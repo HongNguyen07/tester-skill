@@ -57,13 +57,14 @@ if [[ "$UNINSTALL" == "true" ]]; then
   echo "[~] Uninstalling tester-skill..."
   for d in "${SCRIPT_DIR}"/qa-*/; do
     name="$(basename "$d")"
-    run "rm -rf ${NPX_SKILLS_DIR}/${name}"
+    run "rm -rf \"${NPX_SKILLS_DIR}/${name}\""
+    run "rm -rf \"${CLAUDE_SKILLS_DIR}/${name}\""
   done
-  run "rm -rf ${TEMPLATE_DIR_NPX}"
-  run "rm -rf ${TEMPLATE_DIR_CLAUDE}"
+  run "rm -rf \"${TEMPLATE_DIR_NPX}\""
+  run "rm -rf \"${TEMPLATE_DIR_CLAUDE}\""
   for f in "${SCRIPT_DIR}/agents/"*.md; do
     [[ "$(basename "$f")" == "README.md" ]] && continue
-    run "rm -f ${AGENTS_DIR}/$(basename "$f")"
+    run "rm -f \"${AGENTS_DIR}/$(basename "$f")\""
   done
   echo "[OK] Uninstalled."
   exit 0
@@ -79,42 +80,54 @@ NPX_AGENTS="-a claude-code"
 [[ "$WITH_CURSOR" == "true" ]] && NPX_AGENTS="${NPX_AGENTS} -a cursor"
 
 if command -v npx &>/dev/null; then
-  run "cd ${SCRIPT_DIR} && npx skills add . --all ${NPX_AGENTS} -g"
+  run "cd \"${SCRIPT_DIR}\" && npx skills add . --all ${NPX_AGENTS} -g"
 else
   echo "  [!] npx not found - fallback to manual cp"
-  run "mkdir -p ${NPX_SKILLS_DIR}"
+  run "mkdir -p \"${NPX_SKILLS_DIR}\""
   for d in "${SCRIPT_DIR}"/qa-*/; do
-    run "cp -r ${d} ${NPX_SKILLS_DIR}/"
+    run "cp -r \"${d}\" \"${NPX_SKILLS_DIR}/\""
   done
 fi
+
+# Claude Code doc ~/.claude/skills/<name>/SKILL.md (VIET HOA), KHONG doc ~/.agents/skills/.
+# Thieu buoc nay thi skill khong hien trong menu "/" cua Claude Code.
+echo "  -> Claude Code native: ${CLAUDE_SKILLS_DIR}/<name>/SKILL.md"
+run "mkdir -p \"${CLAUDE_SKILLS_DIR}\""
+for d in "${SCRIPT_DIR}"/qa-*/; do
+  name="$(basename "$d")"
+  [[ -f "${d}skill.md" ]] || continue
+  run "mkdir -p \"${CLAUDE_SKILLS_DIR}/${name}\""
+  run "cp \"${d}skill.md\" \"${CLAUDE_SKILLS_DIR}/${name}/SKILL.md\""
+done
 echo ""
 
 echo "[2/3] Agents -> ${AGENTS_DIR}/"
-run "mkdir -p ${AGENTS_DIR}"
+run "mkdir -p \"${AGENTS_DIR}\""
 for f in "${SCRIPT_DIR}/agents/"*.md; do
   name="$(basename "$f")"
   [[ "$name" == "README.md" ]] && continue
   [[ -e "$f" ]] || continue
-  run "cp ${f} ${AGENTS_DIR}/"
+  run "cp \"${f}\" \"${AGENTS_DIR}/\""
 done
 echo ""
 
 echo "[3/3] Project template + shared wiki -> both locations"
-run "mkdir -p ${NPX_SKILLS_DIR}"
-run "mkdir -p ${CLAUDE_SKILLS_DIR}"
-run "rm -rf ${TEMPLATE_DIR_NPX}"
-run "rm -rf ${TEMPLATE_DIR_CLAUDE}"
-run "cp -r ${SCRIPT_DIR}/project-template ${TEMPLATE_DIR_NPX}"
-run "cp -r ${SCRIPT_DIR}/project-template ${TEMPLATE_DIR_CLAUDE}"
+run "mkdir -p \"${NPX_SKILLS_DIR}\""
+run "mkdir -p \"${CLAUDE_SKILLS_DIR}\""
+run "rm -rf \"${TEMPLATE_DIR_NPX}\""
+run "rm -rf \"${TEMPLATE_DIR_CLAUDE}\""
+run "cp -r \"${SCRIPT_DIR}/project-template\" \"${TEMPLATE_DIR_NPX}\""
+run "cp -r \"${SCRIPT_DIR}/project-template\" \"${TEMPLATE_DIR_CLAUDE}\""
 # Shared wiki (dùng chung BA/BE/FE/QA) — vendored (portable)
-run "rm -rf ${NPX_SKILLS_DIR}/shared-wiki-template ${CLAUDE_SKILLS_DIR}/shared-wiki-template"
-run "cp -r ${SCRIPT_DIR}/shared-wiki-template ${NPX_SKILLS_DIR}/shared-wiki-template"
-run "cp -r ${SCRIPT_DIR}/shared-wiki-template ${CLAUDE_SKILLS_DIR}/shared-wiki-template"
+run "rm -rf \"${NPX_SKILLS_DIR}/shared-wiki-template\" \"${CLAUDE_SKILLS_DIR}/shared-wiki-template\""
+run "cp -r \"${SCRIPT_DIR}/shared-wiki-template\" \"${NPX_SKILLS_DIR}/shared-wiki-template\""
+run "cp -r \"${SCRIPT_DIR}/shared-wiki-template\" \"${CLAUDE_SKILLS_DIR}/shared-wiki-template\""
 echo ""
 
 if [[ "$DRY_RUN" == "false" ]]; then
   echo "[OK] Installed:"
   echo "   - $(ls ${NPX_SKILLS_DIR} 2>/dev/null | grep -c '^qa-') qa-* skills in ${NPX_SKILLS_DIR}/"
+  echo "   - $(ls ${CLAUDE_SKILLS_DIR}/qa-*/SKILL.md 2>/dev/null | wc -l) qa-* skills in ${CLAUDE_SKILLS_DIR}/ (menu \"/\" cua Claude Code)"
   echo "   - $(ls ${AGENTS_DIR}/qa-*.md 2>/dev/null | wc -l) qa agents in ${AGENTS_DIR}/"
   echo "   - template in ${TEMPLATE_DIR_NPX}/ and ${TEMPLATE_DIR_CLAUDE}/"
   echo "Next: bootstrap a project → bash ${TEMPLATE_DIR_CLAUDE}/bootstrap.sh /path/to/your-project"

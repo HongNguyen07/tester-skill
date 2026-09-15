@@ -62,6 +62,7 @@ if ($Uninstall) {
         $name = $_.Name
         Run-Cmd "Remove $name" {
             Remove-Item -Recurse -Force (Join-Path $NpxSkillsDir $name) -ErrorAction SilentlyContinue
+            Remove-Item -Recurse -Force (Join-Path $ClaudeSkillsDir $name) -ErrorAction SilentlyContinue
         }
     }
     Run-Cmd "Remove project-template (npx location)" {
@@ -108,6 +109,22 @@ if (Get-Command npx -ErrorAction SilentlyContinue) {
         Run-Cmd "Copy $($_.Name)" { Copy-Item -Recurse -Force $src $NpxSkillsDir }
     }
 }
+
+# Claude Code doc ~/.claude/skills/<name>/SKILL.md (VIET HOA), KHONG doc ~/.agents/skills/.
+# Thieu buoc nay thi skill khong hien trong menu "/" cua Claude Code.
+Write-Host "  -> Claude Code native: $ClaudeSkillsDir\<name>\SKILL.md"
+Run-Cmd "mkdir claude skills dir" { New-Item -ItemType Directory -Force -Path $ClaudeSkillsDir | Out-Null }
+Get-ChildItem -Directory $ScriptDir -Filter "qa-*" | ForEach-Object {
+    $name    = $_.Name
+    $srcSkill = Join-Path $_.FullName "skill.md"
+    if (Test-Path $srcSkill) {
+        $destDir = Join-Path $ClaudeSkillsDir $name
+        Run-Cmd "Install skill $name -> SKILL.md" {
+            New-Item -ItemType Directory -Force -Path $destDir | Out-Null
+            Copy-Item -Force $srcSkill (Join-Path $destDir "SKILL.md")
+        }
+    }
+}
 Write-Host ""
 
 Write-Host "[2/3] Agents -> $AgentsDir\"
@@ -150,7 +167,9 @@ if (-not $DryRun) {
     $agentCount  = (Get-ChildItem $AgentsDir -Filter "qa-*.md" -ErrorAction SilentlyContinue).Count
 
     Write-Host "[OK] Installed:"
+    $claudeSkillCount = (Get-ChildItem $ClaudeSkillsDir -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -match '^qa-' }).Count
     Write-Host "   - $skillCount qa-* skills in $NpxSkillsDir\"
+    Write-Host "   - $claudeSkillCount qa-* skills in $ClaudeSkillsDir\ (menu '/' cua Claude Code)"
     Write-Host "   - $agentCount qa agents in $AgentsDir\"
     Write-Host "   - template in $TemplateDirNpx\"
     Write-Host "   - template in $TemplateDirClaude\"

@@ -21,7 +21,8 @@ bash install.sh
 ```
 
 Cài gì:
-- Skills `qa-orchestrator` + `qa-*` → `~/.agents/skills/`
+- Skills `qa-orchestrator` + `qa-*` → **`~/.claude/skills/<name>/SKILL.md`** (để hiện trong menu `/`
+  của Claude Code) **và** `~/.agents/skills/` (cho `npx skills` / Cursor)
 - Agents `qa-*` → `~/.claude/agents/`
 - `qa-project-template` + `shared-wiki-template` (vendored) → `~/.claude/skills/` & `~/.agents/skills/`
 

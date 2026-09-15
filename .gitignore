@@ -1,0 +1,22 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Logs / temp
+*.log
+tmp/
+.tmp/
+
+# Node (nếu sau này thêm automation deps)
+node_modules/
+
+# Working output — không thuộc bộ skill
+/wiki/
+/tailieu/

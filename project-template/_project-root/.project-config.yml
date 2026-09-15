@@ -1,0 +1,73 @@
+# .project-config.yml — Project-level metadata (discipline QA / tester-skill)
+#
+# Đặt tại ROOT project. QA sub-agents walk up directory tree tìm file này để suy ra:
+#   - wiki path (SHARED với BA/BE/FE — cùng 1 wiki repo team)
+#   - test stack (automation frameworks)
+#   - convention (bug id prefix, test-case id prefix)
+#
+# ĐA-DISCIPLINE: nếu BA/BE/FE đã bootstrap trước, file này có thể đã tồn tại (của họ) →
+# bootstrap QA KHÔNG ghi đè. Khi đó QA đọc config sẵn có; cần field QA riêng → yêu cầu agent
+# merge block `qa:` bên dưới vào.
+
+projectName: "{PROJECT_NAME}"
+disciplines: ["qa"]                     # bộ này khai QA; nếu file dùng chung, thêm "qa" vào list
+
+# Path tương đối tính từ file này
+wiki: "./wiki"
+memory: "./wiki/memory"
+
+# QA discipline config
+qa:
+  # Ranh giới: dev giữ unit/integration/contract (white-box); QA làm black-box xuyên discipline
+  scope:
+    - acceptance          # nghiệm thu theo AC
+    - system              # end-to-end nghiệp vụ
+    - e2e                 # UI flow (Playwright)
+    - regression          # bộ hồi quy per release
+    - exploratory         # dò lỗi không kịch bản
+    - a11y                # accessibility (axe)
+    - perf-smoke          # smoke hiệu năng (không thay perf test chuyên sâu)
+  devOwns:                # QA KHÔNG lặp lại các lớp này (dev sở hữu)
+    - unit
+    - integration
+    - contract
+
+  # Automation stack
+  automation:
+    e2eWeb: "playwright"          # E2E UI + visual + a11y (axe-core)
+    apiBe: "rest-assured"         # API BE (Java) — hoặc "karate"
+    apiAlt: "karate"              # BDD-style API alternative
+    reportEvidence: true          # bắt buộc log evidence (trace/screenshot) cho mỗi run
+
+  # Môi trường test
+  environments:
+    - name: "local"
+    - name: "staging"
+    - name: "uat"
+
+  # Entry / exit criteria mặc định (override per test plan)
+  exitCriteria:
+    acCoverage: 100                # % AC phải có ≥1 test case
+    passRateBlocking: 100          # blocking severity phải pass 100%
+    openCriticalDefects: 0         # không còn defect critical mở → mới sign-off
+
+# Conventions QA
+conventions:
+  testCaseIdPrefix: "TC"           # TC-<FEAT>-01
+  bugIdPrefix: "BUG"               # BUG-<NNN>
+  testPlanIdPrefix: "TP"           # TP-<FEAT>
+  dateFormat: "YYYY-MM-DD"
+  language: "Tiếng Việt mô tả, English cho code/technical"
+
+# Hard gates QA — chạm → auto high test-risk (xem RISK_LANES.md § Lanes — QA)
+hardGatesGlobal:
+  - "auth"                         # login/token/permission
+  - "payment"                      # checkout/billing
+  - "data-integrity"               # migration, tính tiền, tồn kho
+  - "cross-service-e2e"            # flow xuyên nhiều BE service
+  - "multi-tenant-isolation"       # rò rỉ dữ liệu giữa tenant
+
+# Memory rules
+memoryRules:
+  autoSaveOnFriction: true
+  reviewMemoryOnTaskStart: true

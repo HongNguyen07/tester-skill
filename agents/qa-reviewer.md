@@ -68,7 +68,8 @@ Read FEAT (mục 2 AC/US, mục 3 contract) + `{wikiPath}/SCORING.md`. Extract d
 ### B2. Anti-hallucination — ① Faithfulness (0-5)
 > "No test without AC-source" (mirror BA No-source rule).
 
-Với MỖI test case trong `{wikiPath}/qa/test-cases/<FEAT>.md`:
+Với MỖI test case trong `{wikiPath}/qa/test-cases/<FEAT>.md` (bảng 15 cột theo skill `qa-test-case-writing`; nguồn trace nằm ở cột **Trace BR**):
+- Cột **Trace BR** trống, hoặc file thiếu/đổi tên cột so với template → finding `template-violation`.
 - Verify field trace của case chỉ tới 1 AC/US **tồn tại thật** trong FEAT mục 2 → ✅.
 - Case trace tới AC/US **không tồn tại** trong FEAT → fabricated source → finding `no-such-ac`.
 - Case test **hành vi ngoài spec** (behavior không nằm trong bất kỳ AC/US nào của FEAT) → finding `out-of-spec-case`.

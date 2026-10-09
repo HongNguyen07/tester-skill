@@ -53,8 +53,16 @@ tester-skill/
 - **P2 lõi manual** — qa-intake-classifier · qa-test-planner · qa-test-case-writer · qa-reviewer(scoring) · qa-wiki-logger.
 - **P3 execution+defect** — qa-test-executor · qa-bug-reporter · qa-initiative-builder + FEAT QA-gate wiring vào be/fe orchestrator.
 - **P4 automation** — qa-automation-builder (Playwright + REST-assured/Karate) · qa-regression-manager · qa-git-committer · qa-release-notes-builder + 7 rule skill (test-design/types/e2e-playwright/api-test/defect/test-data/exit-criteria).
+- **P5 quản trị đầu việc** — `qa-point-scoring`: bóc tách đầu việc QA + chấm point (Size × Effort,
+  0.125–2). Độc lập, không dùng commit làm căn cứ; đơn vị chấm là **cơ chế nghiệp vụ**, không phải
+  số test case. Báo cáo ghi ở `wiki/qa/point-reports/`.
 
-**Tổng:** 12 agent `qa-*` + 8 skill (`qa-orchestrator` + 7 rule). Luồng đóng vòng:
+- **P6 rule viết test case** — `qa-test-case-writing`: template 15 cột cố định (Test Case ID · Purpose ·
+  Category · **Trace BR** · Precondition · Steps · Data · Expected Result · Round 1–3 · Error Code · Note ·
+  Date · Tester) + khối thông tin + bảng đếm Manual test. Mỗi case bắt buộc có Trace BR.
+  Template: `project-template/wiki/qa/test-cases/_template.md`.
+
+**Tổng:** 12 agent `qa-*` + 10 skill (`qa-orchestrator` + 9 rule). Luồng đóng vòng:
 intake → plan → case (shift-left) → *(BE/FE build)* → automation → execute+evidence → defect/loop-back → review(score) → log + sign-off gate → commit/push.
 
 ## Đồng bộ shared-wiki

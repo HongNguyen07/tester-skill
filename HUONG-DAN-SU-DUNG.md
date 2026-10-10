@@ -36,8 +36,8 @@ Hai bộ dùng **chung một mẫu test case** nhưng **không gọi lẫn nhau*
 4. [Bước 2 — Dựng khung QA cho project](#4-bước-2--dựng-khung-qa-cho-project)
 5. [Bước 3 — Cấu hình project](#5-bước-3--cấu-hình-project)
 6. [Bước 4 — Làm việc hằng ngày](#6-bước-4--làm-việc-hằng-ngày)
-7. [Ý nghĩa từng skill](#7-ý-nghĩa-từng-skill)
-8. [Ý nghĩa từng agent](#8-ý-nghĩa-từng-agent)
+7. [Tham chiếu skill ↔ agent ↔ rule](#7-tham-chiếu-skill--agent--rule)
+8. [Từng agent: nhận gì, nạp gì, ghi gì, không làm gì](#8-từng-agent-nhận-gì-nạp-gì-ghi-gì-không-làm-gì)
 9. [File sinh ra nằm ở đâu](#9-file-sinh-ra-nằm-ở-đâu)
 10. [Quy tắc cứng cần nhớ](#10-quy-tắc-cứng-cần-nhớ)
 11. [Sự cố thường gặp](#11-sự-cố-thường-gặp)
@@ -256,7 +256,7 @@ hoặc kèm mã feature: `/qa-orchestrator FEAT-042`.
 
 **Bước A4.** Orchestrator đọc đúng tài liệu FEAT tham chiếu (AC/US ở mục 2, contract ở mục 3). Thiếu AC thì dừng và báo BA.
 
-**Bước A5.** Pipeline chạy lần lượt (mỗi bước do một agent đảm nhiệm — xem [mục 8](#8-ý-nghĩa-từng-agent)):
+**Bước A5.** Pipeline chạy lần lượt (mỗi bước do một agent đảm nhiệm — xem [mục 8](#8-từng-agent-nhận-gì-nạp-gì-ghi-gì-không-làm-gì)):
 
 | Phase | Việc | Bạn cần làm |
 |---|---|---|
@@ -303,51 +303,158 @@ Có thể gõ thẳng `/qa-point-scoring` hay `/qa-test-case-writing` trong menu
 
 ---
 
-## 7. Ý nghĩa từng skill
+## 7. Tham chiếu skill ↔ agent ↔ rule
 
-10 skill = 1 cổng vào + 9 bộ luật. Gõ `/` trong Claude Code sẽ thấy tất cả.
+Cách đọc mục này:
 
-| Skill | Dùng để làm gì | Dùng khi nào |
+- **Skill** = một bộ luật (file `.md`). Claude nạp nó vào trước khi làm việc. Skill **không tự chạy**.
+- **Agent** = "người" thực thi một khâu. Agent nạp skill để biết luật, rồi đọc input và ghi file.
+- Hai skill đặc biệt là **điều phối** (`qa-orchestrator`, `qa-flow`): chúng gọi agent. 9 skill còn lại là **luật thuần**, không gọi ai.
+
+### 7.1. Ai gọi ai
+
+```
+BẠN gõ  /qa-orchestrator [FEAT-NNN]            BẠN gõ  /qa-flow <ID>
+            │                                              │
+            ▼                                              ▼
+   qa-orchestrator  (skill điều phối)              qa-flow  (skill điều phối;
+   KHÔNG tự viết/chạy test                         tự làm S1–S5 và S9 trong hội thoại chính)
+            │  dispatch theo phase                         │  dispatch CHỈ KHI gate: open
+            ├─ P1   qa-intake-classifier                   ├─ S6, S8  qa-test-designer
+            ├─ P2   qa-test-planner                        └─ S7      cx-reviewer
+            ├─ P3   qa-test-case-writer        ⏸ bạn duyệt
+            ├─ P4   qa-automation-builder                  Hai agent này đọc luật ở
+            ├─ P5   qa-test-executor           [gate dev]  ~/.claude/skills/qa-flow/rules/ + templates/
+            ├─ P6   qa-bug-reporter                        qa-test-designer đọc thêm qa-test-case-writing
+            ├─ P7   qa-regression-manager
+            ├─ P8   qa-reviewer                MANDATORY
+            ├─ P9   qa-wiki-logger
+            └─ P10  qa-git-committer
+            (ngoài chuỗi: qa-initiative-builder, qa-release-notes-builder)
+
+9 skill luật: qa-test-case-writing · qa-test-design · qa-point-scoring · qa-test-types · qa-test-data ·
+qa-e2e-playwright · qa-api-test · qa-defect · qa-exit-criteria
+→ được agent nạp (bảng 7.2), hoặc bạn gõ /<tên-skill> khi làm lẻ (Cách B).
+```
+
+### 7.2. Agent nào nạp skill nào
+
+| Agent | Skill nạp | Để làm gì |
 |---|---|---|
-| **`qa-orchestrator`** | **Cổng vào chính.** Điều phối cả pipeline: lấy feature, claim, gọi lần lượt các agent. Bản thân nó **không** tự viết test hay tự chạy test | Cách A — làm feature theo quy trình đầy đủ |
-| **`qa-test-case-writing`** | Luật **hình dạng** file test case theo **mẫu chuẩn của team (mẫu `qa-flow`)**: khối thông tin 6 dòng, Manual test theo Round, bảng 15 cột tách **nhóm A** (theo requirement) / **nhóm B** (QA bổ sung), câu hỏi cần chốt, thống kê, lịch sử cập nhật; cột **Trace BR** bắt buộc cho mọi case; checklist tự kiểm; cách chuyển file cũ sang mẫu mới. Dùng chung cho `/qa-flow` và `/qa-orchestrator` | Viết / sửa / soát / chuyển đổi test case trong `wiki/qa/test-cases/` hoặc `wiki/qa/features/<ID>/04-testcases.md` |
-| **`qa-test-design`** | Luật **cách nghĩ ra case**: giá trị biên, lớp tương đương, decision table, state-transition, pairwise, error guessing → ra bộ Happy / Edge / Error | Cần nghĩ case cho một AC/BR |
-| **`qa-point-scoring`** | Luật **bóc việc + chấm point** (0.05–1, ma trận Size × Effort). Đơn vị là **một Business Rule**, không tính theo số case hay số luồng. Không dùng commit làm căn cứ. Có bảng phụ cho defect / automation / regression | Lập báo cáo point, bóc tài liệu thành danh sách BR, review point của đồng nghiệp |
-| **`qa-test-types`** | Phân định **test gì ở tầng nào**: dev giữ unit/integration/contract; QA giữ system/E2E/acceptance/regression/smoke/exploratory/a11y/perf-smoke | Lập test plan, quyết định có nên test thứ này không |
-| **`qa-test-data`** | Quản lý dữ liệu test: dữ liệu cố định/lặp lại được, dọn dẹp sau test, cô lập tenant, **không dùng dữ liệu production**, che thông tin cá nhân (PII), chạy song song không đụng nhau | Chuẩn bị dữ liệu cho case / automation |
-| **`qa-e2e-playwright`** | Luật viết automation **E2E web**: Page Object, selector `getByRole/getByTestId`, chờ tự động, quét a11y bằng axe-core, trace/screenshot làm bằng chứng, mỗi test trỏ về `TC-<FEAT>-NN` | Viết / review code Playwright |
-| **`qa-api-test`** | Luật viết automation **API** (REST-assured / Karate): kiểm status + schema, token + cô lập tenant, đối chiếu contract của FEAT (endpoint, DTO, mã lỗi `ERR-<NNN>-xx`) | Viết / review test API |
-| **`qa-defect`** | Luật **ghi lỗi**: vòng đời, severity vs priority, chuẩn repro tái hiện được, liên kết BUG ↔ FEAT/AC/TC/test-run, định tuyến BE/FE, chống ghi lỗi "phỏng đoán", phát hiện trùng | Viết / triage bug |
-| **`qa-exit-criteria`** | Điều kiện **ký duyệt (Definition of Done)**: phủ 100% AC, 100% case blocking pass, 0 defect critical/blocker mở, đủ bằng chứng, qua cổng SCORING | Trước khi đặt `status.qa=done` |
+| `qa-intake-classifier` | `qa-test-types`, `qa-test-design`, `qa-defect`, `qa-exit-criteria` (luôn); `qa-e2e-playwright` (có e2e/a11y); `qa-api-test` (có contract/API); `qa-test-data` (multi-tenant / data-integrity) | Chấm lane rủi ro, rồi **đề xuất** cho các phase sau nên nạp skill nào — không nạp hết |
+| `qa-test-planner` | `qa-test-types`, `qa-test-design`; ngưỡng từ `.project-config.yml` (theo `qa-exit-criteria`) | Chọn tầng test, ước lượng coverage, điền entry/exit |
+| `qa-test-case-writer` | `qa-test-case-writing`, `qa-test-design`, `qa-test-data`, `qa-point-scoring` | Hình dạng file · kỹ thuật nghĩ case · dữ liệu biên · đánh mã `BR-xx` khi tài liệu không có |
+| `qa-automation-builder` | `qa-e2e-playwright`, `qa-api-test`, `qa-test-data`, `qa-test-case-writing` | Sinh code Playwright / REST-assured / Karate; đọc case 15 cột để trace `TC` |
+| `qa-test-executor` | `qa-e2e-playwright`, `qa-api-test`, `qa-test-data`, `qa-test-case-writing` | Biết evidence nào là hợp lệ; chạy; ghi test-run |
+| `qa-bug-reporter` | `qa-defect` | Ghi `BUG-<NNN>`, định tuyến BE/FE |
+| `qa-regression-manager` | — (theo `regression-suite/README.md`) | Duy trì suite, báo coverage |
+| `qa-reviewer` | `qa-test-case-writing`, `qa-exit-criteria`, `wiki/SCORING.md` | Soát hình dạng case; chấm điểm chống bịa; trả gate |
+| `qa-wiki-logger` | `qa-exit-criteria` | Quyết định có đặt cờ ký duyệt không |
+| `qa-git-committer` | — | Commit/push |
+| `qa-initiative-builder`, `qa-release-notes-builder` | — | Chia lát / tổng hợp release |
+| `qa-test-designer` (bộ qa-flow) | `qa-flow/rules/01, 05, 07, 09` + `templates/`; `qa-test-case-writing` | Thiết kế test theo mẫu chuẩn |
+| `cx-reviewer` (bộ qa-flow) | `qa-flow/rules/01, 06, 09` + `templates/` | Review CX |
 
-**Phân biệt dễ nhầm:**
+### 7.3. Rule trong từng skill
 
-- `qa-test-case-writing` = case **trông như thế nào** · `qa-test-design` = **nghĩ ra** case thế nào.
-- `qa-point-scoring` = chấm **khối lượng việc** (0.05–1) · `wiki/SCORING.md` = chấm **chất lượng** một lần review (0–100). Hai thứ khác nhau.
-- Mức nghiêm trọng của lỗi (severity) **không** làm tăng point; chỉ độ khó tái hiện mới tăng.
+Mỗi skill có nhiều mục; dưới đây là **rule cốt lõi** — thứ Claude sẽ bám và `qa-reviewer` sẽ chấm. Muốn
+đọc đủ: mở `~/.claude/skills/<tên>/SKILL.md`.
+
+#### `qa-orchestrator` — điều phối pipeline từ FEAT
+
+- **Gọi agent:** 10 agent P1→P10 (+2 ngoài chuỗi), theo sơ đồ 7.1.
+- **Rule cứng nhất:** main agent **chỉ được** đọc context, hiện form/TODO, hỏi bạn, dispatch agent, tổng hợp. **Tuyệt đối không** tự Write/Edit test plan / case / run / defect / automation / `QA_COVERAGE_MATRIX` / `quality-trend`, không tự chạy test rồi khai "pass". Trước khi trả kết quả phải đếm số lần gọi Agent; = 0 mà có output QA → vi phạm, làm lại.
+- **Ngoại lệ được tự làm:** health check wiki (copy file thiếu từ template), trả lời câu hỏi ngữ cảnh (chỉ đọc), hoặc bạn chỉ định rõ.
+- **Gate:** test-design (P2–P3) chạy khi `status.ba=done`; execution (P5) chỉ khi `be.done + fe.done`; sign-off chỉ khi AC 100% + blocking pass 100% + 0 critical mở.
+- **Phải dừng hỏi bạn khi:** lane high-risk / chạm hard gate (auth, payment, data-integrity, cross-service-e2e, multi-tenant); FEAT thiếu AC (báo BA, không bịa); muốn sign-off khi còn defect critical.
+- **Anti-hallucination (chấm ở `qa-reviewer`):** no test without AC-source · pass phải có evidence · kết quả mâu thuẫn spec hoặc flaky = cờ đỏ.
+
+#### `qa-test-case-writing` — hình dạng file test case (mẫu chuẩn = mẫu `qa-flow`)
+
+- **Agent dùng:** `qa-test-case-writer` (viết), `qa-reviewer` (soát), `qa-test-designer` (bộ qa-flow), `qa-automation-builder` / `qa-test-executor` (đọc).
+- **Cấu trúc cố định:** tiêu đề → khối thông tin 6 dòng (Mã · Tên · Tài liệu nguồn · Căn cứ cách hiểu · Trục trace · Người thiết kế · ngày) → Manual test **theo Round** → **A. Case theo requirement** → **B. Case QA bổ sung** → Câu hỏi cần chốt → Thống kê → Lịch sử cập nhật. Không có frontmatter YAML.
+- **15 cột, không đổi tên / thứ tự / số lượng:** Test Case ID · Purpose · Category · Trace BR · Precondition · Steps · Data · Expected Result · Round 1 · Round 2 · Round 3 · Error Code · Note · Date · Tester.
+- **Từng cột:** ID `[<Mã>_<NN>]` liên tục cả file, không ký hiệu trong ô ID · Purpose 1 câu riêng · Category ∈ Positive/Negative/Edge case/UI/Security/Performance · Steps đánh số, bắt đầu bằng động từ, đúng tên nút · Data là giá trị cụ thể · Expected Result kiểm chứng được, thông báo chép nguyên văn, mã lỗi kỳ vọng ở dòng cuối · Round mặc định `Todo`, người viết không điền Pass/Fail · Error Code = mã BUG khi Fail (không phải mã lỗi kỳ vọng) · Note theo thứ tự Ưu tiên · Loại · ❓ Cần chốt · Nguồn · Evidence.
+- **Trace BR (7 rule):** BR chính trước, mã phụ sau, ngăn bằng ` · ` · mỗi case đúng 1 BR chính · nhiều tài liệu thì thêm tiền tố (`G007 BR18`) · tài liệu không có mã → QA đánh `BR-xx`, khai ở `Trục trace` · case nhóm A không thuộc BR → `— · <mã gần nhất>` · case QA tự thêm → mục B, `N/A — QA bổ sung` · **không bịa mã**.
+- **Nhóm B** không tính vào độ phủ; Expected Result ghi `ĐO & GHI`. BR chỉ có case `❓ Cần chốt` = chưa phủ.
+- **Khi tài liệu chưa rõ:** viết phần chắc chắn, phần chưa rõ ghi `Chờ Q-<nn>`, không đoán hộ BA.
+- **Lịch sử cập nhật** phải nêu khoảng mã TC — đó là căn cứ chấm point.
+
+#### `qa-test-design` — kỹ thuật nghĩ ra case
+
+- **Agent dùng:** `qa-test-case-writer`, `qa-test-planner`.
+- **6 rule:** (1) no test without AC-source — không derive được từ spec thì loại · (2) black-box: từ spec + giao diện, không từ code · (3) mỗi AC đủ 3 nhánh **Happy / Edge / Error**, Error phải có mã lỗi kỳ vọng · (4) chọn kỹ thuật theo hình dạng input (biên → BVA; lớp → EP; nhiều điều kiện → decision table; vòng đời → state-transition; nhiều tham số → pairwise; kinh nghiệm → error guessing) · (5) giảm tổ hợp có kỷ luật, không Cartesian mù · (6) case phải chạy được — case rỗng không tính coverage.
+- Nhánh ghi ở cột Category (`Positive` / `Edge case` / `Negative`); ma trận BR → case theo chỗ đặt của `qa-test-case-writing`.
+
+#### `qa-point-scoring` — bóc việc và chấm point
+
+- **Agent dùng:** không có agent riêng; bạn gọi trực tiếp. `qa-test-case-writer` chỉ dùng để đánh mã `BR-xx`.
+- **Đơn vị = một Business Rule.** Use case / luồng / AC / bước / mã lỗi không phải đơn vị. Mỗi BR một dòng, gộp phân tích + thiết kế + chạy.
+- **10 rule:** 1 BR = 1 dòng · 1 hành vi chỉ thuộc 1 BR (luồng thuần, thao tác không có rule → không có dòng) · số case không quyết định point · không mã yêu cầu → không dòng · chốt point một lần (đã thiết kế mà chờ build vẫn chốt; chờ BA thì chưa) · pass không evidence không tính · severity không nâng point, chỉ độ khó tái hiện · không nhân % ownership · một dòng tối đa 1 point · evidence là điều kiện, không phải đầu việc.
+- **Thang:** ma trận Size (S/M; **L không dùng cho 1 BR**) × Effort (E/M/H) = 0.05 → 1. Mặc định `S×E = 0.05`; nâng phải có lý do (số nhánh, tài liệu thiếu/mâu thuẫn, ảnh hưởng tiền/dữ liệu/quyền). Mốc: BR cỡ trung bình ≈ 0.5; tính năng 15–20 BR ≈ 4–7 point.
+- **Bảng phụ** (không nằm trong bảng BR): defect theo độ khó tái hiện (0.05 → 0.7) · automation theo harness/page-object · regression theo lần thay đổi thật · dựng môi trường chỉ khi nặng.
+- **Căn cứ:** mã yêu cầu trỏ về tài liệu · khoảng mã TC · test-run + evidence tồn tại thật · ghi công trong artifact (`Người thiết kế · ngày` + Lịch sử cập nhật). **Không dùng commit** làm căn cứ.
+- **Báo cáo:** Bảng tổng hợp · Bảng A (BR) · Bảng B (phụ) · "Chưa chốt point" · "Đã loại". Template `wiki/qa/point-reports/_template.md`.
+
+#### `qa-test-types` — test gì ở tầng nào
+
+- **Agent dùng:** `qa-intake-classifier`, `qa-test-planner`.
+- **6 rule:** QA = black-box qua UI/API · dev giữ unit/integration/contract, QA **không lặp** · no test without AC-source · chọn loại test theo lane rủi ro (`RISK_LANES.md § QA`): tiny = smoke; normal = Happy/Edge/Error; high-risk = + exploratory + a11y + regression automation · execution cần `be.done + fe.done`, design thì shift-left · non-functional trong scope = a11y + perf-smoke + security-test cơ bản; full perf/pentest ngoài scope.
+
+#### `qa-test-data` — dữ liệu test
+
+- **Agent dùng:** `qa-test-case-writer`, `qa-automation-builder`, `qa-test-executor`.
+- **7 rule:** không bao giờ dùng dữ liệu production, PII phải mask · deterministic — random phải có fixed seed · mỗi test bắt đầu từ known state, setup/teardown riêng, không phụ thuộc thứ tự · cô lập tenant, có assertion tenant A không thấy tenant B · không secret trong repo · parallel-safe (unique key theo worker/run) · tách data/config theo môi trường.
+
+#### `qa-e2e-playwright` — automation E2E web + a11y
+
+- **Agent dùng:** `qa-automation-builder` (sinh code), `qa-test-executor` (chạy, thu evidence).
+- **9 rule:** selector `getByRole` / `getByTestId`, cấm CSS class / xpath / nth-child · web-first assertion, cấm `waitForTimeout` · Page Object Model · evidence bắt buộc: trace on-first-retry, screenshot + video on failure · axe-core quét mọi màn chính, không critical/serious · fresh state + isolation, `fullyParallel` · auth một lần qua `storageState` · tag `@TC-<FEAT>-NN` trên mỗi test · fix flaky tận gốc, không tăng retry để giấu.
+
+#### `qa-api-test` — automation API (REST-assured / Karate)
+
+- **Agent dùng:** `qa-automation-builder`, `qa-test-executor`.
+- **7 rule:** contract FEAT §3 là nguồn chân lý — response lệch = contradiction, **không sửa test cho khớp code** · mỗi test map đúng 1 `TC-<FEAT>-NN` · assert status + body + schema + đúng `ERR-<NNN>-xx`, không chỉ `200 OK` · test cô lập tenant là bắt buộc · authz negative (thiếu/sai/hết hạn token → 401/403 đúng mã) · isolated & repeatable, tự setup/teardown · log full request + response (mask secret) làm evidence.
+
+#### `qa-defect` — ghi lỗi
+
+- **Agent dùng:** `qa-bug-reporter`.
+- **7 rule:** no repro → no defect · mỗi BUG link FEAT + AC + TC + test-run · severity (mức hỏng) ≠ priority (thứ tự fix), gán cả hai · kỳ vọng phải trích AC/contract có thật · expected của case sai → trả về `qa-test-case-writer`, không file bug · loop-back đúng nơi: server/contract/data → BE, UI/render/client-validation → FE, không rõ → "cần triage" · không đụng `status.qa`, chỉ đẩy `status.be/fe` → `review`.
+
+#### `qa-exit-criteria` — điều kiện ký duyệt
+
+- **Agent dùng:** `qa-reviewer` (chấm gate), `qa-wiki-logger` (đặt cờ).
+- **6 rule — đủ cả 6 mới sign-off:** AC coverage 100% (case **đã chạy**, không phải chỉ "planned") · blocking pass rate 100% · 0 defect critical/blocker mở · mọi Pass có evidence · SCORING gate pass (total ≥ 85, contradiction ⑤ = 5) · sign-off là hành động ghi `status.qa=done` + `milestones.qa.signedOff=true`, chỉ sau khi 5 điều trên đạt. Ba ngưỡng đầu là **hard floor** — plan chỉ được siết, không được nới.
+
+#### `qa-flow` — điều phối bộ qa-ai-agents (từ tài liệu BA)
+
+- **Gọi agent:** `qa-test-designer` (S6, S8), `cx-reviewer` (S7) — chỉ khi `gate: open`, `materialOpen: 0`, có câu xác nhận của bạn.
+- **Luật nằm ở 10 file `qa-flow/rules/`** (nguyên tắc nền, workflow, phân tích requirement, debate & alignment, test design, CX, risk/coverage/regression, execution, traceability, human-in-the-loop). Tóm tắt từng file: [HUONG-DAN-QA-AI-AGENTS.md §7.3](HUONG-DAN-QA-AI-AGENTS.md#73-mười-file-rule-rules).
 
 ---
 
-## 8. Ý nghĩa từng agent
+## 8. Từng agent: nhận gì, nạp gì, ghi gì, không làm gì
 
-Agent do `qa-orchestrator` gọi. Bạn thường không gọi trực tiếp.
+Agent do `qa-orchestrator` (hoặc `qa-flow`) gọi; bạn thường không gọi trực tiếp.
 
-| Phase | Agent | Nhiệm vụ | Đầu ra |
-|---|---|---|---|
-| 1 | `qa-intake-classifier` | Kiểm feature có AC dùng được không; đánh giá rủi ro → chọn lane + độ sâu test | Kết quả phân loại |
-| 2 | `qa-test-planner` | Lập test plan: phạm vi, loại test, môi trường, dữ liệu, điều kiện vào/ra | `qa/test-plans/TP-<FEAT>.md` |
-| 3 | `qa-test-case-writer` | Viết case cho **mỗi AC** một bộ Happy / Edge / Error; case lỗi trích mã lỗi của contract | `qa/test-cases/<FEAT>.md` |
-| 4 | `qa-automation-builder` | Viết code Playwright / REST-assured / Karate cho case đáng tự động hoá (không tự động hoá tất cả) | Code trong **repo test** |
-| 5 | `qa-test-executor` | Chạy test thủ công + automation; mỗi kết quả kèm **bằng chứng** | `qa/test-runs/FEAT-<NNN>_<ngày>.md` |
-| 6 | `qa-bug-reporter` | Mỗi lỗi tái hiện được → 1 file bug; giao BE/FE; lỗi chặn nghiệm thu → trả feature về `review` | `qa/defects/BUG-<NNN>.md` |
-| 7 | `qa-regression-manager` | Duy trì bộ regression; báo coverage theo release (số liệu thật, không ước lượng) | `qa/regression-suite/` |
-| 8 | `qa-reviewer` | **Bắt buộc.** Soát chất lượng artifact QA + chấm điểm chống bịa; chỉ đọc, không sửa | Điểm + báo cáo review |
-| 9 | `qa-wiki-logger` | Đóng vòng: cập nhật ma trận phủ, defect log, quality-trend; đặt cờ ký duyệt khi đủ điều kiện | `QA_COVERAGE_MATRIX.md`… |
-| 10 | `qa-git-committer` | Commit + push theo từng repo (test repo / wiki repo); không `--force` | Commit |
-| — | `qa-initiative-builder` | Chia spec lớn (epic, release) thành các lát QA nhỏ | Ghi chú initiative |
-| — | `qa-release-notes-builder` | Tổng hợp feature đã QA đạt thành báo cáo QA của release | `release/v<x.y.z>-qa.md` |
+| Phase | Agent | Nhận vào | Nạp skill | Ghi ra | Không làm |
+|---|---|---|---|---|---|
+| 1 | `qa-intake-classifier` | FEAT đã claim, `.project-config.yml` | types · design · defect · exit-criteria (+ e2e / api / data tùy) | Lane + flag + độ sâu test + danh sách skill gợi ý (trả về orchestrator) | Viết plan/case; chạy test; gọi agent khác |
+| 2 | `qa-test-planner` | FEAT + kết quả intake | types · design | `qa/test-plans/TP-<FEAT>.md`; tick ô "Test plan" trong FEAT §4.4 | Viết case; chạy test; đụng defect/matrix |
+| 3 | `qa-test-case-writer` | FEAT §2 (AC/US) + §3 (mã lỗi) + test plan | test-case-writing · design · data · point-scoring | `qa/test-cases/<FEAT>.md` (mẫu chuẩn, nhóm A/B, ma trận BR → case) | Chạy test; viết automation; log bug; **bịa AC/mã lỗi** |
+| 4 | `qa-automation-builder` | FEAT + case + stack trong config | e2e-playwright · api-test · data · test-case-writing | Code trong **repo test** (không phải wiki); mỗi test trace 1 TC | Tự động hoá tất cả; chạy làm nguồn chân lý; viết case; push |
+| 5 | `qa-test-executor` | FEAT + case + plan; **chỉ khi be.done + fe.done** | e2e-playwright · api-test · data · test-case-writing | `qa/test-runs/FEAT-<NNN>_<ngày>.md`, mỗi case Pass/Fail/Blocked + evidence | Viết case; file bug (chỉ liệt kê case fail); sign-off; push |
+| 6 | `qa-bug-reporter` | `failedCases[]` từ executor + FEAT | defect | `qa/defects/BUG-<NNN>.md`; đẩy `status.be/fe` → `review` nếu chặn nghiệm thu | Chạy test; sửa code; push; sign-off |
+| 7 | `qa-regression-manager` | test-run mới / version release | — | `qa/regression-suite/suite-<module>.md`, `release/v<x>.md` (coverage đếm thật, flaky → quarantine) | Viết case mới; build automation; ước lượng coverage; push |
+| 8 | `qa-reviewer` | plan + case (+ run + defect nếu đã chạy) | test-case-writing · exit-criteria · SCORING.md | Score block + review report + 1 dòng `quality-trend.md`; gate pass / loop-back | **Sửa** bất kỳ artifact nào; review code sản phẩm |
+| 9 | `qa-wiki-logger` | Tóm tắt các phase + score của reviewer | exit-criteria | Regenerate `QA_COVERAGE_MATRIX.md`; FEAT §4.4 + §5; defect index; `status.qa=done` + `signedOff=true` khi đủ | Chạy test; viết case; push |
+| 10 | `qa-git-committer` | FEAT vừa xong | — | Commit + push repo test (scoped) và wiki repo; không `--force`, không `--no-verify` | Sửa artifact; chạy test; quyết định sign-off |
+| — | `qa-initiative-builder` | Spec lớn (epic / release scope) | — | Initiative note: N lát QA + FEAT đích + thứ tự phụ thuộc | Viết plan/case; chạy; gọi agent |
+| — | `qa-release-notes-builder` | Version + khoảng thời gian | — | `release/v<x.y.z>-qa.md`: feature đã QA pass, coverage, defect còn mở, rủi ro | Sign-off; chạy test; ước số |
+| S6/S8 | `qa-test-designer` (qa-flow) | `02-alignment-summary.md` (gate open) + `01-…` + tài liệu nguồn | qa-flow rules 01/05/07/09 · test-case-writing | `03-test-design.md`, `04-testcases.md` | Tạo requirement; tự chọn cách hiểu điểm mở; chạy test; điền Pass/Fail; ghi `Automated` khi không có script |
+| S7 | `cx-reviewer` (qa-flow) | `02-…` (gate open) + tài liệu / design / prototype | qa-flow rules 01/06/09 | `05-cx-review.md` (Defect / Usability / CX Risk / Suggestion) | Sửa requirement; nói "đã thao tác" khi chỉ đọc; coi persona giả định là thật |
 
----
+**Nhận ra agent làm sai:** agent ghi file ngoài cột "Ghi ra", hoặc làm việc trong cột "Không làm" → yêu cầu chạy lại đúng agent. Ví dụ: `qa-test-executor` tự tạo `BUG-…` là sai; `qa-reviewer` tự sửa test case là sai; `qa-test-designer` ghi file khi `gate: closed` là sai.
 
 ## 9. File sinh ra nằm ở đâu
 

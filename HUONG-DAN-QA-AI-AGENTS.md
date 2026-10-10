@@ -260,18 +260,76 @@ Gate đóng thì cả hai **dừng, không ghi file nào** và báo lại lý do
 
 ### 7.3. Mười file rule (`rules/`)
 
-| Rule | Quy định |
-|---|---|
-| `01-core-principles` | 10 nguyên tắc nền, 8 nhãn nội dung, điều cấm, checklist tự rà soát |
-| `02-qa-workflow` | Chuỗi thiết kế, cách bắt đầu feature, điều kiện chuyển giai đoạn, trạng thái, quay lại giai đoạn trước |
-| `03-requirement-analysis` | Cách trích requirement từ tài liệu; giữ mã gốc; không tự giải quyết xung đột giữa hai nguồn |
-| `04-requirement-debate-alignment` | Cách lập câu hỏi; **ai xác nhận**; định nghĩa **điểm trọng yếu**; ranh giới debate |
-| `05-test-design` | Thứ tự thiết kế; loại coverage; nguyên tắc test case; **bảng 15 cột**; hai nhóm case A/B |
-| `06-customer-experience-agent` | 3 mode CX; persona; 4 loại finding |
-| `07-risk-coverage-regression` | Cách đánh giá rủi ro, coverage matrix, regression scope, automation candidate |
-| `08-execution-defect-analysis` | Luật cho việc chạy test, phân tích kết quả, ghi defect, đánh giá AI (chưa có agent) |
-| `09-traceability-knowledge` | Chuỗi truy vết; quy ước mã (`Q-`, `SC-`, `CX-`, `CP-`); kho tri thức `wiki/qa/knowledge/` |
-| `10-human-in-the-loop` | **Khi nào AI phải dừng hỏi bạn**; ai quyết định gì; cách hỏi |
+Mỗi file là một bộ luật. Vai nào đọc file nào: xem bảng 7.1. Dưới đây là rule cốt lõi của từng file.
+
+**`01-core-principles` — áp dụng cho mọi vai, mọi giai đoạn**
+- 10 nguyên tắc: hiểu trước khi làm · debate để hiểu, không để sáng tạo · không kết luận thiếu căn cứ · truy vết từ thiết kế · bằng chứng hơn tự tin · con người quyết định khi mơ hồ/xung đột/rủi ro cao · tách requirement khỏi quan sát · tự rà soát trước khi bàn giao · **không giả vờ thực thi** · nhỏ, tách module.
+- 8 nhãn nội dung bắt buộc, mỗi câu đúng một nhãn ([mục 8](#8-nhãn-nội-dung--đọc-đầu-ra-cho-đúng)). Chỉ `[NGUỒN]` và `[ĐÃ XÁC NHẬN]` được làm căn cứ expected result.
+- Cấm: tự tạo BR/AC/hành vi · bịa mã lỗi, thông báo, field, endpoint, số liệu, persona · coi best practice là yêu cầu · tự giải quyết mâu thuẫn giữa hai nguồn · viết lại tài liệu BA như đã duyệt · tạo liên kết truy vết giả.
+- Checklist tự rà soát: mọi `[NGUỒN]` mở ra được · không câu thiếu nhãn · không expected result dựa trên diễn giải/giả định · số liệu đếm lại, không ước · không câu "đã chạy" thiếu bằng chứng · ghi rõ phần chưa làm được.
+
+**`02-qa-workflow` — thứ tự và điều kiện chuyển giai đoạn**
+- Chuỗi: Requirement → Analysis → **Debate & Alignment** → Use Case → BR → Decision Table → State Transition → Risk → Coverage Matrix → Scenario → Testcase Summary → Testcase Detail → Regression Scope → Automation Candidate. CX chạy song song với Test Design sau khi cổng mở.
+- Bắt đầu feature: hỏi từng câu (ID, mục tiêu, phạm vi), nhận tài liệu, tạo `wiki/qa/features/<ID>/`; đã có thì đọc trạng thái và tiếp tục.
+- Điều kiện chuyển: S3→S4 khi `01-…` đủ nguồn + điểm chưa rõ · S4→S5 khi điểm trọng yếu mở = 0 · S5→S6/S7 khi `gate: open` do bạn xác nhận · S6/S7→S9 khi cả hai agent đã ghi file · S9→S10 khi có môi trường + công cụ + bạn yêu cầu. Chưa đạt thì dừng, nói thiếu gì, **không làm tắt**.
+- Trạng thái ghi ở frontmatter `02-alignment-summary.md`: `stage`, `gate`, `materialOpen`, `nonMaterialOpen`, `gateOpenedBy/At`.
+- Quay lại: agent gặp điểm chưa rõ → không tự chọn, đưa về S4 · điểm trọng yếu mới → `gate: closed` cho phần bị ảnh hưởng · tài liệu đổi → cập nhật `01`, rà `02`, đánh dấu case · đề xuất UX không quay lại S4, ghi ở `05`.
+
+**`03-requirement-analysis` — vai Requirement Analyst (S3)**
+- Liệt kê nguồn đã đọc (tệp, version, phạm vi); phần chưa đọc ghi lý do.
+- Trích kèm `tệp:dòng`: requirement, actor, precondition, trigger; main/alternate/exception flow; BR, data rule, permission, trạng thái; mã lỗi, thông báo, giới hạn số **nguyên văn**.
+- Giữ mã gốc (BR01, AC-07…). Tài liệu không đánh mã → QA đánh `BR-xx`, ghi rõ là mã QA + vị trí gốc.
+- Mỗi điểm thiếu / mơ hồ / mâu thuẫn / nhiều cách hiểu / dẫn chiếu treo → một dòng "Điểm chưa rõ", chuyển Debate.
+- Cấm: thêm hành vi vì "nên như vậy" · biến best practice thành AC · tự giải quyết xung đột hai nguồn · kết luận "thiếu tài liệu" chỉ vì version dẫn chiếu không khớp (file trong `tailieu/` là bản hiện hành; lệch dẫn chiếu là câu hỏi cho BA).
+- Một tài liệu nhiều bản → hỏi bạn bản nào hiệu lực, không suy từ ngày sửa file.
+
+**`04-requirement-debate-alignment` — vai Debate (S4–S5), bắt buộc trước Test Design**
+- Mỗi điểm chưa rõ thành một câu hỏi đủ: nguồn trích dẫn · vì sao chưa rõ · các cách hiểu **có căn cứ** · ảnh hưởng tới case · cần ai xác nhận · mức trọng yếu (AI đề xuất, bạn chốt).
+- Hỏi theo nhóm nhỏ, ưu tiên trọng yếu. Ghi câu trả lời kèm **ai trả lời · ngày · kênh**.
+- **Ai đóng được điểm trọng yếu:** chỉ BA (hoặc Dev/Product đúng thẩm quyền), do bạn chuyển vào. Bạn nói "tôi nghĩ là…" → `[GIẢ ĐỊNH]`, điểm vẫn mở.
+- **Trọng yếu** = cách hiểu khác nhau làm đổi hành vi nghiệp vụ, quyền, bảo mật, dữ liệu, hoặc điều kiện chấp nhận. Chỉ ảnh hưởng câu chữ/thứ tự → không trọng yếu, cô lập và đi tiếp.
+- Ranh giới: câu hỏi phải neo vào tài liệu · tài liệu không đủ căn cứ → `Unresolved / BA Clarification Required` · không ép chọn phương án tài liệu không hỗ trợ · ý tưởng ngoài tài liệu → Change Proposal `[ĐỀ XUẤT THAY ĐỔI]` · bạn và tài liệu mâu thuẫn → chỉ ra, hỏi lại · BA trả lời đổi tài liệu → ghi `[ĐÃ XÁC NHẬN]` + "tài liệu chưa cập nhật", **không sửa `tailieu/`**.
+- Đầu ra `02-alignment-summary.md` đủ 7 mục.
+
+**`05-test-design` — vai QA Test Designer (S6)**
+- Chỉ chạy khi `gate: open`; khác → dừng, không viết gì.
+- Thứ tự: Use Case → BR (mỗi BR ghi trạng thái hiểu) → Decision Table (chỉ khi có logic điều kiện) → State Transition (chỉ khi có trạng thái) → Risk / Coverage / Regression / Automation Candidate → Scenario → Summary → Detail. Bước không áp dụng ghi "Không áp dụng — lý do", không bỏ trống.
+- Coverage cân nhắc: Positive · Negative · Boundary/EP · Exception & recovery · Permission/security · Data integrity · Integration/API · Concurrency · UI/usability/a11y/compatibility · Performance (chỉ khi có SLA) · AI-specific (chỉ khi sản phẩm có AI). Là danh sách để cân nhắc, không phải requirement.
+- Nguyên tắc case: một case một mục tiêu · đủ precondition/data/steps/expected để người khác chạy · group row theo BR · expected nghiệp vụ chỉ từ `[NGUỒN]` / `[ĐÃ XÁC NHẬN]`, chưa rõ ghi `❓ Cần chốt` · không bịa mã lỗi/thông báo/field/endpoint · case `❓` không tính là đã phủ.
+- Bảng 15 cột theo `qa-test-case-writing`; Trace BR chỉ ghi BR/AC case thực sự kiểm; link UC/Scenario/Decision nằm ở Coverage Matrix.
+- Hai nhóm tách riêng: **A theo requirement** (Trace BR bắt buộc là mã thật) · **B QA bổ sung** (đếm riêng, không cộng vào độ phủ, expected ghi "ĐO & GHI").
+- Tự kiểm: mỗi BR có ≥1 case A hoặc lý do · không case A thiếu Trace BR · không ID trùng, Purpose không trùng hàng loạt, đủ 15 cột · số liệu đếm bằng script · điểm chưa rõ mới → liệt kê để quay lại Debate, không tự chọn.
+
+**`06-customer-experience-agent` — vai CX (S7)**
+- 3 mode: **1** UI/UX/CX review từ tài liệu/design (luôn làm trước; chưa quan sát → `[CX GIẢ THUYẾT]`) · **2** Customer Simulation chỉ khi có sản phẩm/prototype truy cập được **và** công cụ · **3** Journey Review end-to-end. Đầu file ghi mode + mức bằng chứng.
+- Câu hỏi review: khách hiểu mục tiêu màn hình? nhãn/thuật ngữ/thông báo rõ? biết thành công/thất bại/đang xử lý? có bước thừa, điểm nhầm, nguy cơ bỏ dở? nhất quán giữa màn hình? tiếp cận, đọc, thao tác, khôi phục sau lỗi?
+- Persona: nhiều persona theo nhóm khách; có căn cứ thì ghi tham chiếu, không thì ghi "persona giả thuyết phục vụ review"; không bịa nhân khẩu học.
+- 4 loại finding: **Defect** chỉ khi có bằng chứng thực tế vi phạm requirement đã xác nhận · Usability Issue · CX Risk (chưa quan sát → "rủi ro giả định") · Improvement Suggestion (không phải requirement).
+- Ranh giới: không sửa requirement/BR/AC · trải nghiệm kém nhưng đúng requirement ≠ Defect · câu hỏi về cách hiểu tài liệu → về Debate · "Expected vs observed" chỉ khi có căn cứ cả hai vế.
+
+**`07-risk-coverage-regression` — trong `qa-test-designer`, mục 5–9 của `03-…`**
+- Risk: đánh giá theo impact, likelihood, độ phức tạp, quyền, dữ liệu **khi có căn cứ**; không có thì ghi "chưa có dữ liệu", không tự cho điểm. Rủi ro là `[QA BỔ SUNG]`, không phải AC.
+- Coverage Matrix: mỗi BR/AC một dòng; trạng thái **Đã phủ** (≥1 case A không `❓`) / **Phủ một phần** / **Chưa phủ** (chỉ case `❓` hoặc không có). Phải nêu 3 loại lỗ hổng: requirement không có case · case không có nguồn · coverage chưa rõ. Coverage bắt buộc và coverage QA bổ sung báo **riêng**.
+- Regression Scope: từ thay đổi, dependency, lịch sử defect; mỗi khu vực ghi căn cứ + giới hạn; **không** khẳng định "không bị ảnh hưởng" khi thiếu dữ liệu — ghi "chưa đủ dữ liệu để loại trừ".
+- Automation Candidate: theo độ ổn định, tần suất, giá trị regression, khả năng kiểm, chi phí bảo trì; mặc định `Candidate`; chỉ `Automated` khi có script + đường dẫn.
+
+**`08-execution-defect-analysis` — chưa có agent, áp dụng cho vai nào được bạn yêu cầu (S10)**
+- Executor: chỉ chạy khi có môi trường + công cụ + bạn yêu cầu; mỗi case ghi status, actual, evidence, môi trường, build, ngày, người; không đủ bằng chứng → không Pass/Fail; không chạy được → `Blocked`/`Not Executed` + lý do; không có công cụ → chỉ kế hoạch hoặc mô phỏng gắn nhãn; thao tác phá dữ liệu → dừng hỏi.
+- Result Analyzer: số liệu đếm từ bản ghi thật; tách **quan sát** với **root cause đã xác minh**.
+- Defect Analyst: repro, expected (kèm nguồn), actual, evidence, môi trường, impact; severity/priority chỉ **đề xuất**; hành vi không có requirement làm căn cứ → không phải defect.
+- AI Quality Evaluator: chỉ khi sản phẩm có AI; tiêu chí phải khớp requirement và threat model, không tự đặt ngưỡng.
+
+**`09-traceability-knowledge` — chuỗi truy vết và kho tri thức**
+- Chuỗi tối thiểu: Requirement → UC → BR → Decision/State → Scenario → Testcase → Result → Defect; Requirement → Testcase → Automation Candidate → Status; CX: Source → Persona → Journey → Finding → Testcase/Defect → Decision. Không có liên kết → `N/A` / `Unlinked` + lý do, không tạo liên kết giả.
+- Liên kết nằm ở đâu: `01` (REQ/UC/BR ↔ nguồn) · `02` (câu hỏi ↔ trả lời ↔ người xác nhận) · `03` Coverage Matrix · `04` cột Trace BR · `05` CX finding.
+- Mã: giữ mã gốc; mã QA tự đánh ghi rõ và ổn định; `Q-<nn>`, `SC-<nn>`, `CX-<nn>`, `CP-<nn>`; mã đã được tham chiếu thì không đổi, mục bỏ thì đánh dấu, không tái dùng số.
+- `wiki/qa/knowledge/` (product · requirements · test · defects · cx · decisions): chỉ nhập `[NGUỒN]` / `[ĐÃ XÁC NHẬN]` kèm nguồn + ngày; giả thuyết để mục "Chưa xác minh" riêng.
+
+**`10-human-in-the-loop` — khi nào AI phải dừng hỏi bạn**
+- Bắt buộc dừng khi: requirement mơ hồ/mâu thuẫn/thiếu trọng yếu · nhiều cách hiểu ảnh hưởng nghiệp vụ/quyền/bảo mật/dữ liệu · đề xuất đổi scope · rủi ro bảo mật/dữ liệu nhạy cảm · severity/root cause chưa đủ bằng chứng · chấp nhận rủi ro / release · hành động phá hủy · chuyển UX suggestion thành requirement · **mở cổng Alignment**.
+- Khi dừng phải nêu 6 thứ: điểm chờ quyết định · nguồn/bằng chứng · vì sao không tự quyết · lựa chọn tài liệu hỗ trợ (không có thì nói không có) · ảnh hưởng nếu chưa giải quyết · ai cần xác nhận.
+- Ai quyết: cách hiểu trọng yếu → BA · mở cổng → bạn · mức trọng yếu → AI đề xuất, bạn chốt · CX/CP thành requirement → Product/BA + nguồn phải cập nhật · severity/priority/root cause/release → người có thẩm quyền.
+- Cách hỏi: theo hội thoại, nhóm nhỏ; không hỏi lại điều đã chốt; trong lúc chờ làm tiếp phần không phụ thuộc; đề xuất AI tự thêm gắn nhãn ĐỀ XUẤT.
 
 ### 7.4. Bảy mẫu (`templates/`)
 

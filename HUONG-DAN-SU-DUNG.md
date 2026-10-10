@@ -1,6 +1,7 @@
 # Hướng dẫn sử dụng bộ skill QA (tester-skill)
 
-> Tài liệu cho **team QA**. Đọc theo thứ tự các Bước 1 → 4 là dùng được. Phần 7 trở đi là tra cứu.
+> Tài liệu cho **team QA**. Đọc **"Bắt đầu nhanh"** là đủ để làm việc hằng ngày với `/qa-flow`.
+> Các mục 1–6 mô tả bộ `qa-*` / `/qa-orchestrator` (tuỳ chọn, chưa dùng). Mục 7 trở đi là tra cứu.
 > Muốn cùng sửa rule với team: xem [mục 13](#13-cùng-góp-sửa-rule-với-team).
 
 **Repo:** <https://github.com/HongNguyen07/tester-skill>
@@ -19,14 +20,39 @@ install.bat              # Windows: double-click cũng được
 # 3. Đóng hẳn Claude Code, mở lại, gõ "/qa" để kiểm tra thấy skill
 ```
 
-Rồi chọn một trong hai cách làm việc:
+### Luồng mặc định của team: `/qa-flow`
 
-| Bạn đang có | Dùng | Hướng dẫn |
+```
+/qa-flow G032          ← bắt đầu một feature từ tài liệu BA
+```
+
+Đọc [HUONG-DAN-QA-AI-AGENTS.md](HUONG-DAN-QA-AI-AGENTS.md) để biết các bước. Mọi feature mới đều đi theo luồng này.
+
+Ngoài ra, hai skill của bộ `qa-*` dùng lẻ được ngay, không cần FEAT:
+
+| Việc | Gõ |
+|---|---|
+| Chấm point cuối kỳ | `Dùng qa-point-scoring lập báo cáo point từ wiki/qa/features/<ID>/04-testcases.md` |
+| Ghi bug đúng chuẩn | `Dùng qa-defect viết bug từ mô tả này` |
+
+### Tuỳ chọn, chưa dùng: `/qa-orchestrator`
+
+Pipeline đầy đủ P1→P10 (plan → case → automation → chạy → bug → review → sign-off). Chỉ dùng khi **đủ cả ba**:
+BA đã sinh `FEAT-<NNN>.md` trong wiki chung · wiki là git repo team cùng dùng · dev BE/FE cũng chạy pipeline
+để nhận loop-back. Hiện team chưa có ba thứ này, nên **chưa bắt buộc học**. Khi bật lại, test case viết bằng
+`/qa-flow` dùng được luôn vì **cùng một mẫu**.
+
+Hai bộ **không gọi lẫn nhau** trong cùng một feature.
+
+### Vì sao chọn `/qa-flow` làm mặc định
+
+| Thực tế của team | `/qa-flow` | `/qa-orchestrator` |
 |---|---|---|
-| **Tài liệu BA** (file `.md` trong `tailieu/`), chưa có FEAT | `/qa-flow <ID>` | [HUONG-DAN-QA-AI-AGENTS.md](HUONG-DAN-QA-AI-AGENTS.md) |
-| **Feature `FEAT-<NNN>.md`** trong wiki chung của team, dev đã/đang làm | `/qa-orchestrator` | File này, [Bước 4](#6-bước-4--làm-việc-hằng-ngày) |
-
-Hai bộ dùng **chung một mẫu test case** nhưng **không gọi lẫn nhau** trong cùng một feature.
+| Đầu vào là tài liệu BA (`tailieu/G0xx.md`, `CR-00x.md`) | Đọc thẳng | Cần chuyển thành `FEAT-<NNN>.md` trước |
+| Chưa có wiki git chung với BA/BE/FE | Không cần | Phải có để claim, push, loop-back |
+| Tài liệu BA hay mơ hồ, phải hỏi lại BA | Có bước Debate + cổng Alignment | Thiếu AC thì dừng, không có bước làm rõ |
+| Đang test thủ công, chưa có automation | Dừng ở thiết kế case, đúng phạm vi | Nửa pipeline (P4–P10) chưa dùng được |
+| Chấm point theo BR | `01-requirement-analysis.md` bóc BR sẵn, kèm `tệp:dòng` | Phải tự bóc BR từ FEAT |
 
 ## Mục lục
 
@@ -66,12 +92,13 @@ a11y, perf-smoke). Unit / integration / contract là việc của dev — QA **k
 **Cổng cuối:** một feature chỉ được coi là xong toàn cục khi QA đã ký duyệt
 (`status.qa=done` và `milestones.qa.signedOff=true`).
 
-**Hai cách dùng** (chọn ở Bước 4):
+**Hai cách dùng bộ `qa-*`** (chọn ở Bước 4). Nhắc lại: luồng mặc định của team là `/qa-flow`, bộ `qa-*`
+chỉ dùng theo Cách B cho tới khi có FEAT.
 
-- **Cách A — Pipeline đầy đủ:** gõ `/qa-orchestrator`, hệ thống tự điều phối cả chuỗi. Cần wiki chung của
-  team có sẵn file feature `FEAT-<NNN>.md`.
-- **Cách B — Dùng lẻ từng skill:** chỉ cần tài liệu nguồn. Ví dụ "viết test case theo template 15 cột",
-  "chấm point tháng này". Không cần FEAT.
+- **Cách A — Pipeline đầy đủ (chưa dùng):** gõ `/qa-orchestrator`, hệ thống tự điều phối cả chuỗi. Cần wiki
+  chung của team có sẵn file feature `FEAT-<NNN>.md` và dev BE/FE cùng chạy pipeline.
+- **Cách B — Dùng lẻ từng skill (dùng ngay):** chỉ cần tài liệu nguồn. Ví dụ `qa-point-scoring` để chấm point
+  tháng này, `qa-defect` để ghi bug. Không cần FEAT.
 
 ---
 

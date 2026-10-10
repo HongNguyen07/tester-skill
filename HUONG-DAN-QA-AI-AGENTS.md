@@ -1,9 +1,11 @@
 # Hướng dẫn sử dụng bộ qa-ai-agents (`/qa-flow`)
 
-> Tài liệu cho **team QA**. Làm theo Bước 1 → 5 là chạy được một feature. Phần 6 trở đi là tra cứu.
+> Tài liệu cho **team QA**. **Đây là luồng mặc định của team** — mọi feature mới đi theo luồng này.
+> Làm theo Bước 1 → 5 là chạy được một feature. Phần 6 trở đi là tra cứu.
 >
-> Bộ này **khác** bộ `qa-*` / `/qa-orchestrator` (xem [`HUONG-DAN-SU-DUNG.md`](HUONG-DAN-SU-DUNG.md)).
-> Hai bộ đứng riêng, **không gọi lẫn agent của hai bộ trong cùng một feature**.
+> Bộ này **khác** bộ `qa-*` / `/qa-orchestrator` (tuỳ chọn, chưa dùng — xem
+> [`HUONG-DAN-SU-DUNG.md`](HUONG-DAN-SU-DUNG.md)). Hai bộ đứng riêng, **không gọi lẫn agent của hai bộ
+> trong cùng một feature**.
 
 ## Mục lục
 
@@ -50,8 +52,9 @@ Luồng tóm tắt:
 | Chạy test, ghi bug, ký duyệt | Chỉ rule, **chưa có agent** | Có đủ agent |
 | Phù hợp khi | Nhận tài liệu mới, cần hiểu rõ trước khi viết case | Feature đã có FEAT, dev đã xong, cần chạy và ký duyệt |
 
-**Gợi ý chọn:** tài liệu BA còn mơ hồ, hoặc chưa có FEAT → dùng `/qa-flow`. Feature đã vào quy trình
-BA → BE → FE → QA chính thức → dùng `/qa-orchestrator`.
+**Team chọn `/qa-flow` làm luồng mặc định** cho mọi feature mới. Lý do: đầu vào của team là tài liệu BA trong
+`tailieu/`, chưa có FEAT, chưa có wiki git chung với BA/BE/FE, và đang test thủ công. `/qa-orchestrator` là
+tuỳ chọn, chỉ bật khi đủ ba thứ đó (chi tiết: [HUONG-DAN-SU-DUNG.md › Bắt đầu nhanh](HUONG-DAN-SU-DUNG.md#bắt-đầu-nhanh-5-phút)).
 
 ---
 

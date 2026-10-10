@@ -41,7 +41,8 @@ Hướng dẫn cho team: [`HUONG-DAN-SU-DUNG.md`](HUONG-DAN-SU-DUNG.md) (bộ `q
 bash ~/.claude/skills/qa-project-template/bootstrap.sh D:\path\to\project
 ```
 Bootstrap **non-clobber**: nếu BA/BE/FE đã tạo AGENTS.md/CLAUDE.md/config → KHÔNG ghi đè;
-chỉ thêm overlay `wiki/qa/` + `QA_COVERAGE_MATRIX.md`. Rồi mở Claude Code → `/qa-orchestrator`.
+chỉ thêm overlay `wiki/qa/` + `QA_COVERAGE_MATRIX.md`. Rồi mở Claude Code → `/qa-flow <ID>` (luồng mặc định
+của team, từ tài liệu BA) hoặc `/qa-orchestrator` (khi đã có FEAT + wiki git chung).
 
 ## Cấu trúc
 ```

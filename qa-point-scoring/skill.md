@@ -120,7 +120,7 @@ dòng yêu cầu. Nếu phải tự dựng chiến lược môi trường/dữ l
 |---|---|
 | Yêu cầu có thật | Mã yêu cầu + vị trí trong tài liệu nguồn (mục/dòng) |
 | Đã phân tích | Kỳ vọng được ghi trong case, hoặc câu hỏi làm rõ có trích dẫn nếu tài liệu thiếu |
-| Đã thiết kế | Khoảng mã TC phủ yêu cầu đó trong `qa/test-cases/<FEAT>.md` |
+| Đã thiết kế | Khoảng mã TC (mục A) phủ yêu cầu đó trong `qa/test-cases/<FEAT>.md` hoặc `qa/features/<ID>/04-testcases.md` |
 | Đã chạy | Dòng tương ứng trong `qa/test-runs/<FEAT>_<ngày>.md` + đường dẫn evidence **tồn tại thật** |
 
 Bảng phụ: defect cần `BUG-<NNN>` + repro + evidence; automation cần đường dẫn file + tên test mang mã
@@ -144,12 +144,20 @@ updatedAt: 2026-10-02
 
 Test run thêm `runBy`, `env`, `runDate`. Defect thêm `foundBy`, `foundAt`.
 
+**Riêng file test case** (template chuẩn = mẫu qa-flow, không có frontmatter — xem `qa-test-case-writing` §1):
+người tạo + ngày tạo nằm ở dòng `Người thiết kế · ngày` của khối thông tin; người sửa + ngày sửa nằm ở
+bảng **Lịch sử cập nhật**. Hai chỗ này thay cho frontmatter ở trên.
+
 Mỗi artifact có bảng ở cuối file, **chỉ thêm dòng, không sửa dòng cũ**:
 
 | Ngày | Ai | Phạm vi thay đổi | Mã yêu cầu / TC liên quan |
 |---|---|---|---|
 | 2026-09-28 | QA-H | Tạo case cho AC-01→AC-15 | TC-01→47 |
 | 2026-10-02 | QA-H | Cập nhật kỳ vọng AC-16→AC-18 theo tài liệu mới | TC-48→55 |
+
+File test case dùng bảng 3 cột `| Ngày | Ai | Thay đổi |` của template; khi đó cột `Thay đổi` phải gộp
+đủ phạm vi + mã yêu cầu + khoảng mã TC, vd `Tạo case BR01→BR15, [G032_01]→[G032_47]`. Thiếu khoảng mã
+TC thì dòng đó không dùng làm căn cứ ghi công được.
 
 ### 2.3. Quy tắc mã (để khoảng mã dùng được làm bằng chứng)
 
@@ -159,7 +167,7 @@ Mỗi artifact có bảng ở cuối file, **chỉ thêm dòng, không sửa dò
 
 ### 2.4. Ownership
 
-Xác định bằng `createdBy`/`updatedBy` + bảng lịch sử cập nhật.
+Xác định bằng `createdBy`/`updatedBy` (file test case: dòng `Người thiết kế · ngày`) + bảng lịch sử cập nhật.
 
 - Sửa case sai của người khác: tính. Của chính mình: không tính.
 - Hai người cùng làm một tính năng: chia theo **mã yêu cầu** mỗi người phụ trách, không chia phần trăm.

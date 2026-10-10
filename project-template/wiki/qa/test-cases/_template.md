@@ -1,53 +1,53 @@
----
-feature: FEAT-<NNN>
-plan: TP-<FEAT>
-createdBy: <QA initials>
-createdAt: <YYYY-MM-DD>
----
+# Test Cases — <ID>: <tên feature>
 
-# Test Cases — FEAT-<NNN>: <Tên feature>
+| Thông tin | Giá trị |
+| --- | --- |
+| Mã trường hợp kiểm thử | <mã dùng làm tiền tố ID> |
+| Tên trường hợp kiểm thử | <tên feature> |
+| Tài liệu nguồn | `tailieu/<tệp>` (version ghi trong tệp) |
+| Căn cứ cách hiểu | `02-alignment-summary.md`, cổng mở ngày <YYYY-MM-DD> |
+| Trục trace | Trace BR = BR / AC mà case đang verify (mã gốc của tài liệu) |
+| Người thiết kế · ngày | |
 
-> Viết theo rule ở skill `qa-test-case-writing`. **Không đổi tên, không đổi thứ tự, không thêm bớt cột.**
-> Mỗi test case PHẢI có **Trace BR** (No test without source).
+## Manual test
 
-| Mục | Giá trị |
-|---|---|
-| Tên màn hình/Tên chức năng | <TÊN_CHỨC_NĂNG> |
-| Thiết bị, hệ điều hành | <vd Chrome 129 / Windows 11> |
-| Mã trường hợp kiểm thử | <MHx> |
+| | Pass | Fail | NA | Chưa thực hiện | Tổng |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Round 1 | 0 | 0 | 0 | <n> | <n> |
+| Round 2 | 0 | 0 | 0 | <n> | <n> |
+| Round 3 | 0 | 0 | 0 | <n> | <n> |
 
-**Manual test**
-
-| Chỉ số | Số lượng |
-|---|---|
-| Số trường hợp kiểm thử đạt (P) | 0 |
-| Số trường hợp kiểm thử không đạt (F) | 0 |
-| Số trường hợp kiểm thử đang xem xét (NA) | 0 |
-| Số trường hợp kiểm thử chưa thực hiện | 3 |
-| Tổng số trường hợp kiểm thử | 3 |
-
-## Bảng test case
+## A. Case theo requirement
 
 | Test Case ID | Purpose | Category | Trace BR | Precondition | Steps | Data | Expected Result | Round 1 | Round 2 | Round 3 | Error Code | Note | Date | Tester |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| **<Nhóm 1 — vd BR01 — tên quy tắc>** | | | | | | | | | | | | | | |
-| [MHx_01] | <1 câu: case kiểm gì> | Positive | BR01 · UC-01 · AC-01 | <trạng thái, quyền, dữ liệu có sẵn> | 1. Bấm …<br>2. Nhập …<br>3. Bấm … | <giá trị cụ thể> | <kết quả kiểm chứng được; thông báo chép nguyên văn trong "…"> | Todo | Todo | Todo | | Ưu tiên P1<br>Nguồn: <tệp:dòng "trích"><br>Evidence: screenshot | | |
-| [MHx_02] | <biên / tình huống hiếm> | Edge case | BR01 · AC-02 | - | 1. …<br>2. … | biên: min / max / rỗng | <…> | Todo | Todo | Todo | | Ưu tiên P2<br>Nguồn: <…><br>Evidence: screenshot | | |
-| **<Nhóm 2 — vd BR02 — tên quy tắc>** | | | | | | | | | | | | | | |
-| [MHx_03] | <input sai / vi phạm rule> | Negative | BR02 · E01 | - | 1. …<br>2. … | <input sai> | Báo lỗi "<thông báo nguyên văn>"; không lưu<br>**Mã lỗi kỳ vọng:** ERR-<NNN>-01 | Todo | Todo | Todo | | Ưu tiên P1<br>Nguồn: <…><br>Evidence: log | | |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| **BR01 — <tên BR>** | | | | | | | | | | | | | | |
+| [<Mã>_01] | <một câu, riêng cho case này> | Positive | BR01 · AC-01 | | 1. …<br>2. … | | <chỉ từ `[NGUỒN]` / `[ĐÃ XÁC NHẬN]`> | Todo | Todo | Todo | | Ưu tiên: P1<br>Loại: …<br>Nguồn: `tệp:dòng "trích ngắn"`<br>Evidence: screenshot | | |
+| [<Mã>_02] | | Negative | BR01 | | | | <phần chắc chắn> | Todo | Todo | Todo | | ❓ Cần chốt: Q-05<br>Nguồn: … | | |
 
-## Ma trận BR → case (đảm bảo phủ)
+## B. Case QA bổ sung / exploratory `[QA BỔ SUNG]`
 
-| BR | Nội dung rút gọn | Test case phủ | Đã phủ? |
-|---|---|---|---|
-| BR01 | <…> | [MHx_01], [MHx_02] | ✅ |
-| BR02 | <…> | [MHx_03] | ✅ |
+Không tính vào độ phủ requirement. Kỳ vọng không phải tiêu chí pass theo requirement.
 
-> qa-reviewer chấm: BR nào **không** có case → điểm faithfulness/coverage tụt; BR "phủ" nhưng
-> case rỗng/không executable, hoặc chỉ có case đang `❓ Cần chốt` → không tính là đã phủ.
+| Test Case ID | Purpose | Category | Trace BR | Precondition | Steps | Data | Expected Result | Round 1 | Round 2 | Round 3 | Error Code | Note | Date | Tester |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [<Mã>_NN] | | Edge case | BR07 (liên quan) hoặc `N/A — QA bổ sung` | | | | ĐO & GHI: … | Todo | Todo | Todo | | Loại: QA bổ sung<br>Lý do thêm: … | | |
 
-## Câu hỏi cần chốt (nếu có)
+## Câu hỏi cần chốt
 
-| # | Câu hỏi | Test case liên quan | Người trả lời | Trả lời |
-|---|---|---|---|---|
-| Q1 | <điểm tài liệu chưa rõ> | [MHx_02] | BA / PO / Dev | |
+| Q | Nội dung | Case liên quan | Trạng thái |
+| --- | --- | --- | --- |
+
+## Thống kê
+
+| | Nhóm A | Nhóm B |
+| --- | ---: | ---: |
+| Tổng case | | |
+| Positive / Negative / Edge case / khác | | |
+| Case `❓ Cần chốt` (chưa tính là đã phủ) | | |
+| BR đã phủ / tổng BR | | — |
+
+## Lịch sử cập nhật
+
+| Ngày | Ai | Thay đổi |
+| --- | --- | --- |

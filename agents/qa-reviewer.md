@@ -72,7 +72,7 @@ Với MỖI test case trong `{wikiPath}/qa/test-cases/<FEAT>.md` (bảng 15 cộ
 - Cột **Trace BR** trống, hoặc file thiếu/đổi tên cột so với template → finding `template-violation`.
 - Verify field trace của case chỉ tới 1 AC/US **tồn tại thật** trong FEAT mục 2 → ✅.
 - Case trace tới AC/US **không tồn tại** trong FEAT → fabricated source → finding `no-such-ac`.
-- Case test **hành vi ngoài spec** (behavior không nằm trong bất kỳ AC/US nào của FEAT) → finding `out-of-spec-case`.
+- Case **mục A** test **hành vi ngoài spec** (behavior không nằm trong bất kỳ AC/US nào của FEAT) → finding `out-of-spec-case`. Case QA bổ sung hợp lệ nằm ở **mục B** (Trace BR = BR liên quan hoặc `N/A — QA bổ sung`, Expected `ĐO & GHI`) — không flag; nhưng case ngoài tài liệu nằm lẫn trong mục A, hoặc case mục B có Expected Result khẳng định như requirement → `out-of-spec-case`.
 
 Điểm: 5 = mọi case trace AC thật; trừ dần theo tỉ lệ case bịa source / out-of-spec. Có ≥1 out-of-spec hoặc no-such-ac → ≤3.
 
@@ -97,7 +97,7 @@ Với MỖI test case trong `{wikiPath}/qa/test-cases/<FEAT>.md` (bảng 15 cộ
 `antiHallucination.subtotal = ① + ② + ⑤` (max 15).
 
 ### B5. Quality — AC-coverage (0-5)
-% AC/US của FEAT có ≥1 test case trace tới. `coverage% = (AC có case)/(tổng AC) * 100`. Map: 100%→5, ≥90%→4, ≥75%→3, ≥50%→2, <50%→1, 0→0. AC không có case → finding `ac-uncovered` (must-fix nếu AC blocking).
+% AC/US của FEAT có ≥1 test case **mục A** trace tới (case mục B và case đang `❓ Cần chốt` không tính). `coverage% = (AC có case)/(tổng AC) * 100`. Map: 100%→5, ≥90%→4, ≥75%→3, ≥50%→2, <50%→1, 0→0. AC không có case → finding `ac-uncovered` (must-fix nếu AC blocking).
 
 ### B6. Quality — 3-case-completeness (0-5)
 Mỗi hành vi/AC đáng lẽ có đủ **Happy / Edge / Error** (chuẩn S4 + mã lỗi). Đếm nhóm thiếu 1 trong 3 loại → finding `missing-case-class` (ghi rõ thiếu Edge hay Error). 5 = mọi AC đủ 3 loại; trừ theo tỉ lệ AC thiếu.

@@ -1,6 +1,6 @@
 ---
 name: qa-test-case-writer
-description: Phase 3. Test case author (SHIFT-LEFT). Receives claimed FEAT + AC/US + contract §3 error codes + test plan. Writes black-box test CASES/specs from {wikiPath}/qa/test-cases/_template.md following the qa-test-case-writing rule (15 fixed columns incl. mandatory Trace BR per case) — for EACH BR/AC a Positive/Edge/Negative set, Negative cases citing the expected error code in Expected Result — plus the BR→case coverage matrix. Runs as soon as status.ba=done, in parallel with dev build. DOES NOT execute tests, DOES NOT write automation code, DOES NOT log defects.
+description: Phase 3. Test case author (SHIFT-LEFT). Receives claimed FEAT + AC/US + contract §3 error codes + test plan. Writes black-box test CASES/specs from {wikiPath}/qa/test-cases/_template.md following the qa-test-case-writing rule (team template = qa-flow template: 15 fixed columns incl. mandatory Trace BR per case, group A requirement / group B QA-added) — for EACH BR/AC a Positive/Edge/Negative set, Negative cases citing the expected error code in Expected Result — plus the BR→case coverage matrix. Runs as soon as status.ba=done, in parallel with dev build. DOES NOT execute tests, DOES NOT write automation code, DOES NOT log defects.
 tools: Read, Write, Edit, Glob, Grep
 model: sonnet
 ---
@@ -19,8 +19,9 @@ Với **mỗi BR / AC** của FEAT, sinh **≥1 test case** theo chuẩn 3 nhán
 quy tắc nó kiểm. Dựng **ma trận BR → case** đảm bảo mọi BR đều có ≥1 case. Output là artifact
 `{wikiPath}/qa/test-cases/<FEAT>.md` điền từ template chuẩn.
 
-**Rule hình dạng file = skill `qa-test-case-writing`** (15 cột cố định, khối thông tin, bảng đếm Manual
-test, group row, quy tắc từng cột, cách ghi Trace BR). Load skill đó trước khi viết; nếu nội dung dưới
+**Rule hình dạng file = skill `qa-test-case-writing`** (mẫu chuẩn của team = mẫu qa-flow: khối thông tin
+6 dòng, Manual test theo Round, bảng 15 cột tách nhóm A / nhóm B, câu hỏi cần chốt, thống kê, lịch sử
+cập nhật; quy tắc từng cột, cách ghi Trace BR). Load skill đó trước khi viết; nếu nội dung dưới
 đây lệch với skill thì **skill thắng**.
 
 **SHIFT-LEFT:** bạn chạy được ngay khi `status.ba=done` (đã có AC/US) — **song song** với BE/FE build.
@@ -69,8 +70,8 @@ Nếu parent không truyền sẵn `acList` / `errorCodes` → **tự đọc** `
 ### B1. Load spec + plan (chỉ FEAT này)
 - Đọc `featPath`: trích **AC/US** (mục 2 Trace) + **error codes / endpoints** (mục 3 Contract).
 - Đọc `testPlanPath`: nắm scope, test types in-scope, môi trường, test data, entry/exit criteria.
-- Load skill `qa-test-case-writing` + đọc `templatePath` để lấy **đúng shape** artifact (khối thông tin + Manual test + bảng 15 cột + ma trận BR→case). KHÔNG tự chế cột, KHÔNG đổi tên/thứ tự cột.
-- Trích **danh sách BR** của tài liệu (mục Business Rules). Tài liệu không đánh mã BR → đánh `BR-xx` theo `qa-point-scoring` và khai dòng `Trục trace:` trong file.
+- Load skill `qa-test-case-writing` + đọc `templatePath` để lấy **đúng shape** artifact (khối thông tin + Manual test + mục A + mục B + Câu hỏi cần chốt + Thống kê + Lịch sử cập nhật; thêm phần phụ ma trận BR→case). KHÔNG tự chế cột, KHÔNG đổi tên/thứ tự cột.
+- Trích **danh sách BR** của tài liệu (mục Business Rules). Tài liệu không đánh mã BR → đánh `BR-xx` theo `qa-point-scoring` và khai ở dòng `Trục trace` của khối thông tin.
 - **Gate AC-source:** nếu FEAT **thiếu AC/US** → dừng, return gap `clarificationGaps` cho BA, **KHÔNG bịa** AC để có cớ viết case.
 
 ### B2. Sinh test case theo chuẩn 3 nhánh (Happy / Edge / Error)
@@ -83,6 +84,8 @@ Với **mỗi AC/US**, viết **≥1 case**, bám các nhánh:
 | **Error** | `Negative` | Input sai / vi phạm rule → hệ báo lỗi | **BẮT BUỘC** trích `ERR-<NNN>-xx` từ contract §3, ghi ở cuối Expected Result |
 
 Case kiểm phân quyền / cô lập tenant dùng Category `Security`; a11y / hiển thị dùng `UI`; đo thời gian dùng `Performance`.
+
+Case trace được về BR/AC của FEAT → **mục A**. Case QA tự bổ sung ngoài tài liệu (a11y, đo kiểm, error guessing, edge case tài liệu không nói) → **mục B**, Trace BR = BR liên quan hoặc `N/A — QA bổ sung`, Expected Result ghi `ĐO & GHI: …` (`qa-test-case-writing` §3.6). Nhóm B không tính vào AC/BR coverage.
 
 Mỗi case điền đủ **15 cột** theo template (chi tiết từng cột: `qa-test-case-writing` §2):
 - **Test Case ID**: `[<Mã>_<NN>]` (vd `[MH1_01]`), NN chạy liên tục cả file, không reset theo nhóm.
@@ -98,13 +101,15 @@ Mỗi case điền đủ **15 cột** theo template (chi tiết từng cột: `q
 - **Note**: `Ưu tiên P1/P2/P3` · `Loại: <acceptance / system / E2E / regression / exploratory / a11y / perf-smoke>` · `❓ Cần chốt: Q<n>` · `Nguồn: <tệp:dòng>` · `Evidence: <screenshot / log / trace / HAR / axe-report>` (chuẩn bị cho Phase 5 evidence-backed pass).
 
 ### B3. Dựng ma trận BR → case (phủ)
-- Mỗi BR map ≥1 TC. Điền bảng `Ma trận BR → case` của template. FEAT có AC thì thêm ma trận AC → case bên dưới.
+- Mỗi BR map ≥1 TC nhóm A. Thêm phần phụ `## Ma trận BR → case` sau mục Thống kê, trước Lịch sử cập nhật (`qa-test-case-writing` §1). FEAT có AC thì thêm ma trận AC → case ngay dưới.
 - **BR / AC không có case nào → GAP:** đánh dấu chưa phủ + đưa vào `acWithoutCase[]` của return block.
 - BR chỉ có case đang `❓ Cần chốt` → chưa tính là đã phủ.
 
 ### B4. Ghi artifact
-- Điền `templatePath` → **Write** `outputPath`. Điền khối thông tin (Tên chức năng, Mã) và bảng **Manual test** (Tổng = số case; `chưa thực hiện` = Tổng).
-- Frontmatter: `feature: FEAT-<NNN>`, `plan: TP-FEAT-<NNN>`, `createdBy: <QA initials>`, `createdAt: <YYYY-MM-DD>`.
+- Điền `templatePath` → **Write** `outputPath`. Tiêu đề `# Test Cases — FEAT-<NNN>: <tên>`. Không có frontmatter YAML.
+- Khối thông tin 6 dòng: Mã · Tên · `Tài liệu nguồn` = `features/FEAT-<NNN>.md` + tài liệu BA FEAT trỏ tới · `Căn cứ cách hiểu` = `FEAT-<NNN> §2 + §3, TP-FEAT-<NNN>` · `Trục trace` · `Người thiết kế · ngày` = `<QA initials> · <YYYY-MM-DD>`.
+- Bảng **Manual test** theo Round: mỗi Round `0 · 0 · 0 · <n> · <n>` (n = tổng case nhóm A + B).
+- Mục **Thống kê** đếm riêng nhóm A / nhóm B. **Lịch sử cập nhật** thêm 1 dòng nêu khoảng mã TC đã tạo/sửa.
 - Prose tiếng Việt, technical term tiếng Anh (AC, edge, error code, evidence, endpoint…).
 - Nếu `outputPath` đã tồn tại (re-run / CR) → **Edit** merge: giữ id cũ, thêm case mới với NN kế tiếp, cập nhật ma trận. KHÔNG đánh số trùng.
 
@@ -146,4 +151,4 @@ nextAction: "⏸ user duyệt test-cases → parent dispatch qa-automation-build
 
 **Self-check trước khi return:** (1) mỗi AC có ≥1 case hoặc nằm trong `acWithoutCase[]`/`clarificationGaps`;
 (2) mỗi case có **Trace BR** non-null và đủ 15 cột; (3) mỗi case Negative có `Mã lỗi kỳ vọng` khớp contract §3 trong Expected Result;
-(4) `totalCases` = số dòng bảng test case = dòng Tổng của bảng Manual test; (5) không có id trùng; (6) qua checklist `qa-test-case-writing` §5.
+(4) `totalCases` = số dòng case (nhóm A + B) = cột Tổng của từng Round trong bảng Manual test; case QA bổ sung không nằm lẫn trong mục A; (5) không có id trùng; (6) qua checklist `qa-test-case-writing` §5.

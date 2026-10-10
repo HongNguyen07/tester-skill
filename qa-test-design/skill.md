@@ -133,8 +133,10 @@ Mỗi AC → tối thiểu **1 Happy + (nếu có biên/lớp) 1 Edge + ≥1 Err
 
 ## Traceability — No test without AC-source
 
-- Mỗi TC ghi cột **Trace (AC/US)** → 1 AC cụ thể. Không trace được → loại (mirror BA No-source rule).
-- Duy trì **ma trận AC → case** ở cuối file test-case: mỗi AC phải có ≥1 case, đánh dấu ✅/❌.
+- Mỗi TC ghi cột **Trace BR** → mã BR chính + AC/US cụ thể (`BR07 · AC-11`). Không trace được → loại (mirror BA No-source rule). Cách ghi: skill `qa-test-case-writing` §3.
+- Nhánh Happy / Edge / Error ghi ở cột **Category** là `Positive` / `Edge case` / `Negative`; mã lỗi kỳ vọng ghi ở cuối **Expected Result**.
+- Duy trì **ma trận BR → case** (và AC → case nếu FEAT có AC): mỗi BR/AC phải có ≥1 case nhóm A, ghi trạng thái `Đã phủ` / `Phủ một phần` / `Chưa phủ`. Chỗ đặt: luồng qa-flow → Coverage Matrix trong `03-test-design.md`; luồng orchestrator → phần phụ sau mục Thống kê của file test-case (`qa-test-case-writing` §1).
+- Case QA tự bổ sung ngoài tài liệu (error guessing, a11y, edge case tài liệu không nói) đặt ở **nhóm B**, không tính vào độ phủ BR/AC.
 - AC không phủ → coverage/faithfulness tụt (chấm ở `qa-reviewer`, `wiki/SCORING.md`).
 - Nếu FEAT **thiếu AC** để derive → báo BA, KHÔNG tự bịa AC hay hành vi.
 

@@ -41,5 +41,5 @@ powershell -NoProfile -Command ^
   "Get-ChildItem -Path '%PROJECT_PATH%' -Recurse -Include '*.md','*.yml','*.yaml' | ForEach-Object { $c = Get-Content $_.FullName -Raw -Encoding UTF8; $c = $c -replace '\{PROJECT_NAME\}','%PROJECT_NAME%'; Set-Content $_.FullName -Value $c -NoNewline -Encoding UTF8 }"
 
 echo Done. QA overlay scaffolded at %PROJECT_PATH%
-echo    Next: cd %PROJECT_PATH%, open Claude Code -> /qa-orchestrator
+echo    Next: cd %PROJECT_PATH%, open Claude Code -^> /qa-flow ^<ID^> (tu tai lieu BA)  ^|  /qa-orchestrator (khi co FEAT)
 endlocal

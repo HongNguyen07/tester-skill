@@ -89,7 +89,7 @@ Theo **Protocol regenerate** trong đầu file matrix:
 1. `git -C {wikiPath} pull` — lấy state mới nhất (bạn KHÔNG push, chỉ pull để đọc nguồn đúng).
 2. Glob nguồn:
    - `{wikiPath}/features/FEAT-*.md` → đọc `# AC` (mục 2 Trace / AC list) + `status.qa` + `milestones.qa.signedOff`.
-   - `{wikiPath}/qa/test-cases/*.md` → đếm `# test case` + AC nào có ≥1 case (AC-covered).
+   - `{wikiPath}/qa/test-cases/*.md` (bỏ `_template.md`) → đếm `# test case` (nhóm A + B) + AC nào có ≥1 case **mục A** không `❓ Cần chốt` (AC-covered). Case mục B (QA bổ sung) không tính AC-covered.
    - `{wikiPath}/qa/test-runs/*.md` → case nào có ≥1 run (executed), case nào pass (evidence-backed).
    - `{wikiPath}/qa/defects/*.md` → đếm defect **mở** (status ≠ closed/wontfix) per FEAT, severity critical.
 3. Tính roll-up **per FEAT** (1 hàng = 1 FEAT):

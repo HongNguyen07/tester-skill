@@ -1,30 +1,53 @@
----
-feature: FEAT-<NNN>
-plan: TP-<FEAT>
-createdBy: <QA initials>
-createdAt: <YYYY-MM-DD>
----
+# Test Cases — <ID>: <tên feature>
 
-# Test Cases — FEAT-<NNN>: <Tên feature>
+| Thông tin | Giá trị |
+| --- | --- |
+| Mã trường hợp kiểm thử | <mã dùng làm tiền tố ID> |
+| Tên trường hợp kiểm thử | <tên feature> |
+| Tài liệu nguồn | `tailieu/<tệp>` (version ghi trong tệp) |
+| Căn cứ cách hiểu | `02-alignment-summary.md`, cổng mở ngày <YYYY-MM-DD> |
+| Trục trace | Trace BR = BR / AC mà case đang verify (mã gốc của tài liệu) |
+| Người thiết kế · ngày | |
 
-> **Mỗi test case PHẢI trace 1 AC/US** (No test without AC-source). Chuẩn 3 nhánh:
-> **Happy / Edge / Error**. Case Error phải nêu **mã lỗi kỳ vọng** (khớp `error-codes` / contract).
+## Manual test
 
-## Bảng test case
+| | Pass | Fail | NA | Chưa thực hiện | Tổng |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Round 1 | 0 | 0 | 0 | <n> | <n> |
+| Round 2 | 0 | 0 | 0 | <n> | <n> |
+| Round 3 | 0 | 0 | 0 | <n> | <n> |
 
-| TC id | Trace (AC/US) | Loại | Tiền điều kiện | Bước | Dữ liệu | Kết quả kỳ vọng | Mã lỗi | Evidence-required |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| TC-<NNN>-01 | AC-1 / US-<NNN>-01 | Happy | | 1... 2... | | | — | screenshot |
-| TC-<NNN>-02 | AC-2 | Edge | | | biên: min/max/rỗng | | — | screenshot |
-| TC-<NNN>-03 | AC-3 | Error | | | input sai | báo lỗi | ERR-<NNN>-01 | log |
+## A. Case theo requirement
 
-## Ma trận AC → case (đảm bảo phủ)
+| Test Case ID | Purpose | Category | Trace BR | Precondition | Steps | Data | Expected Result | Round 1 | Round 2 | Round 3 | Error Code | Note | Date | Tester |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| **BR01 — <tên BR>** | | | | | | | | | | | | | | |
+| [<Mã>_01] | <một câu, riêng cho case này> | Positive | BR01 · AC-01 | | 1. …<br>2. … | | <chỉ từ `[NGUỒN]` / `[ĐÃ XÁC NHẬN]`> | Todo | Todo | Todo | | Ưu tiên: P1<br>Loại: …<br>Nguồn: `tệp:dòng "trích ngắn"`<br>Evidence: screenshot | | |
+| [<Mã>_02] | | Negative | BR01 | | | | <phần chắc chắn> | Todo | Todo | Todo | | ❓ Cần chốt: Q-05<br>Nguồn: … | | |
 
-| AC | Test case phủ | Đã phủ? |
+## B. Case QA bổ sung / exploratory `[QA BỔ SUNG]`
+
+Không tính vào độ phủ requirement. Kỳ vọng không phải tiêu chí pass theo requirement.
+
+| Test Case ID | Purpose | Category | Trace BR | Precondition | Steps | Data | Expected Result | Round 1 | Round 2 | Round 3 | Error Code | Note | Date | Tester |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [<Mã>_NN] | | Edge case | BR07 (liên quan) hoặc `N/A — QA bổ sung` | | | | ĐO & GHI: … | Todo | Todo | Todo | | Loại: QA bổ sung<br>Lý do thêm: … | | |
+
+## Câu hỏi cần chốt
+
+| Q | Nội dung | Case liên quan | Trạng thái |
+| --- | --- | --- | --- |
+
+## Thống kê
+
+| | Nhóm A | Nhóm B |
+| --- | ---: | ---: |
+| Tổng case | | |
+| Positive / Negative / Edge case / khác | | |
+| Case `❓ Cần chốt` (chưa tính là đã phủ) | | |
+| BR đã phủ / tổng BR | | — |
+
+## Lịch sử cập nhật
+
+| Ngày | Ai | Thay đổi |
 | --- | --- | --- |
-| AC-1 | TC-<NNN>-01 | ✅ |
-| AC-2 | TC-<NNN>-02 | ✅ |
-| AC-3 | TC-<NNN>-03 | ✅ |
-
-> qa-reviewer chấm: AC nào **không** có case → điểm faithfulness/coverage tụt; AC "phủ" nhưng
-> case rỗng/không executable → không tính.

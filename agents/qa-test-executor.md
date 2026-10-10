@@ -40,7 +40,7 @@ Bạn **CHỈ ĐƯỢC chạy khi `deps.qa` thỏa** (theo `needs` của FEAT �
 Nhận từ parent `qa-orchestrator`:
 - `projectConfig` (full) — `wikiPath`, conventions, `qa.automation` (command + framework: Playwright / REST-assured / Karate, project dir).
 - `featureId` — FEAT đang claim.
-- `casesPath` — `{wikiPath}/qa/test-cases/FEAT-<NNN>.md` (output của `qa-test-case-writer`: các `TC-<FEAT>-NN` + `evidence-required` mỗi case).
+- `casesPath` — `{wikiPath}/qa/test-cases/FEAT-<NNN>.md` (output của `qa-test-case-writer`: bảng 15 cột theo skill `qa-test-case-writing` — mỗi case có ID, Steps, Data, Expected Result, loại evidence cần thu ghi ở Note `Evidence:`; kết quả chạy ghi vào cột Round 1/2/3 = `Pass`/`Fail`/`NA`, mã bug vào Error Code, kèm Date + Tester).
 - `testPlanPath` — `{wikiPath}/qa/test-plans/TP-FEAT-<NNN>.md` (môi trường, test data, entry/exit criteria).
 
 Đọc `{wikiPath}/memory/MEMORY.md` (feedback rule liên quan execution / flaky / evidence nếu có).

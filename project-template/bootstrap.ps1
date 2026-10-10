@@ -36,4 +36,4 @@ Get-ChildItem -Path $ProjectPath -Recurse -Include '*.md','*.yml','*.yaml' | For
     Set-Content $_.FullName -Value $c -NoNewline -Encoding UTF8
 }
 Write-Output "Done. QA overlay scaffolded at $ProjectPath"
-Write-Output "   Next: cd $ProjectPath ; open Claude Code -> /qa-orchestrator"
+Write-Output "   Next: cd $ProjectPath ; open Claude Code -> /qa-flow <ID> (tu tai lieu BA)  | /qa-orchestrator (khi co FEAT)"

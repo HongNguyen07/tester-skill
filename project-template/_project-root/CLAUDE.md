@@ -9,18 +9,23 @@ File này chỉ chứa Claude Code-specific addendum. Mọi workflow / hierarchy
 ## Claude-specific
 
 ### Gọi orchestrator
-`/qa-orchestrator <yêu cầu>` — dispatch QA pipeline.
+- `/qa-orchestrator <yêu cầu>` — dispatch QA pipeline (đầu vào: `wiki/features/FEAT-<NNN>.md`).
+- `/qa-flow <ID>` — bộ qa-ai-agents, đứng riêng (đầu vào: tài liệu BA trong `tailieu/`; kết quả
+  `wiki/qa/features/<ID>/01…06-*.md`). Không gọi lẫn agent của hai bộ trong cùng một feature.
 
 ### Skills
 Cài global ở `~/.claude/skills/`:
 - `qa-orchestrator` — orchestrator (entry point, dispatch sub-agents)
-- `qa-*` — rule skills per concern (test-design, test-types, e2e-playwright, api-test, defect, test-data, exit-criteria)
+- `qa-*` — rule skills per concern (test-design, test-types, e2e-playwright, api-test, defect, test-data, exit-criteria, test-case-writing, point-scoring)
+- `qa-flow` — orchestrator của bộ qa-ai-agents (SKILL.md + CLAUDE.md + rules/ + templates/). Mẫu test case
+  chuẩn của team = `qa-flow/templates/testcase-template.md` (bộ `qa-*` dùng bản sao nguyên văn).
 
 ### Sub-agents
 Cài global ở `~/.claude/agents/`:
 - `qa-intake-classifier`, `qa-test-planner`, `qa-test-case-writer`, `qa-automation-builder`,
   `qa-test-executor`, `qa-bug-reporter`, `qa-regression-manager`, `qa-reviewer`, `qa-wiki-logger`,
   `qa-git-committer`, `qa-initiative-builder`, `qa-release-notes-builder`
+- Bộ qa-ai-agents (do `/qa-flow` dispatch): `qa-test-designer`, `cx-reviewer`
 
 > **Namespace:** QA agents prefix `qa-` → KHÔNG đụng `ba-*` / `be-*` / `fe-*`. An toàn cài chung 1 máy.
 

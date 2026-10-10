@@ -20,3 +20,12 @@ Prefix `qa-` → không đụng `ba-*` / `be-*` / `fe-*`.
 | `qa-release-notes-builder` | release | P4 |
 
 > P1 = khung (không có agent file). Agent thêm dần — file này liệt kê để track.
+
+## Bộ qa-ai-agents (`/qa-flow`) — đứng riêng, không do qa-orchestrator gọi
+| Agent | Giai đoạn | Rule / template đọc từ |
+|---|---|---|
+| `qa-test-designer` | S6, S8 (chỉ khi `gate: open`) | `~/.claude/skills/qa-flow/rules/` + `templates/` |
+| `cx-reviewer` | S7 (chỉ khi `gate: open`) | `~/.claude/skills/qa-flow/rules/` + `templates/` |
+
+Hai agent này do skill `qa-flow` (thư mục `../qa-flow/`) dispatch. Không gọi lẫn agent của hai bộ trong
+cùng một feature. Hướng dẫn: `../HUONG-DAN-QA-AI-AGENTS.md`.

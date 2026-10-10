@@ -39,7 +39,7 @@ Mỗi test map ngược **đúng 1 TC id** (traceability trong code comment) và
 Nhận từ parent `qa-orchestrator`:
 - `projectConfig` (full) — `wikiPath`, conventions, `qa.automation` (framework + project dir + command cho e2e/api).
 - `featureId` — FEAT đang claim.
-- `casesPath` — `{wikiPath}/qa/test-cases/FEAT-<NNN>.md` (các `TC-<FEAT>-NN` + `trace` AC/US + `steps` + `data` + `expected result` + `error code` + `evidence-required`).
+- `casesPath` — `{wikiPath}/qa/test-cases/FEAT-<NNN>.md` (bảng 15 cột theo skill `qa-test-case-writing`: Test Case ID + Trace BR + Steps + Data + Expected Result (gồm `Mã lỗi kỳ vọng`) + Note `Evidence:`).
 - **FEAT content** — mục 2 Trace (AC/US) + mục 3 Contract (**endpoint + DTO field + error code** `ERR-<NNN>-xx`) — nguồn assertion cho API test.
 - **casesToAutomate** — danh sách TC được chỉ định automate (từ lane/plan). Nếu vắng → tự lọc theo tiêu chí high-value + regression candidate và **đề xuất**, KHÔNG tự nhận automate tất cả.
 

@@ -53,7 +53,7 @@ tester-skill/
 ```
 wiki/qa/
   test-plans/_template.md          (plan per FEAT/release)
-  test-cases/_template.md          (case: id, trace AC/US, Happy/Edge/Error, mã lỗi, evidence-required)
+  test-cases/_template.md          (case: 15 cột chuẩn — ID, Purpose, Category, Trace BR, Precondition, Steps, Data, Expected, Round 1–3, Error Code, Note, Date, Tester; rule: qa-test-case-writing)
   test-runs/_template.md           (run: date, env, results, evidence links, pass/fail)
   defects/_template.md             (BUG-<id>: severity, repro, FEAT, AC, status lifecycle)
   regression-suite/README.md

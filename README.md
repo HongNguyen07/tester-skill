@@ -23,23 +23,37 @@ bash install.sh
 Cài gì:
 - Skills `qa-orchestrator` + `qa-*` → **`~/.claude/skills/<name>/SKILL.md`** (để hiện trong menu `/`
   của Claude Code) **và** `~/.agents/skills/` (cho `npx skills` / Cursor)
-- Agents `qa-*` → `~/.claude/agents/`
+- Skill `qa-flow` (bộ qa-ai-agents, nhiều file) → **copy cả thư mục** `~/.claude/skills/qa-flow/`
+  (SKILL.md + CLAUDE.md + `rules/` + `templates/`)
+- Agents `qa-*` + `cx-reviewer` → `~/.claude/agents/`
 - `qa-project-template` + `shared-wiki-template` (vendored) → `~/.claude/skills/` & `~/.agents/skills/`
+- Mẫu test case trong bản cài của `qa-project-template` **luôn lấy từ** `qa-flow/templates/testcase-template.md`
+  (installer cảnh báo nếu bản copy trong repo bị lệch)
+
+> Sửa rule/template: sửa **trong repo** rồi chạy lại installer. Sửa thẳng trong `~/.claude/` sẽ bị ghi đè ở
+> lần cài kế tiếp.
+
+Hướng dẫn cho team: [`HUONG-DAN-SU-DUNG.md`](HUONG-DAN-SU-DUNG.md) (bộ `qa-*` / `/qa-orchestrator`) ·
+[`HUONG-DAN-QA-AI-AGENTS.md`](HUONG-DAN-QA-AI-AGENTS.md) (bộ qa-ai-agents / `/qa-flow`).
 
 ## Dùng trong project
 ```bat
 bash ~/.claude/skills/qa-project-template/bootstrap.sh D:\path\to\project
 ```
 Bootstrap **non-clobber**: nếu BA/BE/FE đã tạo AGENTS.md/CLAUDE.md/config → KHÔNG ghi đè;
-chỉ thêm overlay `wiki/qa/` + `QA_COVERAGE_MATRIX.md`. Rồi mở Claude Code → `/qa-orchestrator`.
+chỉ thêm overlay `wiki/qa/` + `QA_COVERAGE_MATRIX.md`. Rồi mở Claude Code → `/qa-flow <ID>` (luồng mặc định
+của team, từ tài liệu BA) hoặc `/qa-orchestrator` (khi đã có FEAT + wiki git chung).
 
 ## Cấu trúc
 ```
 tester-skill/
   install.sh/.ps1/.bat        # cài global + copy template + vendored shared-wiki
-  qa-orchestrator/skill.md     # entry point (thin dispatcher)
-  qa-*/skill.md                # rule skills (P2–P4)
-  agents/qa-*.md               # sub-agents (P2–P4)
+  qa-orchestrator/skill.md     # entry point (thin dispatcher) — luồng từ FEAT
+  qa-*/skill.md                # rule skills (P2–P6)
+  qa-flow/                     # bộ qa-ai-agents — luồng từ tài liệu BA (SKILL.md + CLAUDE.md + rules/ + templates/)
+  agents/qa-*.md               # sub-agents của qa-orchestrator (P2–P4)
+  agents/qa-test-designer.md   # sub-agent của qa-flow
+  agents/cx-reviewer.md        # sub-agent của qa-flow
   shared-wiki-template/        # vendored (đồng bộ qua ../sync-shared-wiki.*)
   project-template/
     _project-root/             # .project-config.yml + AGENTS.md + CLAUDE.md (QA)
@@ -53,9 +67,29 @@ tester-skill/
 - **P2 lõi manual** — qa-intake-classifier · qa-test-planner · qa-test-case-writer · qa-reviewer(scoring) · qa-wiki-logger.
 - **P3 execution+defect** — qa-test-executor · qa-bug-reporter · qa-initiative-builder + FEAT QA-gate wiring vào be/fe orchestrator.
 - **P4 automation** — qa-automation-builder (Playwright + REST-assured/Karate) · qa-regression-manager · qa-git-committer · qa-release-notes-builder + 7 rule skill (test-design/types/e2e-playwright/api-test/defect/test-data/exit-criteria).
+- **P5 quản trị đầu việc** — `qa-point-scoring`: bóc tách đầu việc QA + chấm point (Size × Effort,
+  0.125–2). Độc lập, không dùng commit làm căn cứ; đơn vị chấm là **cơ chế nghiệp vụ**, không phải
+  số test case. Báo cáo ghi ở `wiki/qa/point-reports/`.
 
-**Tổng:** 12 agent `qa-*` + 8 skill (`qa-orchestrator` + 7 rule). Luồng đóng vòng:
+- **P6 rule viết test case** — `qa-test-case-writing`: template 15 cột cố định (Test Case ID · Purpose ·
+  Category · **Trace BR** · Precondition · Steps · Data · Expected Result · Round 1–3 · Error Code · Note ·
+  Date · Tester) + khối thông tin + Manual test theo Round + tách nhóm A (theo requirement) / nhóm B (QA bổ
+  sung). Mỗi case bắt buộc có Trace BR. Template chuẩn của team = mẫu `qa-flow`, dùng chung cho
+  `/qa-flow` và `/qa-orchestrator`: `project-template/wiki/qa/test-cases/_template.md` (bản sao nguyên văn
+  của `qa-flow/templates/testcase-template.md` — sửa một thì sửa cả hai).
+
+- **P7 bộ qa-ai-agents** — `qa-flow` + 2 agent `qa-test-designer`, `cx-reviewer`. Luồng **từ tài liệu BA**
+  (không cần FEAT / wiki git): Requirement Analysis → Debate & Alignment → **người dùng mở cổng** → Test
+  Design + CX Review song song → Unified QA Review. Kết quả `wiki/qa/features/<ID>/01…06-*.md`. Đứng riêng
+  với `/qa-orchestrator`, không gọi lẫn agent trong cùng feature. Chi tiết: `qa-flow/CLAUDE.md`.
+
+**Tổng:** 14 agent (12 `qa-*` + `qa-test-designer` + `cx-reviewer`) + 11 skill (`qa-orchestrator` + 9 rule + `qa-flow`).
+
+Luồng `/qa-orchestrator` (từ FEAT, đóng vòng):
 intake → plan → case (shift-left) → *(BE/FE build)* → automation → execute+evidence → defect/loop-back → review(score) → log + sign-off gate → commit/push.
+
+Luồng `/qa-flow` (từ tài liệu BA):
+phân tích → debate với BA → mở cổng → thiết kế case ‖ CX review → unified review.
 
 ## Đồng bộ shared-wiki
 Sửa canonical tại `java-skill/shared-wiki-template/` → chạy `../sync-shared-wiki.sh` (đã gồm tester-skill).

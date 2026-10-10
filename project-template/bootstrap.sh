@@ -49,4 +49,4 @@ done
 
 echo "Done. QA overlay scaffolded at ${PROJECT_PATH}"
 echo "   - wiki/qa/ + QA_COVERAGE_MATRIX.md"
-echo "   Next: cd ${PROJECT_PATH}; open Claude Code → /qa-orchestrator"
+echo "   Next: cd ${PROJECT_PATH}; open Claude Code → /qa-flow <ID> (tu tai lieu BA)  |  /qa-orchestrator (khi co FEAT)"

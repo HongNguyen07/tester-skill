@@ -94,7 +94,8 @@ Trên Windows, `~` là `%USERPROFILE%`.
 
 ### 3.2. Cài
 
-Bộ này nằm **chung repo `tester-skill`** với bộ `qa-*` và được cài bằng **cùng một installer**. Mở terminal
+Bộ này nằm **chung repo `tester-skill`** với bộ `qa-*` và được cài bằng **cùng một installer**. Chưa có repo
+trên máy thì lấy về trước: `git clone https://github.com/HongNguyen07/tester-skill.git`. Rồi mở terminal
 tại thư mục `tester-skill`:
 
 | Hệ điều hành | Lệnh |
@@ -106,7 +107,8 @@ Installer copy **cả thư mục** `qa-flow/` (gồm `rules/` và `templates/`) 
 2 file agent vào `~/.claude/agents/`. Đã cài bộ `qa-*` trước đó thì chạy lại installer là có thêm bộ này.
 
 > **Sửa rule / template ở đâu?** Sửa trong repo (`tester-skill/qa-flow/…`) rồi chạy lại installer. Sửa thẳng
-> trong `~/.claude/skills/qa-flow/` sẽ **bị ghi đè** ở lần cài kế tiếp.
+> trong `~/.claude/skills/qa-flow/` sẽ **bị ghi đè** ở lần cài kế tiếp. Quy trình gửi thay đổi cho team:
+> [HUONG-DAN-SU-DUNG.md §13](HUONG-DAN-SU-DUNG.md#13-cùng-góp-sửa-rule-với-team).
 
 ### 3.3. Kiểm tra
 

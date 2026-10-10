@@ -1,6 +1,32 @@
 # Hướng dẫn sử dụng bộ skill QA (tester-skill)
 
-> Tài liệu cho **team QA**. Đọc theo thứ tự các Bước 1 → 4 là dùng được. Phần 5–7 là tra cứu.
+> Tài liệu cho **team QA**. Đọc theo thứ tự các Bước 1 → 4 là dùng được. Phần 7 trở đi là tra cứu.
+> Muốn cùng sửa rule với team: xem [mục 13](#13-cùng-góp-sửa-rule-với-team).
+
+**Repo:** <https://github.com/HongNguyen07/tester-skill>
+
+## Bắt đầu nhanh (5 phút)
+
+```bash
+# 1. Lấy bộ skill về máy (một lần)
+git clone https://github.com/HongNguyen07/tester-skill.git
+cd tester-skill
+
+# 2. Cài vào Claude Code
+bash install.sh          # Linux / macOS / Git Bash
+install.bat              # Windows: double-click cũng được
+
+# 3. Đóng hẳn Claude Code, mở lại, gõ "/qa" để kiểm tra thấy skill
+```
+
+Rồi chọn một trong hai cách làm việc:
+
+| Bạn đang có | Dùng | Hướng dẫn |
+|---|---|---|
+| **Tài liệu BA** (file `.md` trong `tailieu/`), chưa có FEAT | `/qa-flow <ID>` | [HUONG-DAN-QA-AI-AGENTS.md](HUONG-DAN-QA-AI-AGENTS.md) |
+| **Feature `FEAT-<NNN>.md`** trong wiki chung của team, dev đã/đang làm | `/qa-orchestrator` | File này, [Bước 4](#6-bước-4--làm-việc-hằng-ngày) |
+
+Hai bộ dùng **chung một mẫu test case** nhưng **không gọi lẫn nhau** trong cùng một feature.
 
 ## Mục lục
 
@@ -16,6 +42,7 @@
 10. [Quy tắc cứng cần nhớ](#10-quy-tắc-cứng-cần-nhớ)
 11. [Sự cố thường gặp](#11-sự-cố-thường-gặp)
 12. [Lệnh nhanh](#12-lệnh-nhanh)
+13. [Cùng góp sửa rule với team](#13-cùng-góp-sửa-rule-với-team)
 
 ---
 
@@ -56,7 +83,7 @@ Tick đủ trước khi sang Bước 1.
 
 - [ ] **Claude Code** đã cài và đăng nhập (CLI, hoặc extension VS Code). Kiểm tra: mở terminal gõ `claude --version`.
 - [ ] **Git** (`git --version`). Orchestrator dùng git để pull wiki, claim feature và push kết quả.
-- [ ] **Bộ source này** đã có trên máy: clone repo `tester-skill`, hoặc copy nguyên thư mục.
+- [ ] **Bộ source này** đã có trên máy: `git clone https://github.com/HongNguyen07/tester-skill.git` (cần quyền xem repo — chưa có thì xin người quản lý repo thêm bạn vào).
 - [ ] **Tài liệu nguồn của feature** (SRS / tài liệu BA) — Claude chỉ viết case dựa trên tài liệu, không bịa.
 
 ### 2.2. Theo hệ điều hành
@@ -128,7 +155,7 @@ Tuỳ chọn thêm:
 
 ### 3.4. Cập nhật / gỡ
 
-- **Cập nhật:** `git pull` trong repo `tester-skill` → chạy lại installer → mở lại Claude Code.
+- **Cập nhật:** `git pull` trong repo `tester-skill` → chạy lại installer → mở lại Claude Code. Khi có người báo "đã sửa rule" trong nhóm, mọi người làm bước này để máy ai cũng chạy cùng một bộ luật.
 - **Gỡ:** `install.bat -Uninstall` hoặc `bash install.sh --uninstall`.
 
 > Skill mới thêm gần đây (`qa-point-scoring`, `qa-test-case-writing`) chỉ có trên máy **sau khi chạy lại
@@ -396,3 +423,58 @@ Trong Claude Code:
 | `/qa-test-case-writing` | Viết / soát test case theo template 15 cột |
 | `/qa-point-scoring` | Bóc việc + chấm point |
 | `/qa-test-design` · `/qa-defect` · `/qa-test-types` · `/qa-test-data` · `/qa-e2e-playwright` · `/qa-api-test` · `/qa-exit-criteria` | Nạp luật tương ứng |
+| `/qa-flow <ID>` | Bộ qa-ai-agents — từ tài liệu BA (xem [HUONG-DAN-QA-AI-AGENTS.md](HUONG-DAN-QA-AI-AGENTS.md)) |
+
+---
+
+## 13. Cùng góp sửa rule với team
+
+Bộ skill là **code chung**: mọi người dùng cùng một bộ luật, nên sửa luật phải đi qua repo để ai cũng nhận được.
+
+### 13.1. Nguyên tắc
+
+1. **Sửa trong repo, không sửa trong `~/.claude/`.** Thư mục `~/.claude/skills/` và `~/.claude/agents/` là **bản cài**; lần chạy installer kế tiếp sẽ ghi đè. Sửa ở đó là mất.
+2. **Một mẫu test case duy nhất** = `qa-flow/templates/testcase-template.md`. File `project-template/wiki/qa/test-cases/_template.md` phải là bản sao nguyên văn. Sửa mẫu thì copy sang file thứ hai; installer sẽ cảnh báo nếu hai file lệch.
+3. **Rule nào sửa thì đọc checklist / anti-pattern của rule đó** trước, để không mâu thuẫn với phần còn lại (ví dụ: `qa-point-scoring` chấm theo BR, nếu đổi cách đánh mã BR trong `qa-test-case-writing` thì phải xem lại cả hai).
+4. **Không bịa thêm luật cho AI** ngoài những gì team đã thống nhất. Rule là thoả thuận của team, không phải ý kiến cá nhân.
+
+### 13.2. Sửa ở đâu
+
+| Muốn đổi | Sửa file |
+|---|---|
+| Cách viết test case (cột, nhóm A/B, Trace BR) | `qa-test-case-writing/skill.md` + mẫu `qa-flow/templates/testcase-template.md` (và bản sao trong `project-template/`) |
+| Cách chấm point | `qa-point-scoring/skill.md` + `project-template/wiki/qa/point-reports/_template.md` |
+| Luật debate / cổng Alignment / CX của `/qa-flow` | `qa-flow/rules/<số>-*.md`, mẫu đầu ra trong `qa-flow/templates/` |
+| Hành vi một agent (ví dụ `qa-test-designer` ghi thêm gì) | `agents/<tên-agent>.md` |
+| Cách cài | `install.sh` + `install.ps1` (sửa cả hai) |
+| Cấu hình mặc định cho project mới | `project-template/_project-root/.project-config.yml` |
+
+### 13.3. Quy trình gửi thay đổi
+
+```bash
+cd tester-skill
+git checkout main && git pull
+git checkout -b <ten-nhanh>          # vd: fix/trace-br-nhieu-tai-lieu
+
+# ... sửa file trong repo ...
+
+bash install.sh                      # cài bản đang sửa vào máy mình để thử
+# mở lại Claude Code, chạy thử với một tài liệu thật, xem kết quả có đúng ý không
+
+git add <file đã sửa>
+git commit -m "fix(qa): <mô tả ngắn, nói rõ đổi luật gì>"
+git push -u origin <ten-nhanh>
+```
+
+Rồi vào GitHub tạo **Pull Request** vào `main` (hoặc `gh pr create --fill`). Trong mô tả PR ghi:
+**đổi luật gì · vì sao · đã thử với tài liệu nào**. Người khác xem, góp ý, rồi merge.
+
+Sau khi merge: báo trong nhóm để mọi người `git pull` + chạy lại installer.
+
+### 13.4. Trước khi gửi PR, tự kiểm
+
+- [ ] Đã chạy installer và thử thật trên ít nhất một tài liệu; file sinh ra đúng mẫu.
+- [ ] Không sửa file nào trong `wiki/` hay `tailieu/` của project (đó là dữ liệu làm việc, không thuộc bộ skill; `.gitignore` đã chặn).
+- [ ] Sửa mẫu test case thì hai file template vẫn giống nhau (`diff` không ra gì).
+- [ ] Sửa installer thì sửa cả `install.sh` lẫn `install.ps1`; đã thử trên hệ điều hành mình có; ghi rõ trong PR hệ nào **chưa** thử.
+- [ ] Đổi luật ảnh hưởng tới cách chấm point hoặc độ phủ → ghi rõ trong PR để người chấm biết.

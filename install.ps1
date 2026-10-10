@@ -114,7 +114,7 @@ if (Get-Command npx -ErrorAction SilentlyContinue) {
 # Thieu buoc nay thi skill khong hien trong menu "/" cua Claude Code.
 Write-Host "  -> Claude Code native: $ClaudeSkillsDir\<name>\SKILL.md"
 Run-Cmd "mkdir claude skills dir" { New-Item -ItemType Directory -Force -Path $ClaudeSkillsDir | Out-Null }
-Get-ChildItem -Directory $ScriptDir -Filter "qa-*" | ForEach-Object {
+Get-ChildItem -Directory $ScriptDir -Filter "qa-*" | Where-Object { $_.Name -ne "qa-flow" } | ForEach-Object {
     $name    = $_.Name
     $srcSkill = Join-Path $_.FullName "skill.md"
     if (Test-Path $srcSkill) {
@@ -124,6 +124,15 @@ Get-ChildItem -Directory $ScriptDir -Filter "qa-*" | ForEach-Object {
             Copy-Item -Force $srcSkill (Join-Path $destDir "SKILL.md")
         }
     }
+}
+
+# qa-flow (bo qa-ai-agents): SKILL.md + CLAUDE.md + rules\ + templates\ -> copy CA THU MUC.
+# Agent qa-test-designer / cx-reviewer doc rules\ va templates\ tu ~\.claude\skills\qa-flow\.
+Write-Host "  -> qa-flow (qa-ai-agents, nhieu file): $ClaudeSkillsDir\qa-flow\"
+Run-Cmd "Install qa-flow (whole dir)" {
+    $dst = Join-Path $ClaudeSkillsDir "qa-flow"
+    Remove-Item -Recurse -Force $dst -ErrorAction SilentlyContinue
+    Copy-Item -Recurse -Force (Join-Path $ScriptDir "qa-flow") $dst
 }
 Write-Host ""
 
@@ -160,19 +169,39 @@ Run-Cmd "Copy shared-wiki-template (vendored, shared BA/BE/FE/QA)" {
         }
     }
 }
+
+# Mau test case CHUAN cua team = qa-flow\templates\testcase-template.md.
+# Ban cai cua project-template luon lay tu mau nay de hai luong (/qa-flow, /qa-orchestrator) cung 1 hinh dang.
+$tcCanon    = Join-Path $ScriptDir "qa-flow\templates\testcase-template.md"
+$tcRepoCopy = Join-Path $ScriptDir "project-template\wiki\qa\test-cases\_template.md"
+Write-Host "  -> Dong bo mau test case tu qa-flow -> project-template (ca 2 noi cai)"
+Run-Cmd "Sync testcase template" {
+    foreach ($t in @($TemplateDirNpx, $TemplateDirClaude)) {
+        Copy-Item -Force $tcCanon (Join-Path $t "wiki\qa\test-cases\_template.md")
+    }
+}
+if ((Test-Path $tcRepoCopy) -and ((Get-FileHash $tcCanon).Hash -ne (Get-FileHash $tcRepoCopy).Hash)) {
+    Write-Host "  [!] CANH BAO: project-template\wiki\qa\test-cases\_template.md trong repo LECH voi qa-flow\templates\testcase-template.md" -ForegroundColor Yellow
+    Write-Host "      Ban cai da lay theo qa-flow. Hay dong bo lai file trong repo." -ForegroundColor Yellow
+}
 Write-Host ""
 
 if (-not $DryRun) {
     $skillCount  = (Get-ChildItem $NpxSkillsDir -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -match '^qa-' }).Count
-    $agentCount  = (Get-ChildItem $AgentsDir -Filter "qa-*.md" -ErrorAction SilentlyContinue).Count
+    $agentCount  = (Get-ChildItem (Join-Path $ScriptDir "agents") -Filter "*.md" -ErrorAction SilentlyContinue |
+                    Where-Object { $_.Name -ne "README.md" -and (Test-Path (Join-Path $AgentsDir $_.Name)) }).Count
 
     Write-Host "[OK] Installed:"
     $claudeSkillCount = (Get-ChildItem $ClaudeSkillsDir -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -match '^qa-' }).Count
+    $ruleCount = (Get-ChildItem (Join-Path $ClaudeSkillsDir "qa-flow\rules") -ErrorAction SilentlyContinue).Count
+    $tplCount  = (Get-ChildItem (Join-Path $ClaudeSkillsDir "qa-flow\templates") -ErrorAction SilentlyContinue).Count
     Write-Host "   - $skillCount qa-* skills in $NpxSkillsDir\"
     Write-Host "   - $claudeSkillCount qa-* skills in $ClaudeSkillsDir\ (menu '/' cua Claude Code)"
-    Write-Host "   - $agentCount qa agents in $AgentsDir\"
+    Write-Host "   - $agentCount agents (qa-* + cx-reviewer) in $AgentsDir\"
+    Write-Host "   - qa-flow (qa-ai-agents) in $ClaudeSkillsDir\qa-flow\ ($ruleCount rules, $tplCount templates)"
     Write-Host "   - template in $TemplateDirNpx\"
     Write-Host "   - template in $TemplateDirClaude\"
+    Write-Host "Next: mo Claude Code -> /qa-flow <ID> (tu tai lieu BA)  |  /qa-orchestrator (tu FEAT)"
 } else {
     Write-Host "[i] Dry run complete. Re-run without -DryRun to apply."
 }

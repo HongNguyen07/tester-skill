@@ -61,3 +61,8 @@ Mode đã chạy và mức bằng chứng: <…>
 ## 8. Việc tiếp theo
 
 <danh sách ngắn, có người phụ trách nếu biết>
+
+## Lịch sử cập nhật
+
+| Ngày | Ai | Thay đổi |
+| --- | --- | --- |

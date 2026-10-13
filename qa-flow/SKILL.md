@@ -52,10 +52,11 @@ S6 và S7 giao trong cùng một lượt để chạy song song. Prompt gồm:
 
 Nếu hai agent chưa được cài (`~/.claude/agents/`), báo người dùng chạy `install.sh`; không tự làm thay.
 
-## Change log
+## Lịch sử cập nhật
 
-Mỗi lần ghi hoặc sửa file trong thư mục feature (kể cả khi áp câu trả lời BA, kết quả debate, kết quả agent) → thêm
-một dòng vào `wiki/qa/features/<ID>/CHANGELOG.md` (rule 02 §4b). Chưa có file thì tạo từ `templates/changelog-template.md`.
+Mỗi lần ghi hoặc sửa một file trong thư mục feature (áp câu trả lời BA, kết quả debate, sửa dẫn chiếu…) → thêm một
+dòng vào bảng `## Lịch sử cập nhật` **cuối chính file đó** (rule 02 §4b). File chưa có bảng → thêm bảng. Không tạo
+file change log riêng.
 
 ## Sau khi sub-agent trả về
 

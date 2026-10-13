@@ -67,3 +67,8 @@ Mã do QA tự đánh (nếu tài liệu không đánh mã): <liệt kê, kèm v
 - [ ] Không mục `[NGUỒN]` nào thiếu tham chiếu
 - [ ] Mâu thuẫn giữa nguồn đã liệt kê đủ hai phía
 - [ ] Mục 9 không chứa câu trả lời do AI tự chọn
+
+## Lịch sử cập nhật
+
+| Ngày | Ai | Thay đổi |
+| --- | --- | --- |

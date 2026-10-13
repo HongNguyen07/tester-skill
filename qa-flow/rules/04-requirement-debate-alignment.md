@@ -21,7 +21,8 @@ lại khi BA trả lời. Không mở cổng khi chưa debate xong các nhóm c�
    - **Cần xác nhận gì, từ ai** (BA / Dev / Product).
    - **Mức:** trọng yếu / không trọng yếu (§3), do AI đề xuất, người dùng chốt.
 3. Trình bày cho người dùng theo nhóm, người dùng chốt mức; ghi thành `cau-hoi-gui-BA.md` trong thư mục feature
-   (bảng, có cột "BA trả lời", chia Phần A trọng yếu / Phần B không trọng yếu). Người dùng gửi cho BA.
+   (bảng, có cột "BA trả lời", chia Phần A trọng yếu / Phần B không trọng yếu; cuối file có bảng `## Lịch sử cập nhật`
+   nội bộ). Người dùng gửi cho BA.
 4. Khi người dùng chuyển câu trả lời vào phiên: ghi vào bảng câu hỏi của `02-alignment-summary.md` — nội dung,
    **ai trả lời**, ngày, kênh (vd "BA Lan, 2026-10-09, chat nhóm — QA chuyển lại"). Câu trả lời chưa đủ ý →
    tách phần thiếu thành câu hỏi mới, không tự lấp.

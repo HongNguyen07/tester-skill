@@ -55,3 +55,8 @@ Số lượng theo loại: Defect <n> · Usability Issue <n> · CX Risk <n> · I
 - [ ] Không Defect nào thiếu bằng chứng thực tế
 - [ ] Không câu nào nói đã thao tác / đã thấy khi chỉ phân tích tài liệu
 - [ ] Persona giả thuyết đã đánh dấu
+
+## Lịch sử cập nhật
+
+| Ngày | Ai | Thay đổi |
+| --- | --- | --- |

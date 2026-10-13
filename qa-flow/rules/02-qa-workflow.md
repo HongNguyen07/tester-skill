@@ -47,12 +47,13 @@ gateOpenedBy: <tên người dùng>      # trống khi closed
 gateOpenedAt: <YYYY-MM-DD>
 ```
 
-## 4b. Change log của feature
+## 4b. Lịch sử cập nhật trong từng file
 
-Mỗi thư mục `wiki/qa/features/<ID>/` có `CHANGELOG.md` (theo `templates/changelog-template.md`). **Mỗi lần** Orchestrator,
-người dùng hoặc sub-agent tạo / sửa một file trong thư mục → thêm một dòng: thời điểm · ai · file · thay đổi · căn cứ.
-Mới nhất ở trên. Dòng của sub-agent do Orchestrator ghi sau khi agent báo cáo và file đã được kiểm trên đĩa. Bảng
-"Lịch sử cập nhật" bên trong từng file vẫn giữ; `CHANGELOG.md` là bản gộp để đọc một chỗ.
+**Mọi file** trong `wiki/qa/features/<ID>/` (kể cả `cau-hoi-gui-BA.md`) kết thúc bằng bảng
+`## Lịch sử cập nhật` — `| Ngày | Ai | Thay đổi |`. **Mỗi lần** tạo / sửa file → thêm một dòng vào bảng của
+chính file đó, mới nhất ở dưới cùng: ai (Hồng / AI vai nào / BA qua Hồng chuyển), làm gì, nêu mã Q / D / case liên
+quan. Dòng của sub-agent do agent tự ghi khi ghi file; Orchestrator kiểm có dòng đó khi nhận báo cáo. Không dùng
+file change log riêng (người dùng chốt 2026-10-13).
 
 ## 5. Quay lại giai đoạn trước
 

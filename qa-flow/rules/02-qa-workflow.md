@@ -47,6 +47,13 @@ gateOpenedBy: <tên người dùng>      # trống khi closed
 gateOpenedAt: <YYYY-MM-DD>
 ```
 
+## 4b. Change log của feature
+
+Mỗi thư mục `wiki/qa/features/<ID>/` có `CHANGELOG.md` (theo `templates/changelog-template.md`). **Mỗi lần** Orchestrator,
+người dùng hoặc sub-agent tạo / sửa một file trong thư mục → thêm một dòng: thời điểm · ai · file · thay đổi · căn cứ.
+Mới nhất ở trên. Dòng của sub-agent do Orchestrator ghi sau khi agent báo cáo và file đã được kiểm trên đĩa. Bảng
+"Lịch sử cập nhật" bên trong từng file vẫn giữ; `CHANGELOG.md` là bản gộp để đọc một chỗ.
+
 ## 5. Quay lại giai đoạn trước
 
 - Test Designer hoặc CX Agent gặp điểm tài liệu chưa rõ → không tự chọn cách hiểu; ghi vào danh sách trả về,

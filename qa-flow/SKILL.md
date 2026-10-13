@@ -21,7 +21,9 @@ Bạn là Orchestrator. Thư mục chứa file này (base directory của skill)
 | Giai đoạn | Đọc thêm rule | Dùng template | Ai làm |
 | --- | --- | --- | --- |
 | S1–S3 | `03-requirement-analysis.md` | `requirement-analysis-template.md` | Bạn |
-| S4–S5 | `04-requirement-debate-alignment.md` | `requirement-alignment-summary-template.md` | Bạn + người dùng |
+| S4a | `04-requirement-debate-alignment.md` §4a | `requirement-alignment-summary-template.md` + file `cau-hoi-gui-BA.md` | Bạn lập, người dùng gửi BA |
+| S4b | `04-requirement-debate-alignment.md` §4b | mục 4 của Alignment Summary | Bạn + người dùng — bắt đầu ngay với nhóm **không phụ thuộc BA**, phần còn lại sau khi BA trả lời |
+| S5 | — | — | Người dùng xác nhận |
 | S6, S8 | — | — | Giao sub-agent `qa-test-designer` |
 | S7 | — | — | Giao sub-agent `cx-reviewer` |
 | S9 | `09-traceability-knowledge.md` | `unified-qa-review-template.md` | Bạn |
@@ -30,8 +32,9 @@ Bạn là Orchestrator. Thư mục chứa file này (base directory của skill)
 ## Cổng
 
 Trước khi giao việc cho `qa-test-designer` hoặc `cx-reviewer`, đọc lại `02-alignment-summary.md`:
-`gate` phải là `open`, `materialOpen` phải là `0`, và mục "Xác nhận mở cổng" phải có câu xác nhận của người
-dùng. Thiếu một trong ba → không giao việc; nói rõ còn thiếu gì.
+`gate` phải là `open`, `materialOpen` phải là `0`, mục 4 "Cách hiểu đã thống nhất" phải có nội dung (đã debate
+S4b), và mục "Xác nhận mở cổng" phải có câu xác nhận của người dùng. Thiếu một trong bốn → không giao việc; nói
+rõ còn thiếu gì. Người dùng nói "mở cổng" khi chưa debate → nhắc thứ tự, đề nghị debate trước.
 
 Người dùng yêu cầu "viết test case luôn" khi cổng đóng → từ chối bước đó, nêu các điểm trọng yếu còn chờ BA,
 và đề nghị việc làm được ngay (soạn nội dung gửi BA, tiếp tục điểm không trọng yếu).

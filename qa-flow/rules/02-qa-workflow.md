@@ -25,7 +25,8 @@ Customer Experience Agent chạy **song song** với QA Test Designer, sau khi c
 | Từ → sang | Điều kiện |
 | --- | --- |
 | S3 → S4 | `01-requirement-analysis.md` đã ghi đủ nguồn, phạm vi đã đọc, danh sách điểm chưa rõ |
-| S4 → S5 | Mỗi câu hỏi có trạng thái; điểm trọng yếu còn mở = 0 |
+| S4a → S4b | Điểm trọng yếu còn mở = 0 (BA đã trả lời) |
+| S4b → S5 | Debate đã đi hết các nhóm BR; mục 4 Alignment Summary có nội dung |
 | S5 → S6/S7 | `gate: open` do người dùng xác nhận |
 | S6/S7 → S9 | Cả hai sub-agent đã ghi file và tự kiểm |
 | S9 → S10 | Có môi trường, công cụ, và người dùng yêu cầu chạy |
@@ -38,7 +39,7 @@ Ghi ở frontmatter của `02-alignment-summary.md`:
 
 ```yaml
 featureId: <ID>
-stage: S3 | S4 | S5 | S6-S7 | S9 | S10
+stage: S3 | S4a | S4b | S5 | S6-S7 | S9 | S10
 gate: closed | open
 materialOpen: <số điểm trọng yếu còn mở>
 nonMaterialOpen: <số điểm không trọng yếu còn mở>

@@ -27,11 +27,13 @@ updatedAt: <YYYY-MM-DD>
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Q-01 | Trọng yếu | | | (a) … (b) … | | BA | Mở / Đã xác nhận / Unresolved — BA Clarification Required | | |
 
-## 4. Cách hiểu đã xác nhận `[ĐÃ XÁC NHẬN]`
+## 4. Cách hiểu đã thống nhất (kết quả Debate S4b, sau khi BA trả lời)
 
-| # | Nội dung | Từ câu hỏi | Ai xác nhận · ngày | Tài liệu đã cập nhật chưa |
-| ---: | --- | --- | --- | --- |
-| 1 | | Q-01 | | Chưa — ghi chú cho BA |
+| # | Nhóm BR / luồng | Nội dung đã thống nhất | Nhãn | Từ câu hỏi | Ai xác nhận · ngày | Tài liệu đã cập nhật chưa |
+| ---: | --- | --- | --- | --- | --- | --- |
+| 1 | | | `[ĐÃ XÁC NHẬN]` (có BA) / `[GIẢ ĐỊNH]` (QA + AI, điểm còn chờ) | Q-01 | | Chưa — ghi chú cho BA |
+
+Chỗ QA và AI đọc khác nhau, cả hai có căn cứ → nâng thành câu hỏi trọng yếu, quay lại 4a.
 
 ## 5. Các cách hiểu khác nhau còn tồn tại
 

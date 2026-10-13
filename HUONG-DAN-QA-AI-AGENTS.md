@@ -35,7 +35,7 @@
 Luồng tóm tắt:
 
 ```
-Đọc tài liệu BA → Phân tích requirement → Debate với bạn (hỏi BA) → BẠN mở "cổng"
+Đọc tài liệu BA → Phân tích requirement → Câu hỏi gửi BA → Debate bạn ↔ Claude → BẠN mở "cổng"
       → Thiết kế test case  ┐
                             ├─ chạy song song → Unified QA Review
       → Review UI/UX/CX    ┘
@@ -190,11 +190,12 @@ Chạy trong hội thoại chính. **Chưa có test case nào ở chặng này.*
 | **S1** Khởi tạo | Hỏi tên/ID, mục tiêu, phạm vi (từng câu một). Tạo thư mục feature | Trả lời. Chỉ định tài liệu nguồn | Thư mục `wiki/qa/features/<ID>/` |
 | **S2** Nạp nguồn | Đọc hết tài liệu trong phạm vi | Cung cấp tài liệu còn thiếu | — |
 | **S3** Requirement Analysis | Trích requirement, actor, use case, business rule (BR), AC, mã lỗi, thông báo — **kèm `tệp:dòng`**. Liệt kê điểm chưa rõ | Đọc bảng "Điểm chưa rõ" | `01-requirement-analysis.md` |
-| **S4** Debate & Alignment | Với mỗi điểm chưa rõ, lập câu hỏi có trích dẫn + các cách hiểu **có căn cứ** + ảnh hưởng tới test. Đề xuất mức trọng yếu / không | **Chốt mức trọng yếu / không trọng yếu. Gửi câu hỏi cho BA. Mang câu trả lời về, nói rõ ai trả lời, ngày nào, kênh nào** | Bảng câu hỏi trong `02-alignment-summary.md` |
-| **S5** Xác nhận | Khi điểm trọng yếu còn mở = 0, xuất Alignment Summary, đề nghị bạn mở cổng | Đọc mục 2–8 của Summary, **nói rõ "đồng ý mở cổng"** | `02-alignment-summary.md` với `gate: open` |
+| **S4a** Câu hỏi gửi BA | Với mỗi điểm chưa rõ, lập câu hỏi có trích dẫn + các cách hiểu **có căn cứ** + ảnh hưởng tới test. Đề xuất mức trọng yếu / không. Ghi thành file `cau-hoi-gui-BA.md` (bảng, có cột BA trả lời) | **Chốt mức trọng yếu / không trọng yếu. Gửi file cho BA. Mang câu trả lời về, nói rõ ai trả lời, ngày nào, kênh nào** | `cau-hoi-gui-BA.md`; bảng câu hỏi trong `02-alignment-summary.md` |
+| **S4b** Debate bạn ↔ Claude | Tóm tắt nghiệp vụ theo từng nhóm BR, ghép câu trả lời BA vào, nêu cách Claude đọc từng chỗ còn có thể hiểu khác. **Bắt đầu ngay với nhóm không phụ thuộc BA** trong lúc chờ; nhóm còn chạm câu hỏi mở thì debate khi BA trả lời | Nói bạn đọc thế nào ở từng nhóm; lệch nhau thì chỉ chỗ trong tài liệu. Cả hai đều có căn cứ → nâng thành trọng yếu, hỏi BA | Mục 4 "Cách hiểu đã thống nhất" của `02-alignment-summary.md` (`[ĐÃ XÁC NHẬN]` có BA / `[GIẢ ĐỊNH]` chờ BA) |
+| **S5** Xác nhận | Khi điểm trọng yếu còn mở = 0 **và đã debate xong các nhóm có điểm trọng yếu**, đề nghị bạn mở cổng | Đọc mục 2–8 của Summary, **nói rõ "đồng ý mở cổng"** | `02-alignment-summary.md` với `gate: open` |
 
-**Mẹo S4:** Claude có thể soạn sẵn nội dung gửi BA (mục 7 của Summary: "copy được"). Gửi đi, chờ trả lời,
-rồi quay lại dán câu trả lời vào phiên.
+**Mẹo S4:** file `cau-hoi-gui-BA.md` soạn sẵn để gửi BA điền thẳng vào cột "BA trả lời". Trong lúc chờ, bảo Claude
+"debate nhóm không cần BA trước" — không ngồi chờ. Câu trả lời về thì dán vào phiên kèm tên người trả lời và ngày.
 
 ### Bước 4 — Thiết kế + CX song song (S6 → S8)
 
@@ -274,7 +275,7 @@ Mỗi file là một bộ luật. Vai nào đọc file nào: xem bảng 7.1. Dư
 **`02-qa-workflow` — thứ tự và điều kiện chuyển giai đoạn**
 - Chuỗi: Requirement → Analysis → **Debate & Alignment** → Use Case → BR → Decision Table → State Transition → Risk → Coverage Matrix → Scenario → Testcase Summary → Testcase Detail → Regression Scope → Automation Candidate. CX chạy song song với Test Design sau khi cổng mở.
 - Bắt đầu feature: hỏi từng câu (ID, mục tiêu, phạm vi), nhận tài liệu, tạo `wiki/qa/features/<ID>/`; đã có thì đọc trạng thái và tiếp tục.
-- Điều kiện chuyển: S3→S4 khi `01-…` đủ nguồn + điểm chưa rõ · S4→S5 khi điểm trọng yếu mở = 0 · S5→S6/S7 khi `gate: open` do bạn xác nhận · S6/S7→S9 khi cả hai agent đã ghi file · S9→S10 khi có môi trường + công cụ + bạn yêu cầu. Chưa đạt thì dừng, nói thiếu gì, **không làm tắt**.
+- Điều kiện chuyển: S3→S4a khi `01-…` đủ nguồn + điểm chưa rõ · S4a→S4b ngay với nhóm không phụ thuộc BA, hoàn tất khi điểm trọng yếu mở = 0 · S4b→S5 khi mục 4 Summary có nội dung · S5→S6/S7 khi `gate: open` do bạn xác nhận · S6/S7→S9 khi cả hai agent đã ghi file · S9→S10 khi có môi trường + công cụ + bạn yêu cầu. Chưa đạt thì dừng, nói thiếu gì, **không làm tắt**.
 - Trạng thái ghi ở frontmatter `02-alignment-summary.md`: `stage`, `gate`, `materialOpen`, `nonMaterialOpen`, `gateOpenedBy/At`.
 - Quay lại: agent gặp điểm chưa rõ → không tự chọn, đưa về S4 · điểm trọng yếu mới → `gate: closed` cho phần bị ảnh hưởng · tài liệu đổi → cập nhật `01`, rà `02`, đánh dấu case · đề xuất UX không quay lại S4, ghi ở `05`.
 
@@ -286,7 +287,8 @@ Mỗi file là một bộ luật. Vai nào đọc file nào: xem bảng 7.1. Dư
 - Cấm: thêm hành vi vì "nên như vậy" · biến best practice thành AC · tự giải quyết xung đột hai nguồn · kết luận "thiếu tài liệu" chỉ vì version dẫn chiếu không khớp (file trong `tailieu/` là bản hiện hành; lệch dẫn chiếu là câu hỏi cho BA).
 - Một tài liệu nhiều bản → hỏi bạn bản nào hiệu lực, không suy từ ngày sửa file.
 
-**`04-requirement-debate-alignment` — vai Debate (S4–S5), bắt buộc trước Test Design**
+**`04-requirement-debate-alignment` — vai Debate (S4a → S4b → S5), bắt buộc trước Test Design**
+- **Hai nửa:** S4a lập câu hỏi gửi BA (`cau-hoi-gui-BA.md`); S4b debate bạn ↔ Claude theo từng nhóm BR — bắt đầu ngay với nhóm không cần BA, phần còn lại khi BA trả lời. Kết quả ghi mục 4 "Cách hiểu đã thống nhất" của Summary; cổng chỉ mở khi mục này có nội dung.
 - Mỗi điểm chưa rõ thành một câu hỏi đủ: nguồn trích dẫn · vì sao chưa rõ · các cách hiểu **có căn cứ** · ảnh hưởng tới case · cần ai xác nhận · mức trọng yếu (AI đề xuất, bạn chốt).
 - Hỏi theo nhóm nhỏ, ưu tiên trọng yếu. Ghi câu trả lời kèm **ai trả lời · ngày · kênh**.
 - **Ai đóng được điểm trọng yếu:** chỉ BA (hoặc Dev/Product đúng thẩm quyền), do bạn chuyển vào. Bạn nói "tôi nghĩ là…" → `[GIẢ ĐỊNH]`, điểm vẫn mở.

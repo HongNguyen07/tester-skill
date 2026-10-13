@@ -27,7 +27,8 @@ Mọi vai đều chịu `01-core-principles.md`, `09-traceability-knowledge.md`,
 | S1 | Khởi tạo feature | thư mục feature, ID, mục tiêu, phạm vi | Có ID và danh sách tài liệu nguồn |
 | S2 | Nạp nguồn | danh sách file đã đọc (ghi trong S3) | Đã đọc hết phạm vi được giao |
 | S3 | Requirement Analysis | `01-requirement-analysis.md` | Tự rà soát xong |
-| S4 | Debate & Alignment | bảng câu hỏi trong `02-alignment-summary.md` | Mọi điểm **trọng yếu** đã có trả lời của BA |
+| S4a | Câu hỏi cho BA | `cau-hoi-gui-BA.md`, bảng câu hỏi trong `02-alignment-summary.md` | Mọi điểm **trọng yếu** đã có trả lời của BA |
+| S4b | Debate QA ↔ AI (sau khi BA trả lời) | mục 4 "Cách hiểu đã thống nhất" của `02-alignment-summary.md` | Đã đi hết các nhóm BR, không còn chỗ hai bên đọc khác nhau mà chưa xử lý |
 | S5 | Xác nhận cách hiểu | `02-alignment-summary.md`, `gate: open` | Người dùng xác nhận mở cổng |
 | S6 | QA Test Design | `03-test-design.md`, `04-testcases.md` | Chạy song song với S7 |
 | S7 | CX Review | `05-cx-review.md` | — |
@@ -39,7 +40,8 @@ Mọi vai đều chịu `01-core-principles.md`, `09-traceability-knowledge.md`,
 `02-alignment-summary.md` chưa có `gate: open`. Cổng chỉ mở khi cả hai điều kiện đúng:
 
 1. Số điểm trọng yếu còn mở = 0 — tức BA đã trả lời hết, người dùng (QA) đã chuyển câu trả lời vào phiên.
-2. Người dùng nói rõ đồng ý mở cổng. Orchestrator không tự mở.
+2. Đã debate (S4b) với câu trả lời BA trong tay; mục 4 của Alignment Summary có nội dung.
+3. Người dùng nói rõ đồng ý mở cổng. Orchestrator không tự mở.
 
 Điểm không trọng yếu còn mở được phép đi tiếp nếu đã cô lập: ghi rõ trong Alignment Summary và case liên quan
 đánh dấu `❓ Cần chốt`. Định nghĩa "trọng yếu": xem `04-requirement-debate-alignment.md` §3.

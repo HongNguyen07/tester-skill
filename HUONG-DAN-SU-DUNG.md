@@ -50,7 +50,7 @@ Hai bộ **không gọi lẫn nhau** trong cùng một feature.
 |---|---|---|
 | Đầu vào là tài liệu BA (`tailieu/G0xx.md`, `CR-00x.md`) | Đọc thẳng | Cần chuyển thành `FEAT-<NNN>.md` trước |
 | Chưa có wiki git chung với BA/BE/FE | Không cần | Phải có để claim, push, loop-back |
-| Tài liệu BA hay mơ hồ, phải hỏi lại BA | Có bước Debate + cổng Alignment | Thiếu AC thì dừng, không có bước làm rõ |
+| Tài liệu BA hay mơ hồ, phải hỏi lại BA | Có file câu hỏi gửi BA + bước Debate QA ↔ AI + cổng Alignment | Thiếu AC thì dừng, không có bước làm rõ |
 | Đang test thủ công, chưa có automation | Dừng ở thiết kế case, đúng phạm vi | Nửa pipeline (P4–P10) chưa dùng được |
 | Chấm point theo BR | `01-requirement-analysis.md` bóc BR sẵn, kèm `tệp:dòng` | Phải tự bóc BR từ FEAT |
 

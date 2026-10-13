@@ -4,7 +4,13 @@ Giai đoạn **bắt buộc** trước Test Design. Chạy trong hội thoại c
 
 > Thảo luận để hiểu requirement đã được viết ra — không để sáng tạo, mở rộng hay định nghĩa lại.
 
-## 1. Cách làm
+## 1. Thứ tự (người dùng chốt 2026-10-13)
+
+S4 gồm **hai nửa**: **4a — lập câu hỏi gửi BA** và **4b — Debate giữa người dùng (QA) và AI** để cả hai cùng
+hiểu nghiệp vụ. 4a đi trước; 4b bắt đầu ngay với phần **không phụ thuộc BA** trong lúc chờ, và hoàn tất phần còn
+lại khi BA trả lời. Không mở cổng khi chưa debate xong các nhóm có điểm trọng yếu.
+
+### 4a — Lập và gửi câu hỏi cho BA
 
 1. Lấy bảng "Điểm chưa rõ" từ `01-requirement-analysis.md`.
 2. Với mỗi điểm, lập một câu hỏi gồm đủ:
@@ -14,10 +20,27 @@ Giai đoạn **bắt buộc** trước Test Design. Chạy trong hội thoại c
    - **Ảnh hưởng:** mỗi cách hiểu đổi hành vi / phạm vi test case nào.
    - **Cần xác nhận gì, từ ai** (BA / Dev / Product).
    - **Mức:** trọng yếu / không trọng yếu (§3), do AI đề xuất, người dùng chốt.
-3. Hỏi người dùng theo từng nhóm nhỏ, ưu tiên điểm trọng yếu. Không dồn tất cả vào một lượt nếu quá dài.
-4. Ghi câu trả lời vào bảng câu hỏi của `02-alignment-summary.md`: nội dung, **ai trả lời**, ngày, kênh
-   (vd "BA Lan, 2026-10-09, chat nhóm — QA chuyển lại").
-5. Khi điểm trọng yếu còn mở = 0, xuất Alignment Summary và đề nghị người dùng xác nhận mở cổng.
+3. Trình bày cho người dùng theo nhóm, người dùng chốt mức; ghi thành `cau-hoi-gui-BA.md` trong thư mục feature
+   (bảng, có cột "BA trả lời", chia Phần A trọng yếu / Phần B không trọng yếu). Người dùng gửi cho BA.
+4. Khi người dùng chuyển câu trả lời vào phiên: ghi vào bảng câu hỏi của `02-alignment-summary.md` — nội dung,
+   **ai trả lời**, ngày, kênh (vd "BA Lan, 2026-10-09, chat nhóm — QA chuyển lại"). Câu trả lời chưa đủ ý →
+   tách phần thiếu thành câu hỏi mới, không tự lấp.
+
+### 4b — Debate giữa người dùng và AI (sau khi BA trả lời)
+
+Mục tiêu: cả hai cùng hiểu nghiệp vụ như nhau trước khi thiết kế. **Không phải chờ BA xong mới bắt đầu:** trong
+lúc chờ BA, debate ngay những nhóm BR / luồng **đã rõ, không phụ thuộc câu hỏi nào** (hoặc chỉ phụ thuộc câu đã có
+trả lời). Nhóm còn chạm câu hỏi mở thì để lại, debate khi BA trả lời. Thứ tự gợi ý: nhóm rõ → nhóm đã có BA → nhóm
+còn chờ.
+
+5. AI tóm tắt nghiệp vụ theo từng nhóm BR / luồng, **kèm câu trả lời BA đã ghép vào**, và nêu cách AI đọc từng chỗ
+   còn có thể hiểu khác. Hỏi người dùng đọc thế nào; đi từng nhóm nhỏ, không dồn một lượt.
+6. Hai bên lệch nhau → chỉ ra chỗ lệch và căn cứ của mỗi bên. Cả hai đều có căn cứ trong tài liệu → nâng thành
+   điểm trọng yếu, quay lại 4a. Một bên không có căn cứ → theo bên có căn cứ, ghi lại.
+7. Ghi kết quả vào `02-alignment-summary.md` mục 4 "Cách hiểu đã thống nhất": mỗi dòng có nhãn — `[ĐÃ XÁC NHẬN]`
+   nếu dựa trên câu trả lời BA, `[GIẢ ĐỊNH]` nếu chỉ là cách hiểu chung của QA và AI cho điểm còn chờ. Mục này
+   là căn cứ để Test Designer viết kỳ vọng và quyết định case `❓` theo hướng nào.
+8. Debate xong, điểm trọng yếu còn mở = 0 → đề nghị người dùng xác nhận mở cổng (S5).
 
 ## 2. Ai xác nhận
 
@@ -25,7 +48,8 @@ Giai đoạn **bắt buộc** trước Test Design. Chạy trong hội thoại c
   dùng chuyển vào phiên. Ý kiến riêng của QA hoặc của AI không đóng được điểm trọng yếu.
 - Người dùng nói "tôi nghĩ là…" mà không nêu BA đã trả lời → ghi `[GIẢ ĐỊNH]`, điểm vẫn mở, hỏi lại một lần
   xem đây có phải câu trả lời của BA không.
-- Mở cổng là quyết định của người dùng, sau khi điều kiện đủ.
+- Mở cổng là quyết định của người dùng, sau khi điều kiện đủ **và đã debate (4b)**. Cổng mở mà chưa debate là sai
+  thứ tự — Orchestrator phải nói rõ và đề nghị debate trước.
 
 ## 3. Điểm trọng yếu
 

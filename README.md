@@ -79,7 +79,7 @@ tester-skill/
   của `qa-flow/templates/testcase-template.md` — sửa một thì sửa cả hai).
 
 - **P7 bộ qa-ai-agents** — `qa-flow` + 2 agent `qa-test-designer`, `cx-reviewer`. Luồng **từ tài liệu BA**
-  (không cần FEAT / wiki git): Requirement Analysis → Debate & Alignment → **người dùng mở cổng** → Test
+  (không cần FEAT / wiki git): Requirement Analysis → Câu hỏi BA → Debate QA ↔ AI → **người dùng mở cổng** → Test
   Design + CX Review song song → Unified QA Review. Kết quả `wiki/qa/features/<ID>/01…06-*.md`. Đứng riêng
   với `/qa-orchestrator`, không gọi lẫn agent trong cùng feature. Chi tiết: `qa-flow/CLAUDE.md`.
 
@@ -89,7 +89,7 @@ Luồng `/qa-orchestrator` (từ FEAT, đóng vòng):
 intake → plan → case (shift-left) → *(BE/FE build)* → automation → execute+evidence → defect/loop-back → review(score) → log + sign-off gate → commit/push.
 
 Luồng `/qa-flow` (từ tài liệu BA):
-phân tích → debate với BA → mở cổng → thiết kế case ‖ CX review → unified review.
+phân tích → câu hỏi gửi BA → debate QA ↔ AI (bắt đầu ngay với phần không cần BA) → mở cổng → thiết kế case ‖ CX review → unified review.
 
 ## Đồng bộ shared-wiki
 Sửa canonical tại `java-skill/shared-wiki-template/` → chạy `../sync-shared-wiki.sh` (đã gồm tester-skill).

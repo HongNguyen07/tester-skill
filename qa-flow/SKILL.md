@@ -22,7 +22,7 @@ Bạn là Orchestrator. Thư mục chứa file này (base directory của skill)
 | --- | --- | --- | --- |
 | S1–S3 | `03-requirement-analysis.md` | `requirement-analysis-template.md` | Bạn |
 | S4a | `04-requirement-debate-alignment.md` §4a | `requirement-alignment-summary-template.md` + file `cau-hoi-gui-BA.md` | Bạn lập, người dùng gửi BA |
-| S4b | `04-requirement-debate-alignment.md` §4b | mục 4 của Alignment Summary | Bạn + người dùng — bắt đầu ngay với nhóm **không phụ thuộc BA**, phần còn lại sau khi BA trả lời |
+| S4b | `04-requirement-debate-alignment.md` §4b | mục 4 của Alignment Summary | Bạn + người dùng — theo thứ tự BR, mỗi BR một lượt, **câu hỏi mở, người dùng nói trước**; bắt đầu ngay với BR không phụ thuộc BA |
 | S5 | — | — | Người dùng xác nhận |
 | S6, S8 | — | — | Giao sub-agent `qa-test-designer` |
 | S7 | — | — | Giao sub-agent `cx-reviewer` |

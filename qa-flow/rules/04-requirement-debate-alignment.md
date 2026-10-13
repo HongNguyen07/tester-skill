@@ -34,13 +34,23 @@ lúc chờ BA, debate ngay những nhóm BR / luồng **đã rõ, không phụ t
 trả lời). Nhóm còn chạm câu hỏi mở thì để lại, debate khi BA trả lời. Thứ tự gợi ý: nhóm rõ → nhóm đã có BA → nhóm
 còn chờ.
 
-5. AI tóm tắt nghiệp vụ theo từng nhóm BR / luồng, **kèm câu trả lời BA đã ghép vào**, và nêu cách AI đọc từng chỗ
-   còn có thể hiểu khác. Hỏi người dùng đọc thế nào; đi từng nhóm nhỏ, không dồn một lượt.
-6. Hai bên lệch nhau → chỉ ra chỗ lệch và căn cứ của mỗi bên. Cả hai đều có căn cứ trong tài liệu → nâng thành
-   điểm trọng yếu, quay lại 4a. Một bên không có căn cứ → theo bên có căn cứ, ghi lại.
-7. Ghi kết quả vào `02-alignment-summary.md` mục 4 "Cách hiểu đã thống nhất": mỗi dòng có nhãn — `[ĐÃ XÁC NHẬN]`
-   nếu dựa trên câu trả lời BA, `[GIẢ ĐỊNH]` nếu chỉ là cách hiểu chung của QA và AI cho điểm còn chờ. Mục này
-   là căn cứ để Test Designer viết kỳ vọng và quyết định case `❓` theo hướng nào.
+5. **Căn cứ cố định — đi theo thứ tự BR** trong bảng mục 5 của `01-requirement-analysis.md`, mỗi BR một lượt,
+   **không bỏ BR nào** kể cả BR trông đã rõ; BR có AC thì ghép AC vào cùng lượt. Hết BR → E → AF → mục UI (§10).
+   BR chạm câu hỏi mở chưa có BA → để lại, debate khi BA trả lời.
+6. **Mỗi lượt bốn bước, câu hỏi phải là câu hỏi mở:**
+   1. AI trích **nguyên văn** BR + AC + dòng spec gốc liên quan (kèm `tệp:dòng`), **không kèm cách đọc của AI**, rồi
+      đặt **câu hỏi mở**: "BR này bạn hiểu thế nào?", "Bạn sẽ test tình huống nào?", "Chỗ nào của câu chữ bạn thấy
+      có thể hiểu khác?". **Không** đặt câu hỏi có / không, không đưa phương án (a) / (b) ở bước này — câu hỏi đóng
+      làm người dùng trả lời theo quán tính và AI dẫn dắt cách đọc.
+   2. **Người dùng nói trước**: cách hiểu của mình và ít nhất một tình huống thực tế sẽ test.
+   3. AI nói cách đọc của mình, chỉ ra chỗ khớp / lệch, **dò lại tài liệu** cho cả hai cách đọc (mở đúng dòng, trích
+      lại). Khớp nhau mà không có dòng tài liệu ủng hộ → vẫn không phải `[NGUỒN]`.
+   4. Chốt nhãn `[NGUỒN]` / `[DIỄN GIẢI AI]` / `[GIẢ ĐỊNH]` / `[CẦN XÁC NHẬN]` + dòng dẫn. Hai bên lệch nhau mà cả
+      hai đều có căn cứ → nâng thành câu hỏi trọng yếu cho BA, quay lại 4a. Một bên không có căn cứ → theo bên có
+      căn cứ, ghi lại ai đổi.
+7. Người dùng nói "rõ, qua" với một BR → AI vẫn ghi một dòng `[NGUỒN]` kèm dòng dẫn, không bỏ trống.
+   Ghi kết quả vào `02-alignment-summary.md` mục 4 "Cách hiểu đã thống nhất", mỗi BR một hoặc nhiều dòng, có nhãn
+   và dòng tài liệu. Mục này là căn cứ để Test Designer viết kỳ vọng và quyết định case `❓` theo hướng nào.
 8. Debate xong, điểm trọng yếu còn mở = 0 → đề nghị người dùng xác nhận mở cổng (S5).
 
 ## 2. Ai xác nhận

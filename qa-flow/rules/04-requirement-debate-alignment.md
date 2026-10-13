@@ -39,9 +39,11 @@ còn chờ.
    BR chạm câu hỏi mở chưa có BA → để lại, debate khi BA trả lời.
 6. **Mỗi lượt bốn bước, câu hỏi phải là câu hỏi mở:**
    1. AI trích **nguyên văn** BR + AC + dòng spec gốc liên quan (kèm `tệp:dòng`), **không kèm cách đọc của AI**, rồi
-      đặt **câu hỏi mở**: "BR này bạn hiểu thế nào?", "Bạn sẽ test tình huống nào?", "Chỗ nào của câu chữ bạn thấy
-      có thể hiểu khác?". **Không** đặt câu hỏi có / không, không đưa phương án (a) / (b) ở bước này — câu hỏi đóng
-      làm người dùng trả lời theo quán tính và AI dẫn dắt cách đọc.
+      đặt **một câu hỏi mở, hẹp**, trả lời được trong **1–2 câu**. Câu hỏi nhắm vào **một** chỗ cụ thể của câu chữ
+      (một từ, một cụm, một tình huống) — vd "Trong 'ảnh đại diện nhỏ của người làm', người làm là ai khi tin là
+      'X đã ghim'?" — **không** hỏi chung chung kiểu "BR này bạn hiểu thế nào?" hay dồn 3–4 câu một lượt (người
+      dùng phải tự viết quá nhiều). **Không** đặt câu hỏi có / không, không đưa phương án (a) / (b) — câu hỏi đóng
+      làm người dùng trả lời theo quán tính và AI dẫn dắt cách đọc. Một BR có thể cần nhiều lượt; mỗi lượt một câu.
    2. **Người dùng nói trước**: cách hiểu của mình và ít nhất một tình huống thực tế sẽ test.
    3. AI nói cách đọc của mình, chỉ ra chỗ khớp / lệch, **dò lại tài liệu** cho cả hai cách đọc (mở đúng dòng, trích
       lại). Khớp nhau mà không có dòng tài liệu ủng hộ → vẫn không phải `[NGUỒN]`.

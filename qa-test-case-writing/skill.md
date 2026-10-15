@@ -89,7 +89,7 @@ Dùng cho cả bảng nhóm A và nhóm B. `Round 1–3` là ba cột con của 
 | **Precondition** | Trạng thái hệ thống, quyền, dữ liệu có sẵn trước bước 1. Không có thì ghi `-`. |
 | **Steps** | Đánh số `1.` `2.`, mỗi bước một dòng (`<br>`), bắt đầu bằng động từ (Bấm, Nhập, Quét, Chờ, Gọi API…). Gọi tên nút / menu **đúng như trên UI**. Người chưa đọc spec phải chạy được; cấm bước kiểu "Thực hiện thao tác theo test case". |
 | **Data** | Giá trị cụ thể dùng để test (SĐT, chuỗi, độ dài, tài khoản, file). Không có thì ghi `-`. Cấm "dữ liệu hợp lệ", "dữ liệu phù hợp". |
-| **Expected Result** | Kết quả **kiểm chứng được**: UI + dữ liệu + log nếu có. **Nhóm A** chỉ lấy từ nội dung có trong nguồn hoặc đã được BA xác nhận (`[NGUỒN]` / `[ĐÃ XÁC NHẬN]`). Thông báo, nhãn, trạng thái **chép nguyên văn**, đặt trong ngoặc kép. Cấm "hoạt động bình thường", "xử lý đúng". Case kỳ vọng một lỗi có mã thì ghi thêm dòng cuối `**Mã lỗi kỳ vọng:** <mã đúng theo tài liệu/contract>` — không tự chế mã. **Nhóm B** ghi `ĐO & GHI: …` hoặc `❓ Cần chốt` — không phải tiêu chí pass theo requirement. |
+| **Expected Result** | **Ghi theo từng bước** (người dùng chốt 2026-10-15, khớp mẫu Excel của team): mỗi dòng (`<br>`) bắt đầu bằng **số thứ tự của bước tương ứng trong Steps** — tới bước nào thì phải thấy gì, vd `2. Popup đóng, app không crash<br>3. Hiện nút "Mở Cài đặt"`. Bước chỉ là thao tác trung gian, không có gì cần kiểm thì **bỏ qua số đó**; không viết thành một đoạn không đánh số; số trong Expected phải tồn tại trong Steps. Kết quả **kiểm chứng được**: UI + dữ liệu + log nếu có. **Nhóm A** chỉ lấy từ nội dung có trong nguồn hoặc đã được BA xác nhận (`[NGUỒN]` / `[ĐÃ XÁC NHẬN]`). Thông báo, nhãn, trạng thái **chép nguyên văn**, đặt trong ngoặc kép. Cấm "hoạt động bình thường", "xử lý đúng". Phần tài liệu chưa có (nguyên văn thông báo, con số) ghi `Chờ Q-<nn>: …` ngay trong dòng bước đó (§4), không dùng "ĐO & GHI" ở nhóm A. Case kỳ vọng một lỗi có mã thì ghi thêm dòng cuối `**Mã lỗi kỳ vọng:** <mã đúng theo tài liệu/contract>` — không tự chế mã. **Nhóm B** cũng đánh số theo bước, nội dung là `ĐO & GHI: …` hoặc `❓ Cần chốt` — không phải tiêu chí pass theo requirement. |
 | **Round 1 / 2 / 3** | Đúng một trong: `Todo` · `Pass` · `Fail` · `NA`. Mặc định `Todo`. Người viết case **không** điền Pass/Fail. |
 | **Error Code** | Để trống khi viết. Tester điền **mã bug** (`BUG-<NNN>`) khi một Round là `Fail`. Đây KHÔNG phải chỗ ghi mã lỗi kỳ vọng. |
 | **Note** | Mỗi ý một dòng (`<br>`), theo thứ tự: `Ưu tiên: P1/P2/P3` · `Loại: …` · `❓ Cần chốt: Q-<nn>` · `Nguồn: <tệp:dòng "trích ngắn">` · `Evidence: <screenshot / HAR / log / axe-report>`. Nhóm B thêm `Lý do thêm: …`. |
@@ -131,7 +131,7 @@ ma trận / Coverage Matrix (thiếu thông tin, ngoài phạm vi, chờ BA).
 - [ ] Mỗi BR của tài liệu có ≥1 case nhóm A trong ma trận / Coverage Matrix, hoặc có lý do chưa phủ.
 - [ ] Category và Round chỉ dùng giá trị ở §2; Round đều là `Todo`; Error Code, Date, Tester trống.
 - [ ] Purpose đọc riêng vẫn hiểu, không trùng hàng loạt; Steps chạy được mà không cần mở spec; Data là giá trị cụ thể.
-- [ ] Expected Result không có "hoạt động bình thường / xử lý đúng"; thông báo chép nguyên văn; case lỗi có `Mã lỗi kỳ vọng` nếu tài liệu có mã.
+- [ ] Expected Result **đánh số theo bước** (mỗi dòng bắt đầu bằng số có trong Steps), không có "hoạt động bình thường / xử lý đúng"; thông báo chép nguyên văn; nhóm A không có "ĐO & GHI" (dùng `Chờ Q-<nn>`); case lỗi có `Mã lỗi kỳ vọng` nếu tài liệu có mã.
 - [ ] Manual test: mỗi Round `Pass + Fail + NA + Chưa thực hiện = Tổng` = tổng số dòng case; chưa chạy thì `Chưa thực hiện = Tổng`.
 - [ ] Thống kê khớp bảng case (đếm lại, không ước lượng).
 - [ ] Dòng `Người thiết kế · ngày` đã điền; Lịch sử cập nhật có dòng mới nêu khoảng mã TC.
@@ -156,6 +156,7 @@ cũ; sau khi chuyển, đếm lại số case và đối chiếu với bản cũ
 | `Trace (AC/US/BR)` | **Trace BR** — bổ sung mã BR theo §3 nếu cột cũ chỉ có AC / bước. |
 | `Loại` (Happy / Edge / Error · loại test) | **Category**: Happy → `Positive`, Edge → `Edge case`, Error → `Negative`; case security → `Security`, a11y → `UI`, perf → `Performance`. Giá trị gốc giữ ở Note `Loại: …`. |
 | `Mã lỗi` (mã lỗi kỳ vọng) | Dòng cuối của **Expected Result**: `**Mã lỗi kỳ vọng:** …`. |
+| Expected Result viết thành đoạn | Tách theo bước: mỗi ý gắn vào số bước tạo ra nó trong Steps; ý không gắn được bước nào → gắn vào bước quan sát cuối cùng. |
 | `Nguồn tài liệu`, `Evidence-required`, `Trạng thái`, `Priority` | **Note** (`Nguồn:`, `Evidence:`, `Trạng thái thiết kế:`, `Ưu tiên:`). |
 | Ký hiệu ❓ / ⚠ cạnh mã | **Note** (`❓ Cần chốt: …`). |
 | `Q<n>` | `Q-<nn>` |

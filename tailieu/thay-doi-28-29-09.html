@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thay đổi 28–29/09</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --surface: #ffffff;
+    --ink: #17202b;
+    --muted: #586374;
+    --rule: #dde2e8;
+    --accent: #0e7c6b;
+    --accent-soft: #e3f2ef;
+    --warn: #a14d06;
+    --warn-soft: #fbeedd;
+    --sans: "Be Vietnam Pro", "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1419; --surface: #161d24; --ink: #e5eaf0; --muted: #98a3b3; --rule: #2a333d;
+      --accent: #3cc4ad; --accent-soft: #12302b; --warn: #f0a54a; --warn-soft: #3a2a14;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1419; --surface: #161d24; --ink: #e5eaf0; --muted: #98a3b3; --rule: #2a333d;
+    --accent: #3cc4ad; --accent-soft: #12302b; --warn: #f0a54a; --warn-soft: #3a2a14;
+    color-scheme: dark;
+  }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.6; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 32px 16px 64px; display: grid; gap: 36px; }
+  .wrap > *, section > * { min-width: 0; }
+  h1, h2, h3 { text-wrap: balance; line-height: 1.25; margin: 0; }
+  h1 { font-size: 30px; font-weight: 700; letter-spacing: -0.01em; }
+  h2 { font-size: 21px; font-weight: 650; }
+  h3 { font-size: 16.5px; font-weight: 600; }
+  p { margin: 0; max-width: 72ch; }
+  .muted { color: var(--muted); }
+  header { display: grid; gap: 12px; }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+
+  nav ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  nav li { display: flex; }
+  nav a { flex: 1; }
+  nav a { display: block; padding: 9px 13px; border-radius: 8px; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); text-decoration: none; font-size: 14px; font-weight: 500; }
+  nav a:hover, nav a:focus-visible { border-color: var(--accent); outline: none; }
+  nav .sub { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 6px 0 2px; }
+
+  section { display: grid; gap: 16px; }
+  article { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 18px; display: grid; gap: 12px; scroll-margin-top: 16px; }
+  .where { font-size: 12.5px; font-weight: 600; color: var(--accent); }
+  .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .cmp > div { display: grid; gap: 6px; align-content: start; }
+  .lbl { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .now .lbl { color: var(--accent); }
+  ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+  .before ul { color: var(--muted); }
+  .note { padding: 10px 12px; border-radius: 8px; background: var(--warn-soft); border-left: 3px solid var(--warn); font-size: 14px; }
+  .note b { color: var(--warn); }
+  @media (max-width: 640px) {
+    h1 { font-size: 25px; }
+    .cmp { grid-template-columns: 1fr; }
+    nav ol { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Gopany · Chat Zalo</div>
+    <h1>Gopany: những thay đổi mới ngày 28–29/09</h1>
+    <p class="muted">Mỗi mục ghi màn hình liên quan, hành vi trước đây và hành vi bây giờ. Mục nào cần dữ liệu hoặc điều kiện đặc biệt thì có phần lưu ý.</p>
+  </header>
+
+  <nav aria-label="Mục lục">
+    <ol>
+      <li><a href="#nguoi-la">1. Tab “Người lạ”</a></li>
+      <li><a href="#khung-chat">2. Khung chat nhanh, mượt hơn</a></li>
+      <li><a href="#nhom">3. Nhóm Zalo</a></li>
+      <li><a href="#media">4. Ảnh, video, tin thoại hết hạn</a></li>
+      <li><a href="#lich-su">5. Tin lịch sử: tìm kiếm và chưa đọc</a></li>
+      <li><a href="#chuyen-tiep">6. Chuyển tiếp tin</a></li>
+      <li><a href="#xoa-gopany">7. Xoá tài khoản Zalo</a></li>
+      <li><a href="#ket-noi-lai">8. Kết nối lại khi Zalo ở công ty khác</a></li>
+      <li><a href="#doi-cong-ty">9. Chuyển Zalo sang công ty khác</a></li>
+      <li><a href="#gui-gopany">10. Tin đồng bộ đủ các loại</a></li>
+    </ol>
+  </nav>
+
+  <section>
+
+    <article id="nguoi-la">
+      <h3>1. Tab “Người lạ” tách hội thoại người lạ và OA như trên điện thoại</h3>
+      <div class="where">Chat → danh sách hội thoại</div>
+      <div class="cmp">
+        <div class="before"><span class="lbl">Trước đây</span>
+          <ul><li>Hội thoại với người chưa kết bạn, kể cả tài khoản OA/doanh nghiệp, nằm lẫn trong danh sách chính.</li></ul>
+        </div>
+        <div class="now"><span class="lbl">Bây giờ</span>
+          <ul>
+            <li>Có tab mới “Người lạ”, gồm 2 mục “Tin nhắn từ người lạ” và “Tài khoản OA”, kèm số chưa đọc riêng theo tài khoản đang lọc.</li>
+            <li>Hội thoại 1-1 với người chưa kết bạn mà mình chưa từng trả lời sẽ nằm ở tab Người lạ. Tab Tất cả và Chưa đọc chỉ còn danh sách chính. Tab Nhóm giữ nguyên.</li>
+            <li>Khi mình trả lời, gửi hoặc nhận lời mời kết bạn, hoặc kết bạn xong, hội thoại chuyển về danh sách chính.</li>
+            <li>Tin nhắn cuối từ năm trước hiện ngày dạng dd/MM/yy như Zalo.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note"><b>Lưu ý:</b> hội thoại chỉ được phân loại sau khi tài khoản chạy “Gửi Gopany” (bấm tay, hoặc tự chạy sau Đồng bộ).</p>
+    </article>
+
+    <article id="khung-chat">
+      <h3>2. Khung chat nhanh và mượt hơn</h3>
+      <div class="where">Chat → khung tin nhắn, danh sách hội thoại</div>
+      <div class="cmp">
+        <div class="before"><span class="lbl">Trước đây</span>
+          <ul>
+            <li>Bấm vào tin trích dẫn, tin ghim hay kết quả tìm kiếm phải tải lần lượt từng trang mới tới tin cũ, rất chậm ở hội thoại dài.</li>
+            <li>Gửi tin, thu hồi, xoá thường làm danh sách hội thoại tải lại và nháy.</li>
+            <li>Ở tab Chưa đọc, vừa mở đọc thì hội thoại nhảy khỏi danh sách.</li>
+            <li>Danh sách hội thoại và số chưa đọc tải chậm khi công ty có nhiều tin.</li>
+          </ul>
+        </div>
+        <div class="now"><span class="lbl">Bây giờ</span>
+          <ul>
+            <li>Nhảy thẳng tới tin cần xem (trích dẫn, ghim, tìm kiếm). Từ đó cuộn lên hay xuống đều tải tiếp liền mạch. Nút “xuống cuối” và gửi tin đưa về tin mới nhất.</li>
+            <li>Gửi text, sticker, file, danh thiếp, thu hồi, xoá, gửi lại tin lỗi: chỉ tin đó thay đổi, danh sách không tải lại.</li>
+            <li>Tab Chưa đọc: hội thoại vừa đọc giữ nguyên vị trí.</li>
+            <li>Trên 99 tin chưa đọc hiện “99+”.</li>
+            <li>Danh sách hội thoại, số chưa đọc và đánh dấu đã đọc nhanh hơn rõ rệt.</li>
+            <li>Chuyển sang trang khác của Gopany rồi quay lại Chat vẫn nhận tin realtime.</li>
+            <li>Đang xem tin cũ mà upload file xong thì không bị kéo xuống cuối.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <article id="nhom">
+      <h3>3. Nhóm Zalo mở nhanh, cập nhật đúng</h3>
+      <div class="where">Chat → hội thoại nhóm, thông tin nhóm</div>
+      <div class="cmp">
+        <div class="before"><span class="lbl">Trước đây</span>
+          <ul>
+            <li>Mỗi lần mở nhóm phải chờ 2–4 giây tải thành viên và cài đặt nhóm, làm tin nhắn tải chậm theo.</li>
+            <li>Nhóm chưa có ảnh hiện ô trống.</li>
+            <li>Khi Zalo lỗi tạm thời, người trong nhóm có thể bị hiện nhầm là “chưa kết bạn”.</li>
+          </ul>
+        </div>
+        <div class="now"><span class="lbl">Bây giờ</span>
+          <ul>
+            <li>Nhóm đã từng mở thì hiện thành viên và cài đặt ngay, dữ liệu tự làm mới phía sau.</li>
+            <li>Thêm/xoá thành viên hoặc đổi cài đặt, trưởng nhóm trên Zalo thì Gopany tự cập nhật.</li>
+            <li>Nhóm chưa có ảnh hiện chữ cái đầu của tên nhóm (tên có emoji hoặc dấu cũng hiện đúng).</li>
+            <li>Sau khi đồng bộ lịch sử, các nhóm trong danh sách có ảnh đại diện mà không cần mở từng nhóm.</li>
+            <li>Trạng thái bạn bè không còn bị hạ nhầm khi Zalo lỗi tạm thời.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <article id="media">
+      <h3>4. Ảnh, video, tin thoại, file hết hạn</h3>
+      <div class="where">Chat → tin nhắn, tin trích dẫn, trình xem ảnh, Lưu trữ khách hàng</div>
+      <div class="cmp">
+        <div class="before"><span class="lbl">Trước đây</span>
+          <ul>
+            <li>Ảnh/video lịch sử có link Zalo đã chết hiện vỡ. Video và tin thoại không báo gì.</li>
+            <li>Ảnh/video trong tin trích dẫn thường hiện “Không tải được”.</li>
+            <li>Ảnh nhỏ ở Lưu trữ và sidebar có thể mất hàng phút mới hiện.</li>
+          </ul>
+        </div>
+        <div class="now"><span class="lbl">Bây giờ</span>
+          <ul>
+            <li>Ảnh, video, tin thoại, file hết hạn hiện “… đã hết hạn”. Nếu chỉ tải lỗi thì hiện “Không tải được …”, bấm để thử lại.</li>
+            <li>Khi media hiện lỗi, hệ thống tự kiểm tra lại. Nếu còn tải được thì tự thay bằng ảnh thật, không cần F5.</li>
+            <li>Tin trích dẫn dùng ảnh/video đã lưu nên vẫn xem được sau khi link Zalo chết.</li>
+            <li>Trình xem ảnh bỏ qua ảnh/video đã hết hạn khi bấm mũi tên.</li>
+            <li>Ảnh nhỏ ở Lưu trữ khách hàng và sidebar hiện trong vài giây.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note"><b>Lưu ý:</b> link ảnh Zalo chỉ sống khoảng 15–20 ngày, nên cần tài khoản có lịch sử cũ hơn mốc đó để thấy trạng thái hết hạn.</p>
+    </article>
+
+    <article id="lich-su">
+      <h3>5. Tin lịch sử tìm kiếm được và không tính là chưa đọc</h3>
+      <div class="where">Chat → tìm kiếm tin, số chưa đọc, tab Chưa đọc</div>
+      <div class="cmp">
+        <div class="before"><span class="lbl">Trước đây</span>
+          <ul>
+            <li>Tin lịch sử đồng bộ từ Zalo không tìm kiếm được.</li>
+            <li>Tin lịch sử bị tính là chưa đọc, làm số chưa đọc rất lớn.</li>
+          </ul>
+        </div>
+        <div class="now"><span class="lbl">Bây giờ</span>
+          <ul>
+            <li>Tin lịch sử tìm được theo nội dung.</li>
+            <li>Tin lịch sử không cộng vào số chưa đọc. Tin mới đến vẫn tính chưa đọc bình thường.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note"><b>Lưu ý:</b> chỉ áp dụng cho tin lịch sử đồng bộ từ trưa 29/09. Tin lịch sử đồng bộ trước đó chưa được cập nhật, nên hãy dùng một tài khoản đồng bộ mới để kiểm tra.</p>
+    </article>
+
+    <article id="chuyen-tiep">
+      <h3>6. Chuyển tiếp tin sang nhiều hội thoại</h3>
+      <div class="where">Chat → Chuyển tiếp</div>
+      <div class="cmp">
+        <div class="before"><span class="lbl">Trước đây</span>
+          <ul>
+            <li>Chuyển tiếp sang nhiều hội thoại chậm. Trạng thái “đã gửi” phải chờ Zalo báo về, có lúc hiện lỗi ảo.</li>
+            <li>Chuyển tiếp ảnh/file lỗi có thể hiện câu lỗi kỹ thuật khó hiểu.</li>
+          </ul>
+        </div>
+        <div class="now"><span class="lbl">Bây giờ</span>
+          <ul>
+            <li>Chuyển tiếp sang nhiều hội thoại (cá nhân và nhóm) nhanh hơn, xác nhận “đã gửi” ngay cho từng nơi nhận, không sinh tin trùng.</li>
+            <li>Câu báo lỗi dễ hiểu.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <article id="xoa-gopany">
+      <h3>7. Xoá tài khoản Zalo</h3>
+      <div class="where">Kết nối Zalo → Xoá tài khoản</div>
+      <div class="cmp">
+        <div class="before"><span class="lbl">Trước đây</span>
+          <ul><li>Tài khoản nhiều tin thường xoá lỗi hoặc chờ rất lâu, và dữ liệu vẫn còn nguyên.</li></ul>
+        </div>
+        <div class="now"><span class="lbl">Bây giờ</span>
+          <ul>
+            <li>Xoá xong ngay. Hội thoại và tin của tài khoản biến mất ngay, phần dữ liệu còn lại được dọn phía sau.</li>
+            <li>Quét QR lại tài khoản đó thì hội thoại và tin hiện lại đầy đủ.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <article id="ket-noi-lai">
+      <h3>8. Kết nối lại khi Zalo đã kết nối ở công ty khác</h3>
+      <div class="where">Kết nối Zalo → Kết nối lại / Thêm tài khoản</div>
+      <div class="cmp">
+        <div class="before"><span class="lbl">Trước đây</span>
+          <ul>
+            <li>Zalo đã chuyển sang công ty B, quay lại công ty A bấm “Kết nối lại” thì phải xác nhận QR 2 lần trên điện thoại.</li>
+            <li>Bấm “Thêm tài khoản” rồi “Kết nối lại” trong thời gian ngắn có thể nhận nhầm mã QR của thao tác trước.</li>
+          </ul>
+        </div>
+        <div class="now"><span class="lbl">Bây giờ</span>
+          <ul>
+            <li>Chỉ cần quét QR 1 lần.</li>
+            <li>Mỗi thao tác nhận đúng mã QR của nó.</li>
+            <li>Quét mã “Kết nối lại” bằng một Zalo khác thì báo quét sai tài khoản.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <article id="doi-cong-ty">
+      <h3>9. Chuyển Zalo sang công ty khác thì công ty mới nhận đủ lịch sử</h3>
+      <div class="where">Kết nối Zalo → quét QR ở công ty khác, sau đó Đồng bộ</div>
+      <div class="cmp">
+        <div class="before"><span class="lbl">Trước đây</span>
+          <ul><li>Tài khoản đã gửi đủ lịch sử cho công ty A, chuyển sang công ty B thì B chỉ nhận tin mới, thiếu toàn bộ lịch sử.</li></ul>
+        </div>
+        <div class="now"><span class="lbl">Bây giờ</span>
+          <ul>
+            <li>Công ty B nhận toàn bộ lịch sử ở lượt gửi đầu tiên.</li>
+            <li>Quét lại ở cùng công ty cũ thì vẫn chỉ gửi tin mới.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <article id="gui-gopany">
+      <h3>10. Tin đồng bộ từ Zalo sang đủ các loại và tự gửi sau Đồng bộ</h3>
+      <div class="where">Chat → tin nhắn đồng bộ từ Zalo</div>
+      <div class="cmp">
+        <div class="before"><span class="lbl">Trước đây</span>
+          <ul>
+            <li>Ảnh GIF, tin “đã xoá tin nhắn”, tin thu hồi, sticker, thẻ thông báo Zalo không sang được Gopany. Khi gửi hiện “bỏ qua N”.</li>
+            <li>Đồng bộ xong phải bấm “Gửi Gopany” riêng. Chậm bấm thì ảnh có thể đã hết hạn.</li>
+          </ul>
+        </div>
+        <div class="now"><span class="lbl">Bây giờ</span>
+          <ul>
+            <li>Các loại tin trên đều sang Gopany, kể cả tin cũ từng bị “bỏ qua”: chỉ cần bấm “Gửi Gopany” lại, số bỏ qua gần như về 0.</li>
+            <li>Tài khoản của Gopany đồng bộ chạy xong thì hệ thống tự gửi các tin chưa gửi sang Gopany.</li>
+            <li>Tin đến thiếu thông tin loại nội dung được lưu thành tin chữ thay vì bị mất.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+  </section>
+
+</div>
+</body>
+</html>

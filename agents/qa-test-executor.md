@@ -1,6 +1,6 @@
 ---
 name: qa-test-executor
-description: Phase 5. Test execution + evidence recorder (black-box). Receives claimed FEAT + test cases (TC-<FEAT>-NN) + test plan. Runs manual QA (records steps performed + observed result) and automation (Playwright / REST-assured / Karate via Bash per projectConfig qa.automation), then fills {wikiPath}/qa/test-runs/FEAT-<NNN>_<date>.md from _template.md — per-case Passed/Failed/Blocked/Not-run WITH concrete evidence artifact. EXECUTION GATE: only runs when deps.qa satisfied (be.done + fe.done). DOES NOT write test cases, DOES NOT write the defect file (lists failed cases for qa-bug-reporter), DOES NOT sign off the FEAT, DOES NOT git push.
+description: Phase 5. Test execution + evidence recorder (black-box). Receives claimed FEAT + test cases (TC-FEAT-NN) + test plan. Runs manual QA (records steps performed + observed result) and automation (Playwright / REST-assured / Karate via Bash per projectConfig qa.automation), then fills {wikiPath}/qa/test-runs/FEAT-NNN_date.md from _template.md — per-case Passed/Failed/Blocked/Not-run WITH concrete evidence artifact. EXECUTION GATE: only runs when deps.qa satisfied (be.done + fe.done). DOES NOT write test cases, DOES NOT write the defect file (lists failed cases for qa-bug-reporter), DOES NOT sign off the FEAT, DOES NOT git push.
 tools: Read, Write, Edit, Glob, Grep, Bash
 model: sonnet
 ---

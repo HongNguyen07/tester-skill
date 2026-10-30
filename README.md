@@ -48,8 +48,11 @@ của team, từ tài liệu BA) hoặc `/qa-orchestrator` (khi đã có FEAT + 
 ```
 tester-skill/
   install.sh/.ps1/.bat        # cài global + copy template + vendored shared-wiki
+  build-plugin.sh             # dựng dist/tester-skill/ để publish plugin lên claude.ai (thư viện tổ chức)
   qa-orchestrator/skill.md     # entry point (thin dispatcher) — luồng từ FEAT
   qa-*/skill.md                # rule skills (P2–P6)
+  qa-log-bug-mobile|web/       # log bug Gopany theo template (mobile / web)
+  qa-testcase-mobile/          # testcase + checklist app mobile Gopany
   qa-flow/                     # bộ qa-ai-agents — luồng từ tài liệu BA (SKILL.md + CLAUDE.md + rules/ + templates/)
   agents/qa-*.md               # sub-agents của qa-orchestrator (P2–P4)
   agents/qa-test-designer.md   # sub-agent của qa-flow
@@ -93,3 +96,7 @@ phân tích → câu hỏi gửi BA → debate QA ↔ AI (bắt đầu ngay vớ
 
 ## Đồng bộ shared-wiki
 Sửa canonical tại `java-skill/shared-wiki-template/` → chạy `../sync-shared-wiki.sh` (đã gồm tester-skill).
+
+- **P7 skill Gopany nghiệp vụ** — `qa-log-bug-mobile`, `qa-log-bug-web`, `qa-testcase-mobile`: gộp từ bản tải lẻ trên
+  claude.ai (workspace Gopany) để repo là nguồn duy nhất. Phát hành lên claude.ai bằng plugin `tester-skill`
+  (thư viện tổ chức), không tải lẻ từng skill nữa.

@@ -1,6 +1,6 @@
 ---
 name: qa-e2e-playwright
-description: "Playwright E2E + a11y patterns the qa-automation-builder loads — Page Object Model, getByRole/getByTestId selectors, web-first auto-wait assertions, axe-core a11y scan, trace/screenshot/video evidence, TC-<FEAT>-NN traceability, storageState auth reuse, flaky mitigation without blanket retries."
+description: "Playwright E2E + a11y patterns the qa-automation-builder loads — Page Object Model, getByRole/getByTestId selectors, web-first auto-wait assertions, axe-core a11y scan, trace/screenshot/video evidence, TC-FEAT-NN traceability, storageState auth reuse, flaky mitigation without blanket retries."
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 

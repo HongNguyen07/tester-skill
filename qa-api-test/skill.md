@@ -1,6 +1,6 @@
 ---
 name: qa-api-test
-description: "REST-assured (Java) & Karate (BDD) API contract testing rules the qa-automation-builder loads: given/when/then + JSON path assertions, status + schema, auth token + multi-tenant isolation, contract verification vs FEAT §3 (endpoint/method/DTO/ERR-<NNN>-xx), data setup/teardown, request-response evidence, TC-<FEAT>-NN traceability."
+description: "REST-assured (Java) & Karate (BDD) API contract testing rules the qa-automation-builder loads: given/when/then + JSON path assertions, status + schema, auth token + multi-tenant isolation, contract verification vs FEAT §3 (endpoint/method/DTO/ERR-NNN-xx), data setup/teardown, request-response evidence, TC-FEAT-NN traceability."
 allowed-tools: Read, Write, Edit, Glob, Grep
 ---
 

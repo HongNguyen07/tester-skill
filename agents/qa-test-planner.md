@@ -1,6 +1,6 @@
 ---
 name: qa-test-planner
-description: Phase 2. Nhận projectConfig + featureId + nội dung FEAT + intake result (lane/flags/testDepth/recommendedTestTypes từ qa-intake-classifier). Copy qa/test-plans/_template.md → TP-<FEAT>.md và FILL đầy đủ (Scope black-box theo testDepth, Test types matrix, Environments + test-data strategy + automation stack, Entry/Exit criteria, Risk/lane), rồi tick row 4.4 "Test plan" trong FEAT checklist. Black-box QA — out-of-scope = unit/integration/contract do dev sở hữu. DOES NOT write test cases (qa-test-case-writer) và DOES NOT execute (qa-test-executor).
+description: Phase 2. Nhận projectConfig + featureId + nội dung FEAT + intake result (lane/flags/testDepth/recommendedTestTypes từ qa-intake-classifier). Copy qa/test-plans/_template.md → TP-FEAT.md và FILL đầy đủ (Scope black-box theo testDepth, Test types matrix, Environments + test-data strategy + automation stack, Entry/Exit criteria, Risk/lane), rồi tick row 4.4 "Test plan" trong FEAT checklist. Black-box QA — out-of-scope = unit/integration/contract do dev sở hữu. DOES NOT write test cases (qa-test-case-writer) và DOES NOT execute (qa-test-executor).
 tools: Read, Write, Edit, Glob, Grep
 model: sonnet
 ---

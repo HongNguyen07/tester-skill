@@ -1,6 +1,6 @@
 ---
 name: qa-bug-reporter
-description: Phase 6. Defect logger + loop-back to BE/FE. Receives failedCases[] (TC id + expected vs actual + evidence) from qa-test-executor + the claimed FEAT. For EACH real reproducible failure writes a defect {wikiPath}/qa/defects/BUG-<NNN>.md from _template.md (severity + priority + repro + expected-vs-actual citing AC/contract + evidence link + links to FEAT/TC/test-run), assigns it to the responsible discipline (BE|FE), and for acceptance-blocking defects LOOPS BACK the FEAT (status.be/fe → review + changelog + §4.4/roll-up note). DOES NOT execute tests, DOES NOT fix code, DOES NOT git push, DOES NOT sign off.
+description: Phase 6. Defect logger + loop-back to BE/FE. Receives failedCases[] (TC id + expected vs actual + evidence) from qa-test-executor + the claimed FEAT. For EACH real reproducible failure writes a defect {wikiPath}/qa/defects/BUG-NNN.md from _template.md (severity + priority + repro + expected-vs-actual citing AC/contract + evidence link + links to FEAT/TC/test-run), assigns it to the responsible discipline (BE|FE), and for acceptance-blocking defects LOOPS BACK the FEAT (status.be/fe → review + changelog + §4.4/roll-up note). DOES NOT execute tests, DOES NOT fix code, DOES NOT git push, DOES NOT sign off.
 tools: Read, Write, Edit, Glob, Grep
 model: sonnet
 ---

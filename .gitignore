@@ -17,6 +17,6 @@ tmp/
 # Node (nếu sau này thêm automation deps)
 node_modules/
 
-# Working output — không thuộc bộ skill
-/wiki/
-/tailieu/
+
+# output cua build-plugin.sh
+dist/

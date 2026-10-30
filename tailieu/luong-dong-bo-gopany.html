@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luồng Đồng bộ Gopany</title>
+<style>
+  :root {
+    --bg: #f7f7f5; --card: #ffffff; --fg: #1d1d1f; --muted: #6b6b70; --border: #e3e3e0;
+    --accent: #2563eb; --accent-soft: #e8efff; --warn: #a16207; --warn-soft: #fdf5e1; --code-bg: #f1f1ef;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #151517; --card: #1e1e21; --fg: #ececee; --muted: #a0a0a8; --border: #333338;
+      --accent: #7aa2ff; --accent-soft: #1f2a44; --warn: #fbbf24; --warn-soft: #3a2f14; --code-bg: #2a2a2e;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #151517; --card: #1e1e21; --fg: #ececee; --muted: #a0a0a8; --border: #333338;
+    --accent: #7aa2ff; --accent-soft: #1f2a44; --warn: #fbbf24; --warn-soft: #3a2f14; --code-bg: #2a2a2e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 15px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  main { max-width: 960px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 26px; line-height: 1.3; margin: 0 0 6px; }
+  h2 { font-size: 20px; margin: 40px 0 12px; padding-top: 8px; border-top: 1px solid var(--border); }
+  h3 { font-size: 15px; margin: 16px 0 4px; color: var(--accent); }
+  p { margin: 6px 0; }
+  ul, ol { padding-left: 22px; margin: 4px 0; }
+  li { margin: 3px 0; }
+  code { background: var(--code-bg); border-radius: 4px; padding: 0 4px; overflow-wrap: anywhere; }
+  .sub { color: var(--muted); margin: 0; }
+  .ui { font-weight: 600; background: var(--code-bg); border-radius: 4px; padding: 0 5px; }
+  .msg { font-style: italic; }
+  .note { border-left: 3px solid var(--warn); background: var(--warn-soft); padding: 8px 12px; border-radius: 6px; margin: 10px 0; }
+  .info { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 8px 12px; border-radius: 6px; margin: 10px 0; }
+  .diagram { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px; overflow-x: auto; }
+  .diagram pre.mermaid { margin: 0; display: flex; justify-content: center; min-width: min-content; font-family: inherit; }
+  .step { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin: 14px 0; }
+  .step > h2 { border: 0; margin: 0 0 4px; padding: 0; font-size: 18px; }
+  .step .where { color: var(--muted); margin: 0 0 6px; }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; vertical-align: top; padding: 7px 10px; border-bottom: 1px solid var(--border); }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); background: var(--code-bg); }
+  tr:last-child td { border-bottom: 0; }
+  @media (max-width: 640px) { h1 { font-size: 22px; } }
+  @media print { .step { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Luồng đồng bộ lịch sử Zalo: Gopany → zaloHub → Gopany</h1>
+<p class="sub">Cập nhật 26/09/2026 · Khách quét QR trên Gopany, sau đó admin zaloHub đồng bộ lịch sử và gửi sang Gopany.</p>
+
+<div class="info">
+  Khách chỉ quét QR. <strong>Đồng bộ</strong> và <strong>Gửi Gopany</strong> là 2 bước riêng, đều do admin zaloHub bấm trên trang <span class="ui">Đồng bộ Gopany</span>. Chỉ tài khoản có phiên <span class="ui">Zalo PC</span> mới đồng bộ được.
+</div>
+
+<h2>Sơ đồ</h2>
+<div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant P as Điện thoại khách
+  participant G as Gopany
+  participant H as zaloHub
+  participant A as Admin zaloHub
+
+  Note over P,H: Giai đoạn 1 · Liên kết Zalo
+  G->>H: Khách bấm "Thêm liên kết" / "Kết nối"<br/>→ tạo mã QR Zalo PC
+  H-->>G: Mã QR
+  P->>H: Quét mã
+  opt Lần đầu liên kết tài khoản này
+    H-->>G: Mã thứ 2, thay đúng chỗ mã cũ (sống ~12 giây)
+    P->>H: Camera quét tiếp mã thứ 2
+  end
+  P->>H: Xác nhận đăng nhập trên điện thoại
+  H-->>G: Kết nối thành công
+  Note over H: Lưu tài khoản (phiên Zalo PC)<br/>+ công ty Gopany đã tạo mã
+
+  Note over P,A: Giai đoạn 2 · Đồng bộ (điện thoại → zaloHub)
+  A->>H: Bấm "Đồng bộ" → xác nhận
+  H->>P: Xin toàn bộ lịch sử tin nhắn
+  Note over P: Giữ Zalo mở, màn hình sáng
+  P-->>H: Gửi lịch sử theo từng đợt
+  Note over H: Lưu tin, điền tên người gửi / tên nhóm<br/>→ "Đã đồng bộ"
+
+  Note over G,A: Giai đoạn 3 · Gửi Gopany (zaloHub → Gopany)
+  A->>H: Bấm "Gửi Gopany" → xác nhận
+  H->>G: Gửi lại toàn bộ tin đã đồng bộ, theo lô
+  G-->>H: Kết quả từng lô (tin đã có thì bỏ qua)
+  H-->>A: "Gopany đã nhận đủ"
+  Note over G: Hội thoại + tin cũ hiện trong Chat<br/>của đúng công ty Gopany
+</pre>
+</div>
+
+<section class="step">
+  <h2>Bước 1. Khách liên kết Zalo trên Gopany</h2>
+  <p class="where">Gopany → trang <span class="ui">Liên kết tài khoản</span> (<code>/customer-support/setting/integration</code>)</p>
+  <h3>Diễn biến</h3>
+  <ol>
+    <li>Tài khoản mới: bấm <span class="ui">Thêm liên kết</span>. Tài khoản đã ngắt: bấm <span class="ui">Kết nối</span> trên thẻ tài khoản.</li>
+    <li>Hộp <span class="msg">“Kết nối Zalo”</span> hiện mã QR (loại <strong>Zalo PC</strong>) kèm đếm ngược thời gian hết hạn.</li>
+    <li>Khách mở Zalo trên điện thoại → Quét mã QR.</li>
+    <li><strong>Lần đầu liên kết</strong> một tài khoản: sau khi quét, Zalo đòi quét thêm mã thứ 2. Mã thứ 2 hiện <strong>đúng chỗ mã cũ</strong>, cùng cỡ, chỉ sống khoảng 12 giây; camera vẫn đang mở nên thường tự quét tiếp. <strong>Kết nối lại</strong> đúng tài khoản cũ thì chỉ có 1 mã.</li>
+    <li>Khách xác nhận đăng nhập trên điện thoại → Gopany báo <span class="msg">“Kết nối thành công!”</span>, tài khoản <span class="ui">Đang hoạt động</span>.</li>
+    <li>zaloHub lưu tài khoản với phiên Zalo PC, kèm <strong>công ty Gopany</strong> đã tạo mã (dùng ở bước 4).</li>
+  </ol>
+  <h3>Quy tắc</h3>
+  <ul>
+    <li>Mỗi Zalo chỉ có 1 phiên Zalo PC. Nếu khách đang mở app Zalo PC trên máy tính Windows thì app đó bị đăng xuất.</li>
+    <li>Phiên <strong>Zalo Web</strong> ở hệ thống khác (vd Salework) vẫn giữ đăng nhập, chỉ chớp mất kết nối khoảng 2 giây lúc quét.</li>
+    <li>Mã “Kết nối” của tài khoản A mà quét bằng Zalo B → báo <span class="msg">“Lỗi trong quá trình quét QR.”</span>, tài khoản A không bị đổi.</li>
+    <li>Mã hết hạn → <span class="msg">“Mã QR đã hết hạn”</span>, bấm <span class="ui">Làm mới mã</span> để lấy mã mới.</li>
+  </ul>
+  <div class="note">Hộp QR của Gopany có thể hiện <span class="msg">“Đang đồng bộ lịch sử”</span> vài giây sau khi kết nối. Đó là Gopany khôi phục hội thoại cũ của chính Gopany khi liên kết lại, không phải bước Đồng bộ của zaloHub.</div>
+</section>
+
+<section class="step">
+  <h2>Bước 2. Tài khoản xuất hiện trên admin zaloHub</h2>
+  <p class="where">Admin zaloHub → menu trái <span class="ui">Đồng bộ Gopany</span></p>
+  <ul>
+    <li><strong>4 thẻ số liệu</strong>, bấm vào để lọc nhanh (bấm lại để bỏ lọc): <span class="ui">Đang chạy</span>, <span class="ui">Lỗi / chưa trọn</span>, <span class="ui">Chưa đồng bộ</span>, <span class="ui">Cần quét QR Zalo PC</span>. Số trên thẻ đếm theo bộ lọc đang chọn.</li>
+    <li><strong>Bộ lọc</strong>: Công ty Gopany, Company (zaloHub), Phiên (<em>Zalo PC / Zalo Web / Chưa đăng nhập</em>), trạng thái; tìm theo tên / SĐT / UID. Ô chọn công ty tìm được cả khi gõ không dấu. Bộ lọc và số trang lưu trên URL.</li>
+    <li><strong>Mỗi dòng</strong>: Tài khoản (tên, SĐT, company, “Mất kết nối” nếu có) · Công ty Gopany · Phiên · lượt <strong>Đồng bộ</strong> gần nhất · lượt <strong>Gửi Gopany</strong> gần nhất (có % khi đang chạy) · nút <span class="ui">Đồng bộ</span> và <span class="ui">Gửi Gopany…</span>.</li>
+    <li>Nút <span class="ui">Gửi Gopany…</span> mở <strong>hộp thoại lịch sử</strong> của tài khoản: trên đầu là phiên + công ty Gopany + thời điểm liên kết; khung <em>“1. Đồng bộ lịch sử về zaloHub”</em>; khung <em>“2. Gửi lịch sử sang Gopany”</em>; mục <em>“Các lượt gần đây”</em> (10 lượt, thu gọn sẵn).</li>
+    <li>Bảng tự làm mới khoảng 5 giây/lần khi có lượt đang chạy. Hộp thoại cập nhật tiến độ khoảng 2 giây/lần.</li>
+  </ul>
+  <p>Tài khoản vừa liên kết ở bước 1: Phiên <span class="ui">Zalo PC</span>, Đồng bộ <span class="ui">Chưa đồng bộ</span>, Gửi Gopany <span class="ui">Chưa gửi</span>.</p>
+</section>
+
+<section class="step">
+  <h2>Bước 3. Đồng bộ: lấy lịch sử từ điện thoại về zaloHub</h2>
+  <p class="where">Nút <span class="ui">Đồng bộ</span> trên dòng, hoặc trong khung 1 của hộp thoại</p>
+  <h3>Điều kiện bấm được (không đủ thì nút bị khoá, rê chuột thấy lý do)</h3>
+  <table>
+    <thead><tr><th>Điều kiện</th><th>Lý do hiện khi bị khoá</th></tr></thead>
+    <tbody>
+      <tr><td>Admin có quyền quản lý tài khoản Zalo</td><td><span class="msg">Không có quyền</span></td></tr>
+      <tr><td>Phiên là Zalo PC</td><td><span class="msg">Cần phiên Zalo PC — khách quét lại mã QR Zalo PC</span></td></tr>
+      <tr><td>Tài khoản đang kết nối</td><td><span class="msg">Tài khoản mất kết nối — khách cần kết nối lại</span></td></tr>
+      <tr><td>Không có lượt đồng bộ đang chạy</td><td><span class="msg">Đang đồng bộ</span></td></tr>
+      <tr><td>Không có lượt gửi Gopany đang chạy</td><td><span class="msg">Đang gửi sang Gopany — đợi gửi xong</span></td></tr>
+    </tbody>
+  </table>
+  <h3>Diễn biến</h3>
+  <ol>
+    <li>Bấm <span class="ui">Đồng bộ</span> → hộp xác nhận <strong>“Đồng bộ lịch sử tin nhắn?”</strong>: <span class="msg">“Lấy toàn bộ lịch sử tin nhắn từ điện thoại của &lt;tên&gt; về zaloHub. Vui lòng giữ màn hình điện thoại ở ứng dụng Zalo và luôn giữ màn hình sáng.”</span> Bấm <span class="ui">Huỷ</span> thì không có gì chạy.</li>
+    <li>Bấm <span class="ui">Đồng bộ</span> trong hộp xác nhận → thông báo <span class="msg">“Đã bắt đầu đồng bộ”</span>. Lượt chạy nền, đóng hộp thoại hay tải lại trang vẫn chạy tiếp.</li>
+    <li>Tiến độ hiện theo các bước: <em>Đăng nhập → Lấy danh sách hội thoại → Lấy tin nhắn từ điện thoại → Điền tên người gửi, tên nhóm → Xong</em>, kèm % và “N hội thoại · M tin”.</li>
+    <li>Suốt lượt, điện thoại phải <strong>mở Zalo, màn hình sáng</strong>. Điện thoại có thể hiện thông báo đang đồng bộ tin nhắn sang máy tính.</li>
+    <li>Xong: khung 1 hiện <span class="ui">Đã đồng bộ</span> + giờ kết thúc; nhật ký ghi lượt “Đồng bộ — Thành công”, nguồn “Trang admin” + tên admin.</li>
+  </ol>
+  <h3>Hủy đồng bộ</h3>
+  <ul>
+    <li>Đang chạy thì nút đổi thành <span class="ui">Hủy đồng bộ</span> (bấm là hủy, không hỏi lại).</li>
+    <li>Hủy chỉ <strong>ngừng lấy tin mới</strong>; zaloHub vẫn lưu nốt tin đã lấy và điền tên người gửi, tài khoản nhiều tin có thể mất vài phút. Trong lúc đó nhãn hiện <span class="ui">Đang dừng</span>, nút Hủy ẩn đi, có dòng giải thích.</li>
+    <li>Đã sang bước <em>Điền tên người gửi, tên nhóm</em> thì không hủy được nữa (nút ẩn, có dòng báo sắp xong).</li>
+    <li>Kết thúc: <span class="msg">“Đã hủy giữa chừng — dữ liệu có thể thiếu, nên đồng bộ lại.”</span>, nhật ký ghi “Đã hủy”.</li>
+  </ul>
+  <h3>Quy tắc khác</h3>
+  <ul>
+    <li>Mỗi lần đồng bộ lấy <strong>toàn bộ</strong> lịch sử có trên điện thoại. Tham khảo: khoảng 270 hội thoại / 70.000 tin mất tầm 2 phút.</li>
+    <li>Một tài khoản chỉ có 1 lượt đồng bộ tại một thời điểm; bấm trùng (vd từ tab khác) báo <span class="msg">“Tài khoản đang đồng bộ — vui lòng đợi hoặc bấm "Hủy" rồi thử lại.”</span>. Các tài khoản khác nhau đồng bộ song song được.</li>
+    <li>Lượt dừng trước khi xong sẽ ghi lý do: <em>Mất kết nối giữa chừng · Điện thoại từ chối gửi lịch sử · Điện thoại không đủ bộ nhớ · Tài khoản đã đăng xuất trên điện thoại · Kết nối của tài khoản vừa được dựng lại</em>.</li>
+  </ul>
+</section>
+
+<section class="step">
+  <h2>Bước 4. Gửi Gopany: đẩy lịch sử sang đúng công ty Gopany</h2>
+  <p class="where">Nút <span class="ui">Gửi Gopany…</span> trên dòng → khung 2 của hộp thoại → <span class="ui">Gửi Gopany</span></p>
+  <h3>Điều kiện bấm được</h3>
+  <table>
+    <thead><tr><th>Điều kiện</th><th>Lý do hiện khi bị khoá</th></tr></thead>
+    <tbody>
+      <tr><td>Admin có quyền quản lý tài khoản Zalo</td><td><span class="msg">Không có quyền</span></td></tr>
+      <tr><td>Không đang đồng bộ</td><td><span class="msg">Đợi đồng bộ xong rồi gửi</span></td></tr>
+      <tr><td>Không đang gửi</td><td><span class="msg">Đang gửi sang Gopany</span></td></tr>
+      <tr><td>Lượt đồng bộ gần nhất không bị lỗi</td><td><span class="msg">Lượt đồng bộ gần nhất bị lỗi — Đồng bộ lại trước khi gửi</span></td></tr>
+    </tbody>
+  </table>
+  <h3>Diễn biến</h3>
+  <ol>
+    <li>Bấm <span class="ui">Gửi Gopany</span> → hộp xác nhận <strong>“Gửi lịch sử sang Gopany?”</strong>: <span class="msg">“Gửi lại toàn bộ khoảng &lt;số&gt; tin đã đồng bộ của &lt;tên&gt; vào &lt;công ty Gopany&gt;. Gopany tự bỏ tin đã có…”</span></li>
+    <li>Xác nhận → thông báo <span class="msg">“Đang gửi N tin sang Gopany”</span>.</li>
+    <li>Khung 2 chạy qua: <span class="ui">Đã gửi, chờ Gopany nhận</span> → <span class="ui">Gopany đang nhận</span> (thanh tiến độ, “Gopany đã nhận x/y tin”, số bỏ qua / lỗi nếu có).</li>
+    <li>Kết thúc: <span class="ui">Gopany đã nhận đủ</span>, hoặc <span class="ui">Gopany nhận một phần</span> / <span class="ui">Gopany từ chối</span> kèm lý do.</li>
+  </ol>
+  <h3>Quy tắc</h3>
+  <ul>
+    <li>Luôn gửi lại <strong>toàn bộ</strong> tin đã đồng bộ. Gopany tự bỏ tin đã có, nên gửi nhiều lần không bị nhân đôi tin.</li>
+    <li>Tin vào công ty Gopany <strong>đang giữ liên kết</strong> tài khoản đó (tên hiện trong hộp xác nhận). Tài khoản liên kết từ trước đợt này có thể hiện công ty “chưa rõ”, nhưng vẫn gửi vào công ty đang giữ tài khoản bên Gopany.</li>
+    <li>Mỗi tài khoản chỉ 1 lượt gửi tại một thời điểm; các tài khoản Gopany khác nhau gửi cùng lúc được.</li>
+    <li>Trong lúc gửi, tài khoản đó không Đồng bộ được. Ngược lại, đang đồng bộ thì không gửi được.</li>
+  </ul>
+</section>
+
+<section class="step">
+  <h2>Bước 5. Kết quả trên Gopany</h2>
+  <p class="where">Gopany (đúng công ty ở bước 4) → Chat → chọn tài khoản Zalo</p>
+  <ul>
+    <li>Có các hội thoại cũ (từ trước lúc liên kết) với tin cũ, đúng thứ tự thời gian.</li>
+    <li>Tin trong nhóm có tên người gửi; ảnh / file cũ hiện được.</li>
+    <li>Tin mới phát sinh sau khi liên kết vẫn nhận bình thường.</li>
+  </ul>
+</section>
+
+<h2>Tài khoản chưa đồng bộ được</h2>
+<ul>
+  <li><strong>Phiên Zalo Web</strong> (liên kết Gopany bằng QR Web từ trước đợt này): nằm ở thẻ <span class="ui">Cần quét QR Zalo PC</span>. Khách phải bấm <span class="ui">Kết nối</span> trên Gopany và quét QR mới, phiên chuyển sang Zalo PC rồi mới đồng bộ được.</li>
+  <li><strong>Mất kết nối</strong>: khách kết nối lại trên Gopany (bước 1).</li>
+</ul>
+
+<h2>Nhật ký lượt</h2>
+<p>Mỗi lần bấm Đồng bộ / Gửi Gopany tạo 1 lượt, hiện ở cột Đồng bộ / Gửi Gopany trên bảng và ở mục <em>“Các lượt gần đây”</em>. Mỗi lượt ghi: loại, người bấm, công ty Gopany, kết quả, số liệu, lỗi (nếu có).</p>
+<div class="table-wrap"><table>
+  <thead><tr><th>Trạng thái lượt</th><th>Ý nghĩa</th></tr></thead>
+  <tbody>
+    <tr><td>Đang chạy</td><td>Lượt đang làm. Nếu đã bấm Hủy thì hiện “Đang dừng”.</td></tr>
+    <tr><td>Thành công</td><td>Xong trọn vẹn.</td></tr>
+    <tr><td>Chưa trọn</td><td>Xong nhưng thiếu một phần (vd Gopany nhận một phần), nên chạy lại.</td></tr>
+    <tr><td>Thất bại</td><td>Lỗi, không xong.</td></tr>
+    <tr><td>Đã hủy</td><td>Admin bấm Hủy đồng bộ.</td></tr>
+    <tr><td>Bị gián đoạn</td><td>Hệ thống khởi động lại giữa lượt. Khoảng 5 phút sau mới được đánh dấu; chạy lại là được.</td></tr>
+  </tbody>
+</table></div>
+
+</main>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'
+  const dark = document.documentElement.dataset.theme === 'dark' ||
+    (document.documentElement.dataset.theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default', sequence: { useMaxWidth: true } })
+  let i = 0
+  for (const pre of document.querySelectorAll('pre.mermaid')) {
+    const { svg } = await mermaid.render('so-do-' + ++i, pre.textContent)
+    pre.innerHTML = svg
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,325 @@
+# Lớp text bóc từ Figma MCP 2026-10-16 — trang '↳ Mobile app', file Gopany v1.1 (aPKF4iF1YI2FPUwvdrz56V)
+# Chỉ gồm lớp text và tên instance; chữ bên trong instance (ô nhập, nút, badge) KHÔNG bóc được. <Tên> = instance chưa mở.
+
+########## US4
+
+--- 1641:22403 Nhập số điện thoại hoặc email
+    <Button Group 2>
+    Quên mật khẩu
+    Nhập email hoặc số điện thoại đã đăng ký. Mã xác thực sẽ được gửi qua email hoặc Zalo
+    <Input field>
+    <Button>
+
+--- 1754:6239 Nhập số điện thoại hoặc email
+    <Button Group 2>
+    Quên mật khẩu
+    Nhập email hoặc số điện thoại đã đăng ký. Mã xác thực sẽ được gửi qua email hoặc Zalo
+    <Input field>
+    <Button>
+
+--- 1754:6293 Nhập số điện thoại hoặc email
+    <Button Group 2>
+    Quên mật khẩu
+    Nhập email hoặc số điện thoại đã đăng ký. Mã xác thực sẽ được gửi qua email hoặc Zalo
+    <Input field>
+    <Button>
+
+--- 1641:22535 Nhập OTP
+    <Button Group 2>
+    Nhập mã xác thực
+    Mã số đã được gửi qua Zalo tới số 09•• ••• 678.
+    <Button - Link Brand>
+    <Input field>
+    Chưa nhận được mã?
+    45s
+    <Button>
+
+--- 1641:22563 Nhập OTP
+    <Button Group 2>
+    Nhập mã xác thực
+    Mã số đã được gửi qua Zalo tới số 09•• ••• 678.
+    <Button - Link Brand>
+    <Input field>
+    Chưa nhận được mã?
+    45s
+    <Button>
+
+--- 1754:6468 Chưa nhập đầy đủ thông tin
+    Đặt mật khẩu mới
+    Mật khẩu mới dùng để đăng nhập bằng cả email và số điện thoại
+    <Input field>
+    <Input field>
+    <Button>
+
+--- 1641:22759 Mật khẩu không hợp lệ
+    Đặt mật khẩu mới
+    Mật khẩu mới dùng để đăng nhập bằng cả email và số điện thoại
+    <Input field>
+    <Input field>
+    <Button>
+
+--- 1754:6840 Nhập mật khẩu không khớp
+    Đặt mật khẩu mới
+    Mật khẩu mới dùng để đăng nhập bằng cả email và số điện thoại
+    <Input field>
+    <Input field>
+    <Button>
+
+--- 1774:7086 Nhập OTP
+    <Button Group 2>
+    Nhập mã xác thực
+    Mã số đã được gửi tới ng•• ••• @congty.vn
+    <Button - Link Brand>
+    <Input field>
+    Chưa nhận được mã?
+    45s
+    <Button>
+
+--- 1774:7189 Nhập OTP
+    <Button Group 2>
+    Nhập mã xác thực
+    Mã số đã được gửi tới ng•• ••• @congty.vn
+    <Button - Link Brand>
+    <Input field>
+    Chưa nhận được mã?
+    45s
+    <Button>
+
+########## US6
+
+--- 1641:50276 Nhập email
+    <Button Group 2>
+    Đăng ký
+    Tạo tài khoản Gopany bằng email
+    <Horizontal tabs>
+    <Input field>
+    <Button>
+    Hoặc
+    <Button - Social>
+    Bằng việc đăng ký, bạn đồng ý với
+    <Button - Link Brand>
+    và
+    <Button - Link Brand>
+    Đã có tài khoản?
+    <Button - Link Brand>
+
+--- 1641:50334 Nhập OTP
+    <Button Group 2>
+    Nhập mã xác thực
+    Mã số đã được gửi tới ng•• ••• @congty.vn
+    <Button - Link Brand>
+    <Input field>
+    Chưa nhận được mã?
+    45s
+    <Button>
+
+--- 1641:50362 Nhập OTP
+    <Button Group 2>
+    Nhập mã xác thực
+    Mã số đã được gửi tới ng•• ••• @congty.vn
+    <Button - Link Brand>
+    <Input field>
+    Chưa nhận được mã?
+    45s
+    <Button>
+
+--- 1641:50302 Nhập mật khẩu
+    <Button Group 2>
+    Tạo mật khẩu
+    nguyenvana@congty.vn
+    <Badge>
+    <Input field>
+    <Input field>
+    <Button>
+
+--- 1641:50321 Đăng ký thành công
+    <BG>
+    Đăng ký thành công
+    Tài khoản của bạn đã được tạo với số điện thoại +84 912 345 678.
+    Tên hiển thị: nguyenvana@congty.vn
+    bạn có thể đổi trong: Tài khoản → Thông tin tài khoản
+    <Button>
+
+--- 1819:5176 Email đã được sử dụng trong hệ thống
+    <Button Group 2>
+    Đăng ký
+    Tạo tài khoản Gopany bằng email
+    <Horizontal tabs>
+    <Input field>
+    <Button>
+    Hoặc
+    <Button - Social>
+    Bằng việc đăng ký, bạn đồng ý với
+    <Button - Link Brand>
+    và
+    <Button - Link Brand>
+    Đã có tài khoản?
+    <Button - Link Brand>
+    <Background overlay>
+    <Liquid Glass - Regular - Medium>
+    <Featured icon>
+    Email này đã được đăng ký. Bạn có muốn đăng nhập không?
+    <Button - outline>
+    <Button>
+
+--- 1819:5296 Thiết bị đã vượt giới hạn số lượng email được phép sử dụng
+    <Button Group 2>
+    Đăng ký
+    Tạo tài khoản Gopany bằng email
+    <Horizontal tabs>
+    <Input field>
+    <Button>
+    Hoặc
+    <Button - Social>
+    Bằng việc đăng ký, bạn đồng ý với
+    <Button - Link Brand>
+    và
+    <Button - Link Brand>
+    Đã có tài khoản?
+    <Button - Link Brand>
+
+--- 1819:5430 Email thuộc danh sách chặn
+    <Button Group 2>
+    Đăng ký
+    Tạo tài khoản Gopany bằng email
+    <Horizontal tabs>
+    <Input field>
+    <Button>
+    Hoặc
+    <Button - Social>
+    Bằng việc đăng ký, bạn đồng ý với
+    <Button - Link Brand>
+    và
+    <Button - Link Brand>
+    Đã có tài khoản?
+    <Button - Link Brand>
+
+--- 1819:5526 Email không đúng định dạng
+    <Button Group 2>
+    Đăng ký
+    Tạo tài khoản Gopany bằng email
+    <Horizontal tabs>
+    <Input field>
+    <Button>
+    Hoặc
+    <Button - Social>
+    Bằng việc đăng ký, bạn đồng ý với
+    <Button - Link Brand>
+    và
+    <Button - Link Brand>
+    Đã có tài khoản?
+    <Button - Link Brand>
+
+--- 1819:5278 Menu items wrapper
+    <Featured icon>
+    Email này đã được đăng ký. Bạn có muốn đăng nhập không?
+    <Button - outline>
+    <Button>
+
+########## EmailOTP
+
+--- 1859:3924 Đăng ký bằng email (US6)
+    GOPANY
+    Nhập mã xác thực đăng ký
+    Xin chào huongmt@gopany.com,
+    Bạn đang đăng ký tài khoản Gopany bằng email này. Nhập mã dưới đây vào màn hình đăng ký để tiếp tục.
+    MÃ XÁC THỰC CỦA BẠN
+    4
+    8
+    8
+    8
+    8
+    8
+    Mã có hiệu lực trong 5 phút và chỉ dùng được một lần.
+    <lock>
+    Không chia sẻ mã này với bất kỳ ai, kể cả người tự nhận là nhân viên Gopany. Gopany không bao giờ hỏi mã xác thực của bạn.
+    Nếu bạn không đăng ký tài khoản Gopany, hãy bỏ qua email này. Sẽ không có tài khoản nào được tạo.
+    Cảm ơn bạn đã sử dụng Gopany!
+    Đội ngũ Gopany
+    Đây là email tự động, vui lòng không trả lời. Cần hỗ trợ? Liên hệ [email hỗ trợ] · [hotline] © 2026 Gopany
+
+--- 1872:4430 Đăng ký bằng email (US6)
+    GOPANY
+    Đặt lại mật khẩu
+    Xin chào huongmt@gopany.com,
+    Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản Gopany gắn với email này. Nhập mã dưới đây để đặt mật khẩu mới.
+    MÃ XÁC THỰC CỦA BẠN
+    4
+    8
+    8
+    8
+    8
+    8
+    Mã có hiệu lực trong 5 phút và chỉ dùng được một lần.
+    <lock>
+    Không chia sẻ mã này với bất kỳ ai, kể cả người tự nhận là nhân viên Gopany. Gopany không bao giờ hỏi mã xác thực của bạn.
+    Nếu bạn không yêu cầu đặt lại mật khẩu, hãy bỏ qua email này. Mật khẩu hiện tại của bạn không thay đổi.
+    Cảm ơn bạn đã sử dụng Gopany!
+    Đội ngũ Gopany
+    Đây là email tự động, vui lòng không trả lời. Cần hỗ trợ? Liên hệ [email hỗ trợ] · [hotline] © 2026 Gopany
+
+--- 1872:4483 Thêm email – khi tài khoản chưa có email (US5)
+    GOPANY
+    Xác nhận thêm email vào tài khoản
+    Xin chào huongmt@gopany.com,
+    Email này đang được thêm vào tài khoản Gopany của bạn. Nhập mã dưới đây để xác nhận đây là email của bạn.
+    MÃ XÁC THỰC CỦA BẠN
+    4
+    8
+    8
+    8
+    8
+    8
+    Mã có hiệu lực trong 5 phút và chỉ dùng được một lần.
+    <lock>
+    Không chia sẻ mã này với bất kỳ ai, kể cả người tự nhận là nhân viên Gopany. Gopany không bao giờ hỏi mã xác thực của bạn.
+    Nếu bạn không thực hiện thao tác này, hãy bỏ qua email và đổi mật khẩu Gopany để bảo vệ tài khoản.
+    Cảm ơn bạn đã sử dụng Gopany!
+    Đội ngũ Gopany
+    Đây là email tự động, vui lòng không trả lời. Cần hỗ trợ? Liên hệ [email hỗ trợ] · [hotline] © 2026 Gopany
+
+########## US3
+
+--- 1634:21845 Đăng Nhập
+    GOPANY
+    Đăng nhập
+    Chào mừng bạn đến với Gopany
+    <Input field>
+    <Input field>
+    <Checkbox>
+    <Button - Link Brand>
+    <Button>
+    Hoặc
+    <Button - Social>
+    Chưa có tài khoản?
+    <Button - Link Brand>
+
+--- 1725:10310 Đăng Nhập
+    GOPANY
+    Đăng nhập
+    Chào mừng bạn đến với Gopany
+    <Input field>
+    <Input field>
+    <Checkbox>
+    <Button - Link Brand>
+    <Button>
+    Hoặc
+    <Button - Social>
+    Chưa có tài khoản?
+    <Button - Link Brand>
+
+--- 1725:10598 Đăng Nhập
+    GOPANY
+    Đăng nhập
+    Chào mừng bạn đến với Gopany
+    <Input field>
+    <Input field>
+    <Checkbox>
+    <Button - Link Brand>
+    <Button>
+    Hoặc
+    <Button - Social>
+    <error>
+    Đăng nhập đang tạm bị khóa. Vui lòng thử lại sau [thời gian]. vô hiệu hóa nút đăng nhập
+    Chưa có tài khoản?
+    <Button - Link Brand>
